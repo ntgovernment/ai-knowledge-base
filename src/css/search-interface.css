@@ -211,14 +211,6 @@
   color: var(--clr-icon-subtle, #878f9f);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .aikb-search-input-wrapper,
-  .aikb-dropdown-wrapper {
-    /* width: 100%; */
-  }
-}
-
 @media (max-width: 576px) {
   #text-question {
     grid-column: span 12;

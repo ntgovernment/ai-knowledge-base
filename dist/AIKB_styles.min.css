@@ -1,1 +1,567 @@
-.aikb-search-card{background:var(--clr-surface-primary,#fff);border-bottom:.5px solid var(--clr-stroke-default,#afb5bf);box-sizing:border-box;display:flex;flex-direction:column;gap:10px;max-width:100%;padding:24px 48px;width:100%}.aikb-search-card__inner{align-items:flex-start;display:flex;gap:24px;justify-content:space-between}.aikb-search-card__content{display:flex;flex:1;flex-direction:column;gap:16px;max-width:582px}.aikb-search-card__text{display:flex;flex-direction:column;gap:8px}.aikb-search-card__title{color:var(--clr-text-default,#102040);font-size:20px;font-weight:700;margin:0;margin-top:0!important}.aikb-search-card__summary,.aikb-search-card__title{font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:24px;word-wrap:break-word}.aikb-search-card__summary{color:var(--clr-text-body,#384560);font-size:16px;font-weight:400;margin:0}.aikb-search-card__tags{align-items:center;display:flex;gap:16px}.aikb-search-card__tag{background:var(--clr-tag-tag-subtle,#fff);border-radius:4px;color:var(--clr-text-helper,#606a80);font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;line-height:16px;outline:1px solid var(--clr-stroke-subtle,#d0e0e0);outline-offset:-1px;padding:4px 8px;text-transform:uppercase;word-wrap:break-word}.aikb-search-card__actions{align-items:flex-end;display:flex;flex-direction:column;gap:16px;justify-content:center}.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right{color:#208820;font-size:1rem;position:absolute;right:2rem;top:1rem;transition:right .3s ease}.aikb-search-card__metadata{align-items:flex-end;display:flex;flex-direction:column;gap:8px}.aikb-search-card__useful-for{align-items:center;display:flex;gap:4px}.aikb-search-card__useful-label{font-weight:700}.aikb-search-card__useful-label,.aikb-search-card__useful-value{color:var(--clr-text-default,#102040);font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:14px;line-height:20px;word-wrap:break-word}.aikb-search-card__useful-value{font-weight:400}.aikb-search-card__date{color:var(--clr-text-helper,#606a80);font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:14px;font-weight:400;line-height:20px;word-wrap:break-word}@media (max-width:768px){.aikb-search-card{padding:16px 24px}.aikb-search-card__inner{flex-direction:column}.aikb-search-card__content{max-width:100%}.aikb-search-card__actions{align-items:flex-start;width:100%}.aikb-search-card__metadata{align-items:flex-start}}#ntgc-page-filters{align-items:stretch;box-sizing:border-box;display:grid;gap:24px;grid-template-columns:repeat(12,1fr);max-width:100%;width:100%}#ntgc-page-filters>*{min-width:226px;width:100%}#select-question-2,#select-question-3,#text-question{max-width:100%;min-width:226px}.aikb-search-section{align-items:flex-start;background:var(--clr-surface-primary,#fff);display:flex;flex-direction:column;gap:10px;justify-content:flex-start;overflow:hidden;padding:48px 54px;width:100%}.aikb-search-controls{align-self:stretch;gap:48px}.aikb-search-controls,.aikb-search-input-wrapper{align-items:center;display:flex;justify-content:flex-start}.aikb-search-input-wrapper{background:var(--clr-surface-primary,#fff);flex:1 1 0;gap:10px;height:48px;outline:1px var(--clr-stroke-default,#afb5bf) solid;outline-offset:-1px;overflow:hidden;padding:24px}.aikb-search-input-wrapper:hover{outline-color:#878f9f;outline-width:2px}.aikb-search-input-wrapper:focus-within{outline-color:#208820;outline-width:2px}.aikb-search-input-inner{align-items:center;display:flex;flex:1 1 0;justify-content:space-between}.aikb-search-input-wrapper input[type=text]{background:transparent;border:none;color:var(--clr-text-default,#102040);flex:1;font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:16px;font-weight:400;line-height:24px;outline:none;padding:0 24px 0 0}.aikb-search-input-wrapper input[type=text]::-moz-placeholder{color:var(--clr-text-helper,#606a80)}.aikb-search-input-wrapper input[type=text]::placeholder{color:var(--clr-text-helper,#606a80)}.aikb-search-input-wrapper .search-icon{align-items:center;display:flex;height:24px;justify-content:center;pointer-events:none;position:absolute;right:24px;top:50%;transform:translateY(-50%);width:24px;z-index:2}.aikb-search-input-wrapper .search-icon:before{color:var(--clr-icon-subtle,#878f9f);content:"\f002";font-family:Font Awesome\ 5 Pro;font-size:.75rem;font-weight:600;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%)}.aikb-dropdown-wrapper{align-items:flex-start;background:var(--clr-surface-primary,#fff);display:flex;flex-direction:column;gap:10px;justify-content:flex-start;outline:1px var(--clr-stroke-default,#afb5bf) solid;outline-offset:-1px;overflow:hidden;position:relative}.aikb-dropdown-wrapper:hover{outline-color:#878f9f;outline-width:2px}.aikb-dropdown-wrapper:focus-within{outline-color:#208820;outline-width:2px}#select-question-3 .aikb-dropdown-wrapper{padding-bottom:0;padding-top:0}.aikb-dropdown-inner{align-items:center;align-self:stretch;display:flex;justify-content:flex-start;min-width:0;position:relative;width:100%}.aikb-dropdown-wrapper select{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:transparent;border:none;cursor:pointer;flex:1 1 0%;font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:16px;font-weight:400;line-height:24px;min-width:0;outline:none;padding:12px 24px;width:100%}.aikb-dropdown-wrapper select,.aikb-dropdown-wrapper select option:first-child{color:var(--clr-text-helper,#606a80)}.aikb-dropdown-wrapper select option:not(:first-child){color:var(--clr-text-default,#102040)}.aikb-dropdown-icon{height:24px;pointer-events:none;position:absolute;right:24px;top:50%;transform:translateY(-50%);width:24px;z-index:2}.aikb-dropdown-icon:before{color:var(--clr-icon-subtle,#878f9f);content:"\f078";font-family:Font Awesome\ 5 Pro;font-size:.75rem;font-weight:600;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%)}@media (max-width:576px){#select-question-2,#select-question-3,#text-question{grid-column:span 12}}@media (min-width:576px){#text-question{grid-column:span 12}#select-question-2,#select-question-3{grid-column:span 6}}@media (min-width:1024px){#ntgc-page-filters{grid-template-columns:1fr 276px 276px}#ntgc-page-filters>*{max-width:none;width:100%}#text-question{grid-column:1/2}#select-question-2{grid-column:2/3}#select-question-3{grid-column:3/4}}.aikb-multiselect-container{border:1px solid var(--clr-stroke-default,#afb5bf);border-radius:4px;box-sizing:border-box;min-width:226px;position:relative;transition:border-color .2s;width:100%}.aikb-multiselect-container.aikb-multiselect-open,.aikb-multiselect-container:focus-within{border-color:var(--clr-primary,#208820);border-width:2px}.aikb-multiselect-button{align-items:center;background:var(--clr-surface-primary,#fff);border:none;cursor:pointer;display:flex;font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:16px;justify-content:space-between;line-height:24px;outline:1px var(--clr-stroke-default,#afb5bf) solid;outline-offset:-1px;padding:12px 24px;transition:outline-color .2s ease;width:100%}.aikb-multiselect-button:hover{outline-color:var(--clr-stroke-hover,#878f9f)}.aikb-multiselect-button.aikb-multiselect-open,.aikb-multiselect-button:active,.aikb-multiselect-button:focus,.aikb-multiselect-open.aikb-multiselect-button{outline-color:var(--clr-primary,#208820);outline-width:2px}.aikb-multiselect-text{color:var(--clr-text-helper,#606a80);flex:1;font-weight:400;text-align:left}.aikb-multiselect-text.aikb-multiselect-has-selection{color:var(--clr-text-default,#102040)}.aikb-multiselect-icon{height:24px;position:relative;transition:transform .2s ease;width:24px}.aikb-multiselect-icon:before{color:var(--clr-icon-subtle,#878f9f);content:"\f078";font-family:Font Awesome\ 5 Pro;font-size:.75rem;font-weight:600;position:absolute;right:0;top:0}.aikb-multiselect-open .aikb-multiselect-icon{transform:rotate(180deg)}.aikb-multiselect-panel{background:var(--clr-surface-primary,#fff);border:1px solid var(--clr-stroke-default,#afb5bf);box-shadow:0 4px 12px rgba(16,32,64,.1);display:flex;flex-direction:column;left:0;max-height:320px;position:absolute;right:0;top:calc(100% + 4px);z-index:1000}.aikb-multiselect-options{flex:1;max-height:240px;overflow-y:auto;padding:8px 0}.aikb-multiselect-option{align-items:center;cursor:pointer;display:flex;padding:8px 16px;transition:background-color .15s ease;-webkit-user-select:none;-moz-user-select:none;user-select:none}.aikb-multiselect-option:hover{background-color:var(--clr-surface-secondary,#f5f6f7)}.aikb-multiselect-option-all{border-bottom:1px solid var(--clr-stroke-default,#afb5bf);font-weight:500;margin-bottom:4px}.aikb-multiselect-checkbox{accent-color:var(--clr-primary,#208820);cursor:pointer;height:18px;margin:0 12px 0 0;width:18px}.aikb-multiselect-label{color:var(--clr-text-default,#102040);cursor:pointer;flex:1;font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:16px;line-height:24px}.aikb-multiselect-options::-webkit-scrollbar{width:8px}.aikb-multiselect-options::-webkit-scrollbar-track{background:var(--clr-surface-secondary,#f5f6f7)}.aikb-multiselect-options::-webkit-scrollbar-thumb{background:var(--clr-stroke-default,#afb5bf);border-radius:4px}.aikb-multiselect-options::-webkit-scrollbar-thumb:hover{background:var(--clr-icon-subtle,#878f9f)}.aikb-multiselect-actions{border-top:1px solid var(--clr-stroke-default,#afb5bf);display:flex;gap:0}.aikb-multiselect-btn{background:var(--clr-surface-primary,#fff);border:none;color:var(--clr-text-default,#102040);cursor:pointer;flex:1;font-family:Roboto,system-ui,-apple-system,Segoe UI,Helvetica Neue,Arial,sans-serif;font-size:16px;font-weight:500;line-height:24px;padding:12px 16px;transition:background-color .15s ease}.aikb-multiselect-btn:hover{background-color:var(--clr-surface-secondary,#f5f6f7)}.aikb-multiselect-btn:active{background-color:var(--clr-stroke-default,#afb5bf)}.aikb-multiselect-btn-ok{border-right:1px solid var(--clr-stroke-default,#afb5bf)}@media (max-width:768px){.aikb-multiselect-panel{max-height:280px}.aikb-multiselect-options{max-height:200px}}
+/* Source stylesheet for AIKB bundle. Currently seeded from the existing minified output; split into modules as needed. */
+/* Search result card styles */
+.aikb-search-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 24px 48px;
+  background: var(--clr-surface-primary, white);
+  border-bottom: 0.5px solid var(--clr-stroke-default, #afb5bf);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.aikb-search-card__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.aikb-search-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 582px;
+}
+.aikb-search-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.aikb-search-card__title {
+  color: var(--clr-text-default, #102040);
+  font-size: 20px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+  margin-top: 0 !important;
+  word-wrap: break-word;
+}
+.aikb-search-card__summary {
+  color: var(--clr-text-body, #384560);
+  font-size: 16px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+  word-wrap: break-word;
+}
+.aikb-search-card__tags {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.aikb-search-card__tag {
+  padding: 4px 8px;
+  background: var(--clr-tag-tag-subtle, white);
+  border-radius: 4px;
+  outline: 1px solid var(--clr-stroke-subtle, #d0e0e0);
+  outline-offset: -1px;
+  color: var(--clr-text-helper, #606a80);
+  font-size: 12px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 16px;
+  letter-spacing: 2px;
+  word-wrap: break-word;
+}
+.aikb-search-card__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px;
+}
+.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right {
+  font-size: 1rem;
+  color: #208820;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  transition: right 300ms ease;
+}
+.aikb-search-card__metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.aikb-search-card__useful-for {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.aikb-search-card__useful-label {
+  color: var(--clr-text-default, #102040);
+  font-size: 14px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+.aikb-search-card__useful-value {
+  color: var(--clr-text-default, #102040);
+  font-size: 14px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+.aikb-search-card__date {
+  color: var(--clr-text-helper, #606a80);
+  font-size: 14px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aikb-search-card {
+    padding: 16px 24px;
+  }
+
+  .aikb-search-card__inner {
+    flex-direction: column;
+  }
+
+  .aikb-search-card__content {
+    max-width: 100%;
+  }
+
+  .aikb-search-card__actions {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .aikb-search-card__metadata {
+    align-items: flex-start;
+  }
+}
+/* Always fill width for page filters container */
+#ntgc-page-filters {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+#ntgc-page-filters > * {
+  min-width: 226px;
+  width: 100%;
+}
+/* Ensure select-question-2 and select-question-3 containers fit their contents */
+#text-question,
+#select-question-2,
+#select-question-3 {
+  /* width: fit-content; */
+  min-width: 226px;
+  max-width: 100%;
+}
+/* Search interface styles matching design specifications */
+.aikb-search-section {
+  width: 100%;
+  padding: 48px 54px;
+  background: var(--clr-surface-primary, white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+}
+.aikb-search-controls {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 48px;
+  display: flex;
+}
+/* Search input container */
+.aikb-search-input-wrapper {
+  flex: 1 1 0;
+  height: 48px;
+  padding: 24px;
+  background: var(--clr-surface-primary, white);
+  overflow: hidden;
+  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
+  outline-offset: -1px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+}
+.aikb-search-input-wrapper:hover {
+  outline-color: #878f9f;
+  outline-width: 2px;
+}
+.aikb-search-input-wrapper:focus-within {
+  outline-color: #208820;
+  outline-width: 2px;
+}
+.aikb-search-input-inner {
+  flex: 1 1 0;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+.aikb-search-input-wrapper input[type="text"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--clr-text-default, #102040);
+  font-size: 16px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 0;
+  padding-right: 24px;
+}
+.aikb-search-input-wrapper input[type="text"]::-moz-placeholder {
+  color: var(--clr-text-helper, #606a80);
+}
+.aikb-search-input-wrapper input[type="text"]::placeholder {
+  color: var(--clr-text-helper, #606a80);
+}
+.aikb-search-input-wrapper .search-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.aikb-search-input-wrapper .search-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f002";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
+}
+/* Dropdown containers */
+.aikb-dropdown-wrapper {
+  /* width: 278px; */
+  /* padding removed, now on select */
+  background: var(--clr-surface-primary, white);
+  overflow: hidden;
+  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+.aikb-dropdown-wrapper:hover {
+  outline-color: #878f9f;
+  outline-width: 2px;
+}
+.aikb-dropdown-wrapper:focus-within {
+  outline-color: #208820;
+  outline-width: 2px;
+}
+/* Sort dropdown - no vertical padding */
+#select-question-3 .aikb-dropdown-wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.aikb-dropdown-inner {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+.aikb-dropdown-wrapper select {
+  flex: 1 1 0%;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--clr-text-helper, #606a80);
+  font-size: 16px;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 12px 24px 12px 24px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+}
+.aikb-dropdown-wrapper select option:first-child {
+  color: var(--clr-text-helper, #606a80);
+}
+.aikb-dropdown-wrapper select option:not(:first-child) {
+  color: var(--clr-text-default, #102040);
+}
+.aikb-dropdown-icon {
+  position: absolute;
+  pointer-events: none;
+  width: 24px;
+  height: 24px;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.aikb-dropdown-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f078";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
+}
+@media (max-width: 576px) {
+  #text-question {
+    grid-column: span 12;
+  }
+  #select-question-2,
+  #select-question-3 {
+    grid-column: span 12;
+  }
+}
+@media (min-width: 576px) {
+  #text-question {
+    grid-column: span 12;
+  }
+  #select-question-2,
+  #select-question-3 {
+    grid-column: span 6;
+  }
+}
+@media (min-width: 1024px) {
+  #ntgc-page-filters {
+    grid-template-columns: 1fr 276px 276px;
+  }
+  #ntgc-page-filters > * {
+    max-width: none;
+    width: 100%;
+  }
+  #text-question {
+    grid-column: 1 / 2;
+  }
+  #select-question-2 {
+    grid-column: 2 / 3;
+  }
+  #select-question-3 {
+    grid-column: 3 / 4;
+  }
+}
+/* Multi-Select Dropdown Styles */
+.aikb-multiselect-container {
+  position: relative;
+  width: 100%;
+  min-width: 226px;
+  border: 1px solid var(--clr-stroke-default, #afb5bf);
+  border-radius: 4px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+/* Highlight border when open or focused */
+.aikb-multiselect-container.aikb-multiselect-open,
+.aikb-multiselect-container:focus-within {
+  border-color: var(--clr-primary, #208820);
+  border-width: 2px;
+}
+/* Display Button */
+.aikb-multiselect-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--clr-surface-primary, white);
+  border: none;
+  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
+  outline-offset: -1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  transition: outline-color 0.2s ease;
+}
+.aikb-multiselect-button:hover {
+  outline-color: var(--clr-stroke-hover, #878f9f);
+}
+.aikb-multiselect-button:focus {
+  outline-width: 2px;
+  outline-color: var(--clr-primary, #208820);
+}
+/* Keep border when open */
+.aikb-multiselect-open.aikb-multiselect-button,
+.aikb-multiselect-button.aikb-multiselect-open,
+.aikb-multiselect-button:focus,
+.aikb-multiselect-button:active {
+  outline-width: 2px;
+  outline-color: var(--clr-primary, #208820);
+}
+.aikb-multiselect-text {
+  color: var(--clr-text-helper, #606a80);
+  font-weight: 400;
+  text-align: left;
+  flex: 1;
+}
+.aikb-multiselect-text.aikb-multiselect-has-selection {
+  color: var(--clr-text-default, #102040);
+}
+.aikb-multiselect-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+.aikb-multiselect-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f078";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
+}
+.aikb-multiselect-open .aikb-multiselect-icon {
+  transform: rotate(180deg);
+}
+/* Dropdown Panel */
+.aikb-multiselect-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--clr-surface-primary, white);
+  border: 1px solid var(--clr-stroke-default, #afb5bf);
+  box-shadow: 0 4px 12px rgba(16, 32, 64, 0.1);
+  z-index: 1000;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+/* Options List */
+.aikb-multiselect-options {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  max-height: 240px;
+}
+.aikb-multiselect-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.aikb-multiselect-option:hover {
+  background-color: var(--clr-surface-secondary, #f5f6f7);
+}
+.aikb-multiselect-option-all {
+  border-bottom: 1px solid var(--clr-stroke-default, #afb5bf);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.aikb-multiselect-checkbox {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--clr-primary, #208820);
+}
+.aikb-multiselect-label {
+  flex: 1;
+  color: var(--clr-text-default, #102040);
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+/* Scrollbar styling */
+.aikb-multiselect-options::-webkit-scrollbar {
+  width: 8px;
+}
+.aikb-multiselect-options::-webkit-scrollbar-track {
+  background: var(--clr-surface-secondary, #f5f6f7);
+}
+.aikb-multiselect-options::-webkit-scrollbar-thumb {
+  background: var(--clr-stroke-default, #afb5bf);
+  border-radius: 4px;
+}
+.aikb-multiselect-options::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-icon-subtle, #878f9f);
+}
+/* Action Buttons */
+.aikb-multiselect-actions {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--clr-stroke-default, #afb5bf);
+}
+.aikb-multiselect-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: var(--clr-surface-primary, white);
+  color: var(--clr-text-default, #102040);
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.aikb-multiselect-btn:hover {
+  background-color: var(--clr-surface-secondary, #f5f6f7);
+}
+.aikb-multiselect-btn:active {
+  background-color: var(--clr-stroke-default, #afb5bf);
+}
+.aikb-multiselect-btn-ok {
+  border-right: 1px solid var(--clr-stroke-default, #afb5bf);
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aikb-multiselect-panel {
+    max-height: 280px;
+  }
+
+  .aikb-multiselect-options {
+    max-height: 200px;
+  }
+}
