@@ -14,9 +14,34 @@ import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
       return; // Not on search results page
     }
 
-    console.log("Loading initial results from Funnelback API...");
+    console.log("Loading initial results (fallback first, then API)...");
 
-    // Primary: Fetch from Funnelback API endpoint with default query (top items)
+    // Load fallback JSON immediately for fast initial display
+    fetch("src/data/search.json")
+      .then((response) => {
+        console.log(
+          "Fallback JSON response status:",
+          response.status,
+          response.ok
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fallback JSON data loaded successfully:", data);
+        processAndRenderResults(data, "fallback");
+      })
+      .catch((fallbackError) => {
+        console.error("Error loading fallback search.json:", fallbackError);
+        searchResultsContainer.innerHTML =
+          '<p class="aikb-error">Error loading search data: ' +
+          fallbackError.message +
+          "</p>";
+      });
+
+    // Fetch from Funnelback API in background (will update results when ready)
     const apiURL =
       "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull";
 
@@ -33,41 +58,22 @@ import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
         return response.json();
       })
       .then((data) => {
-        console.log("Funnelback API data loaded successfully:", data);
-        processAndRenderResults(data);
+        console.log(
+          "Funnelback API data loaded successfully, updating results:",
+          data
+        );
+        processAndRenderResults(data, "api");
       })
       .catch((error) => {
-        console.error(
-          "Error loading from Funnelback API, falling back to local JSON:",
+        console.warn(
+          "Funnelback API failed or timed out, keeping fallback data:",
           error
         );
-
-        // Fallback: Load from local search.json as last resort
-        fetch("src/data/search.json")
-          .then((response) => {
-            console.log(
-              "Fallback JSON response status:",
-              response.status,
-              response.ok
-            );
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("Fallback JSON data loaded successfully:", data);
-            processAndRenderResults(data);
-          })
-          .catch((fallbackError) => {
-            console.error("Error loading fallback search.json:", fallbackError);
-            searchResultsContainer.innerHTML =
-              "<p>Error loading search data: " + fallbackError.message + "</p>";
-          });
+        // Don't show error - fallback data already displayed
       });
   }
 
-  function processAndRenderResults(data) {
+  function processAndRenderResults(data, source = "unknown") {
     // Extract results from Funnelback response structure
     const results =
       data.response && data.response.resultPacket
@@ -90,7 +96,7 @@ import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
       score: result.score || 0,
     }));
 
-    console.log("Rendering", mappedResults.length, "cards");
+    console.log(`Rendering ${mappedResults.length} cards from ${source}`);
 
     // Store results for filtering/sorting
     storeResults(mappedResults);
@@ -98,8 +104,10 @@ import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
     // Initialize dropdowns with work area data
     initializeDropdowns(mappedResults);
 
-    // Initialize filter and sort listeners
-    initializeFiltersAndSort();
+    // Initialize filter and sort listeners (only once)
+    if (source === "fallback") {
+      initializeFiltersAndSort();
+    }
 
     // Render cards using the template
     renderResults(mappedResults, "search-results-list");
