@@ -44,7 +44,7 @@ export class MultiSelectDropdown {
     this.displayButton.innerHTML = `
       <span class="aikb-multiselect-text">Select Options</span>
       <span class="aikb-multiselect-icon">
-        <i class="fal fa-chevron-down" aria-hidden="true"></i>
+        <span class="fal fa-chevron-down" aria-hidden="true"></span>
       </span>
     `;
 

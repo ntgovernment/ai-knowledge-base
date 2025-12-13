@@ -102,8 +102,7 @@ function populateSortDropdown() {
 
   // Define sort options
   const sortOptions = [
-    { value: "", label: "Sort by...", disabled: true, selected: true },
-    { value: "relevance", label: "Relevance" },
+    { value: "relevance", label: "Relevance", selected: true },
     { value: "date-newest", label: "Date (newest first)" },
     { value: "date-oldest", label: "Date (oldest first)" },
     { value: "title-az", label: "Title (A-Z)" },
@@ -115,12 +114,11 @@ function populateSortDropdown() {
     const option = document.createElement("option");
     option.value = opt.value;
     option.textContent = opt.label;
-    if (opt.disabled) option.disabled = true;
     if (opt.selected) option.selected = true;
     dropdown.appendChild(option);
   });
 
-  console.log(`Populated sort dropdown with ${sortOptions.length - 1} options`);
+  console.log(`Populated sort dropdown with ${sortOptions.length} options`);
 }
 
 /**
