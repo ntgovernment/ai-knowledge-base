@@ -1,6 +1,8 @@
 /* Search result card styles */
 .aikb-search-card {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 24px 48px;
   background: var(--clr-surface-primary, white);
   border-bottom: 0.5px solid var(--clr-stroke-default, #afb5bf);

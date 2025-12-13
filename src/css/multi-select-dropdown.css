@@ -3,6 +3,18 @@
 .aikb-multiselect-container {
   position: relative;
   width: 100%;
+  min-width: 226px;
+  border: 1px solid var(--clr-stroke-default, #afb5bf);
+  border-radius: 4px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+/* Highlight border when open or focused */
+.aikb-multiselect-container.aikb-multiselect-open,
+.aikb-multiselect-container:focus-within {
+  border-color: var(--clr-primary, #208820);
+  border-width: 2px;
 }
 
 /* Display Button */
@@ -29,6 +41,15 @@
 }
 
 .aikb-multiselect-button:focus {
+  outline-width: 2px;
+  outline-color: var(--clr-primary, #208820);
+}
+
+/* Keep border when open */
+.aikb-multiselect-open.aikb-multiselect-button,
+.aikb-multiselect-button.aikb-multiselect-open,
+.aikb-multiselect-button:focus,
+.aikb-multiselect-button:active {
   outline-width: 2px;
   outline-color: var(--clr-primary, #208820);
 }

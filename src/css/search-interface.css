@@ -1,3 +1,26 @@
+/* Always fill width for page filters container */
+#ntgc-page-filters {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+#ntgc-page-filters > * {
+  min-width: 226px;
+  width: 100%;
+}
+/* Ensure select-question-2 and select-question-3 containers fit their contents */
+#text-question,
+#select-question-2,
+#select-question-3 {
+  /* width: fit-content; */
+  min-width: 226px;
+  max-width: 100%;
+}
 /* Search interface styles matching design specifications */
 
 .aikb-search-section {
@@ -64,6 +87,7 @@
   font-weight: 400;
   line-height: 24px;
   padding: 0;
+  padding-right: 24px;
 }
 
 .aikb-search-input-wrapper input[type="text"]::placeholder {
@@ -73,12 +97,15 @@
 .aikb-search-input-wrapper .search-icon {
   width: 24px;
   height: 24px;
-  position: relative;
-  overflow: hidden;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  pointer-events: none;
 }
 
 .aikb-search-input-wrapper .search-icon::before {
@@ -95,8 +122,8 @@
 
 /* Dropdown containers */
 .aikb-dropdown-wrapper {
-  width: 278px;
-  padding: 12px 24px;
+  /* width: 278px; */
+  /* padding removed, now on select */
   background: var(--clr-surface-primary, white);
   overflow: hidden;
   outline: 1px var(--clr-stroke-default, #afb5bf) solid;
@@ -127,13 +154,18 @@
 
 .aikb-dropdown-inner {
   align-self: stretch;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   display: flex;
+  width: 100%;
+  min-width: 0;
+  position: relative;
 }
 
 .aikb-dropdown-wrapper select {
-  flex: 1;
+  flex: 1 1 0%;
+  width: 100%;
+  min-width: 0;
   border: none;
   outline: none;
   background: transparent;
@@ -143,7 +175,7 @@
     Arial, sans-serif;
   font-weight: 400;
   line-height: 24px;
-  padding: 0;
+  padding: 12px 24px 12px 24px;
   appearance: none;
   cursor: pointer;
 }
@@ -157,19 +189,23 @@
 }
 
 .aikb-dropdown-icon {
-  position: relative;
+  position: absolute;
   pointer-events: none;
   width: 24px;
   height: 24px;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
 }
 
 .aikb-dropdown-icon::before {
   font-family: "Font Awesome 5 Pro";
   content: "\f078";
   position: absolute;
-  right: 0;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--clr-icon-subtle, #878f9f);
@@ -177,23 +213,47 @@
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-  .aikb-search-section {
-    padding: 32px 24px;
-  }
-
-  .aikb-search-controls {
-    flex-direction: column;
-    gap: 16px;
-  }
-
   .aikb-search-input-wrapper,
   .aikb-dropdown-wrapper {
-    width: 100%;
+    /* width: 100%; */
   }
 }
 
-@media (max-width: 768px) {
-  .aikb-search-section {
-    padding: 24px 16px;
+@media (max-width: 576px) {
+  #text-question {
+    grid-column: span 12;
+  }
+  #select-question-2,
+  #select-question-3 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 576px) {
+  #text-question {
+    grid-column: span 12;
+  }
+  #select-question-2,
+  #select-question-3 {
+    grid-column: span 6;
+  }
+}
+
+@media (min-width: 1024px) {
+  #ntgc-page-filters {
+    grid-template-columns: 1fr 276px 276px;
+  }
+  #ntgc-page-filters > * {
+    max-width: none;
+    width: 100%;
+  }
+  #text-question {
+    grid-column: 1 / 2;
+  }
+  #select-question-2 {
+    grid-column: 2 / 3;
+  }
+  #select-question-3 {
+    grid-column: 3 / 4;
   }
 }
