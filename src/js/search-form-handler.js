@@ -56,7 +56,10 @@
       window.ntgFunnelback &&
       typeof window.ntgFunnelback.callSearchAPI === "function"
     ) {
-      window.ntgFunnelback.callSearchAPI(params.query, params);
+      // Set originalterm and call API
+      window.ntgFunnelback.originalterm = params.query;
+      window.ntgFunnelback.currentPage = 1;
+      window.ntgFunnelback.callSearchAPI();
     } else {
       console.error("Funnelback API not initialized");
     }

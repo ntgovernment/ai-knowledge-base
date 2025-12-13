@@ -16,9 +16,9 @@ import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 
     console.log("Loading initial results from Funnelback API...");
 
-    // Primary: Fetch from Funnelback API endpoint
+    // Primary: Fetch from Funnelback API endpoint with default query (top items)
     const apiURL =
-      "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull&query=";
+      "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull";
 
     fetch(apiURL)
       .then((response) => {

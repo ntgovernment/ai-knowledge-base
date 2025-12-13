@@ -34,17 +34,27 @@ The AI Knowledge Base is a searchable repository that helps NT Government employ
 
 ✅ **Search Functionality**
 
+- Dynamic query parameter switching: `&s=` for top items, `&query=` for searches
 - Primary: Funnelback API (`ntgov~sp-ntgc-ai-knowledge-base` collection)
 - Fallback: Local `search.json` file when API unavailable
-- Auto-load results on page load
-- Manual search via form submission
+- Auto-load top items on page load
+- Manual search via form submission with noise word filtering
+- URL exclusion filter (e.g., configuration pages)
+
+✅ **Dynamic Filters & Sorting**
+
+- Work area filter dropdown (dynamically populated from results)
+- Sort by: Relevance, Date (newest/oldest), Title (A-Z/Z-A)
+- Client-side filtering and sorting for instant results
+- Preserves search state during filter/sort operations
 
 ✅ **Card-Based Results**
 
-- Title, summary, work area tags
+- Title, summary, work area tags (comma-separated tags split)
 - "Useful for" metadata and submission dates
 - Responsive layout (breakpoint at 768px)
-- "See more" button with Font Awesome icons
+- "See more" button with Font Awesome arrow icons (positioned absolutely)
+- Validation ensures required fields (title, summary, liveUrl)
 
 ✅ **Build System**
 
@@ -98,14 +108,17 @@ ntgc-aikb/
 │   ├── 📁 js/
 │   │   ├── index.js                            # Entry point - imports all modules
 │   │   ├── search-card-template.js             # Card rendering logic (228 lines)
-│   │   ├── ntg-funnelback.js                   # Funnelback API integration (218 lines)
+│   │   ├── ntg-funnelback.js                   # Funnelback API integration (204 lines)
 │   │   ├── search-form-handler.js              # Form submission handler (95 lines)
+│   │   ├── populate-dropdowns.js               # Dynamic dropdown population (180 lines)
+│   │   ├── search-filters.js                   # Client-side filtering & sorting (165 lines)
 │   │   ├── cta-button-alias.js                 # CTA button styling (15 lines)
-│   │   └── load-initial-results.js             # Auto-load on page load (60 lines)
+│   │   └── load-initial-results.js             # Auto-load on page load (105 lines)
 │   │
 │   ├── 📁 css/
 │   │   ├── index.css                           # Entry point - imports all styles
-│   │   ├── search-card.css                     # Card styling (152 lines)
+│   │   ├── search-card.css                     # Card styling (158 lines)
+│   │   ├── search-interface.css                # Search UI styling (155 lines)
 │   │   └── call-to-action.css                  # CTA styling (empty placeholder)
 │   │
 │   └── 📁 data/
@@ -191,28 +204,72 @@ npm run build:css
 
 **Important Element IDs:**
 
-- `#search-results-list` - Main container (line 1173)
+- `#search-results-list` - Main results container (line 1173)
 - `#policy-search-form` - Search form (line 1060)
-- `#search` - Search input field
+- `#search` - Search input field (line 1069)
+- `#document_type` - Work area filter dropdown (line 1088)
+- `#owner` - Sort dropdown (line 1118)
+- `#clear-input` - Clear search button (line 1077)
+- `.search-icon` - Search icon trigger (line 1073)
 
 ## 🏗 Architecture
 
 ### Data Flow
+
+**Initial Page Load:**
 
 ```
 Page Load
     ↓
 load-initial-results.js
     ↓
-fetch("src/data/search.json")
+Fetch Funnelback API (?s=!FunDoesNotExist:PadreNull)
     ↓
-Parse Funnelback response
+Parse response.resultPacket.results
     ↓
-Map to card format
+Filter excluded URLs
     ↓
-search-card-template.js → renderResults()
+Map to card format (title, summary, metadata, date, liveUrl, rank, score)
     ↓
-Display cards in #search-results-list
+storeResults() → Store for filtering/sorting
+    ↓
+initializeDropdowns() → Extract work areas & populate dropdowns
+    ↓
+initializeFiltersAndSort() → Attach event listeners
+    ↓
+renderResults() → Display cards in #search-results-list
+```
+
+**User Search:**
+
+```
+User enters "English" in #search input
+    ↓
+Form submission (search-form-handler.js)
+    ↓
+Set originalterm = "English"
+    ↓
+filterQuery() → Remove noise words → filteredterm = "English"
+    ↓
+Build URL: ?collection=...&query=English
+    ↓
+Fetch Funnelback API
+    ↓
+processResults() → Filter, map, store, initialize, render
+```
+
+**Filter/Sort:**
+
+```
+User selects work area or sort option
+    ↓
+Dropdown change event (search-filters.js)
+    ↓
+filterByWorkArea() → Filter stored results
+    ↓
+sortResults() → Sort by selected criteria
+    ↓
+renderResults() → Re-render filtered/sorted results
 ```
 
 ### Module Dependencies
@@ -220,10 +277,18 @@ Display cards in #search-results-list
 ```
 index.js
 ├── ntg-funnelback.js
+│   ├── → search-card-template.js (renderResults)
+│   ├── → populate-dropdowns.js (initializeDropdowns)
+│   └── → search-filters.js (storeResults, initializeFiltersAndSort)
 ├── cta-button-alias.js
-├── search-card-template.js ← imported by load-initial-results.js
+├── search-card-template.js
 ├── search-form-handler.js
+├── populate-dropdowns.js
+├── search-filters.js
 └── load-initial-results.js
+    ├── → search-card-template.js (renderResults)
+    ├── → populate-dropdowns.js (initializeDropdowns)
+    └── → search-filters.js (storeResults, initializeFiltersAndSort)
 ```
 
 ### Key Modules
@@ -272,30 +337,57 @@ export function renderResults(results, containerId = "search-results-list")
 </div>
 ```
 
-#### `ntg-funnelback.js` (218 lines)
+#### `ntg-funnelback.js` (204 lines)
 
-**Purpose:** Funnelback API integration with fallback
+**Purpose:** Funnelback API integration with dynamic query parameters
+
+**Key Properties:**
+
+```javascript
+defaults: {
+  baseURL: "https://ntgov-search.funnelback.squiz.cloud/s/search.json",
+  collection: "ntgov~sp-ntgc-ai-knowledge-base",
+  defaultQuery: "!FunDoesNotExist:PadreNull",
+  sourceField: "#search",
+  minChars: 3
+}
+```
 
 **Key Methods:**
 
 ```javascript
-callSearchAPI(); // Makes AJAX request to Funnelback
-filterQuery(); // Removes noise words
-processResults(data); // Maps results and calls renderResults
+init(query); // Initialize with optional querystring parameter
+callSearchAPI(query); // Makes AJAX request (accepts optional query param)
+filterQuery(); // Removes noise words from originalterm → filteredterm
+processResults(data); // Filters URLs, maps results, initializes dropdowns/filters, renders
 ```
 
-**API Endpoint:**
+**Query Parameter Logic:**
 
-```
-https://ntgov-search.funnelback.squiz.cloud/s/search.json
-?collection=ntgov~sp-ntgc-ai-knowledge-base
-&s=!FunDoesNotExist:PadreNull
-&query=<search-term>
-&num_ranks=10
-&start_rank=1
+```javascript
+// Initial load or no search term:
+?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull
+
+// User searches for "English":
+?collection=ntgov~sp-ntgc-ai-knowledge-base&query=English
 ```
 
-#### `load-initial-results.js` (60 lines)
+**URL Exclusion:**
+
+```javascript
+const excludedUrls = [
+  "https://ntgcentral.nt.gov.au/dev/aikb/configuration/listing/articles/_nocache",
+];
+const filteredResults = results.filter(
+  (r) => !excludedUrls.includes(r.liveUrl)
+);
+```
+
+**Noise Words:** Filters out common words (a, the, and, etc.) before API call
+
+**Fallback:** Loads `src/data/search.json` if API fails
+
+#### `load-initial-results.js` (105 lines)
 
 **Purpose:** Auto-load results on page load
 
@@ -304,10 +396,76 @@ https://ntgov-search.funnelback.squiz.cloud/s/search.json
 1. Wait for `window.load` event
 2. Delay 200ms for scripts to initialize
 3. Check for `#search-results-list` container
-4. Fetch `src/data/search.json`
-5. Parse Funnelback response structure
-6. Map results to card format
-7. Call `renderResults()`
+4. Fetch Funnelback API with `?s=` parameter (top items)
+5. Fallback to `src/data/search.json` on network error
+6. Parse Funnelback response structure
+7. Filter excluded URLs
+8. Map results to card format (including rank/score)
+9. Store results for filtering/sorting
+10. Initialize dropdowns with work area data
+11. Initialize filter and sort listeners
+12. Call `renderResults()`
+
+#### `populate-dropdowns.js` (180 lines)
+
+**Purpose:** Dynamically populate work area and sort dropdowns
+
+**Exports:**
+
+```javascript
+export function initializeDropdowns(results)
+export function initializeEmptyDropdowns()
+```
+
+**Functions:**
+
+- `extractWorkAreas(results)` - Gets unique work areas from results (splits comma-separated)
+- `populateWorkAreaDropdown(workAreas)` - Populates `#document_type` dropdown
+- `populateSortDropdown()` - Populates `#owner` with sort options
+- `addDropdownIcons()` - Adds Font Awesome chevron-down icons
+
+**Sort Options:**
+
+- Relevance (default)
+- Date (newest first)
+- Date (oldest first)
+- Title (A-Z)
+- Title (Z-A)
+
+#### `search-filters.js` (165 lines)
+
+**Purpose:** Client-side filtering and sorting
+
+**Exports:**
+
+```javascript
+export function storeResults(results)
+export function initializeFiltersAndSort()
+```
+
+**Functions:**
+
+- `storeResults(results)` - Stores results in module-level array
+- `filterByWorkArea(workArea)` - Filters by work area (handles comma-separated)
+- `sortResults(results, sortBy)` - Sorts by relevance/date/title
+- `applyFiltersAndSort()` - Combines filtering + sorting + rendering
+- `initializeFiltersAndSort()` - Attaches change event listeners to dropdowns
+
+**Filtering Logic:**
+
+```javascript
+// "Management, Health" matches both "Management" and "Health"
+const workAreaArray = result.listMetadata.keyword[0]
+  .split(",")
+  .map((a) => a.trim());
+return workAreaArray.includes(selectedWorkArea);
+```
+
+**Sorting Logic:**
+
+- **Relevance:** Sort by rank (lower better) or score (higher better)
+- **Date:** Parse date field, sort by timestamp
+- **Title:** Locale-aware alphabetical sort
 
 #### `search-form-handler.js` (95 lines)
 
@@ -328,26 +486,90 @@ https://ntgov-search.funnelback.squiz.cloud/s/search.json
 ```
 index.css
 ├── @import "./call-to-action.css"  (empty)
-└── @import "./search-card.css"     (152 lines)
+├── @import "./search-card.css"     (158 lines)
+└── @import "./search-interface.css" (155 lines)
 ```
 
 ### Design Tokens (CSS Variables)
 
 ```css
+/* Colors */
 --clr-surface-primary: white
---clr-stroke-default: #afb5bf
+--clr-stroke-default: #AFB5BF
+--clr-stroke-subtle: #D0E0E0
 --clr-text-default: #102040
 --clr-text-body: #384560
+--clr-text-helper: #606A80
+--clr-icon-subtle: #878F9F
+--clr-tag-tag-subtle: white
 ```
+
+### Search Interface Styling
+
+**Container:**
+
+```css
+.aikb-search-section {
+  padding: 48px 54px;
+  background: white;
+}
+
+.aikb-search-controls {
+  display: flex;
+  gap: 48px;
+}
+```
+
+**Search Input:**
+
+```css
+.aikb-search-input-wrapper {
+  flex: 1;
+  height: 48px;
+  padding: 24px;
+  outline: 1px solid #afb5bf;
+}
+
+input::placeholder {
+  color: #606a80;
+}
+
+.search-icon .fa-search {
+  color: #878f9f;
+  font-size: 20px;
+}
+```
+
+**Dropdowns:**
+
+```css
+.aikb-dropdown-wrapper {
+  width: 278px;
+  padding: 12px 24px;
+  outline: 1px solid #afb5bf;
+}
+
+.aikb-dropdown-icon .fa-chevron-down {
+  color: #878f9f;
+  font-size: 20px;
+}
+```
+
+**Responsive (<1024px):**
+
+- Stacked layout
+- Full-width dropdowns
+- Reduced padding
 
 ### Card Styling
 
 **Desktop (default):**
 
 - Padding: 24px 48px
-- Title: 20px Roboto Bold
+- Title: 20px Roboto Bold (margin-top: 0 !important)
 - Summary: 16px Roboto Regular
-- Tags: Uppercase, 12px
+- Tags: Uppercase, 12px, splits comma-separated values
+- Arrow icon: Absolutely positioned (right: 2rem, top: 1rem, color: #208820)
 
 **Mobile (<768px):**
 
@@ -358,13 +580,27 @@ index.css
 ### Key CSS Classes
 
 ```css
-.aikb-search-card              /* Card container */
+.aikb-search-card                        /* Card container */
 /* Card container */
-.aikb-search-card__title       /* H3 title (margin-top: 0 !important) */
-.aikb-search-card__summary     /* Description text */
-.aikb-search-card__tag         /* Work area tag */
-.aikb-search-card__useful-for  /* "Useful for" metadata */
-.aikb-search-card__date; /* Submission date */
+.aikb-search-card__title                 /* H3 title (margin-top: 0 !important) */
+.aikb-search-card__summary               /* Description text */
+.aikb-search-card__tag                   /* Work area tag */
+.aikb-search-card__useful-for            /* "Useful for" metadata */
+.aikb-search-card__date                  /* Submission date */
+.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right; /* Arrow icon positioning */
+```
+
+**Arrow Icon Styles:**
+
+```css
+.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right {
+  font-size: 1rem;
+  color: #208820;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  transition: right 300ms ease;
+}
 ```
 
 ## 🔌 API Integration
@@ -517,29 +753,86 @@ npm run build:css
 ```
 Search form handler initialized
 Page load event fired, loading initial results...
-Loading initial results...
-Fetch response status: 200 true
-JSON data loaded successfully: {...}
-Rendering 10 cards
-renderResults called with 10 results for container #search-results-list
+Loading initial results from Funnelback API...
+Funnelback API response status: 200 true
+Funnelback API data loaded successfully: {...}
+Processing 15 search results
+After filtering: 14 results (excluded 1)
+Stored 14 results for filtering/sorting
+Populated work area dropdown with 7 options
+Populated sort dropdown with 5 options
+Filter and sort listeners initialized
+Renderering 14 cards
+renderResults called with 14 results for container #search-results-list
 document.getElementById("search-results-list"): <div...>
-Rendered 10 search result cards
+Rendered 14 search result cards
+Search results rendered successfully
+```
+
+**Expected console logs on search:**
+
+```
+Search query: "English"
+callSearchAPI called with originalterm: English
+After filterQuery, filteredterm: English
+Calling Funnelback API: https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&query=English&num_ranks=10&start_rank=1
+Processing 8 search results
+After filtering: 8 results (excluded 0)
+...
+```
+
+**Expected console logs on filter/sort:**
+
+```
+Work area filter changed to: Legal
+Applying filters - Work Area: "Legal", Sort: "relevance"
+After filtering: 2 results
+After sorting: 2 results
+renderResults called with 2 results for container #search-results-list
+Rendered 2 search result cards
 ```
 
 ## 🧪 Testing
 
 ### Manual Testing Checklist
 
+**Initial Load:**
+
 - [ ] Page loads without errors
-- [ ] 10 results display on load
+- [ ] Top items display automatically (using ?s= parameter)
 - [ ] Cards show title, summary, tags
-- [ ] "See more" buttons have arrow icons
 - [ ] Work area tags split on commas
 - [ ] Dates format as "Month YYYY"
 - [ ] "Useful for" displays when available
+- [ ] Arrow icons positioned absolutely (right: 2rem, top: 1rem)
+
+**Search Functionality:**
+
 - [ ] Search form submission works
+- [ ] Query parameter switches to ?query=<term>
+- [ ] "Searching..." loading state displays
+- [ ] Results update with searched items
 - [ ] Clear button appears/disappears
-- [ ] Responsive layout works <768px
+- [ ] URL updates with query parameter
+- [ ] Noise words filtered (a, the, and, etc.)
+- [ ] Excluded URLs don't appear (Articles config page)
+
+**Filtering & Sorting:**
+
+- [ ] Work area dropdown populates from data
+- [ ] Sort dropdown has 6 options (default + 5 sorts)
+- [ ] Selecting work area filters results instantly
+- [ ] Sorting updates results (no page reload)
+- [ ] Filter + sort combination works
+- [ ] "All work areas" shows all results
+- [ ] Dropdowns have chevron-down icons
+
+**Responsive Design:**
+
+- [ ] Desktop: Horizontal layout with 48px gap
+- [ ] Mobile (<768px): Stacked cards
+- [ ] Tablet (<1024px): Stacked search controls
+- [ ] Touch targets adequate on mobile
 
 ### Debug Mode
 
@@ -604,7 +897,92 @@ window.DEBUG = true;
 - 200ms delay after window.load event
 - ~10 cards rendered in <50ms
 
-## 🤝 Contributing
+## � AI Agent Development Guide
+
+### For AI Coding Assistants
+
+When working with this codebase:
+
+**1. Understanding the Search Flow:**
+
+- Initial load uses `?s=!FunDoesNotExist:PadreNull` for top items
+- User searches use `?query=<term>` for keyword searches
+- Results are stored in `search-filters.js` for client-side operations
+
+**2. Key Integration Points:**
+
+```javascript
+// Add new filter criterion:
+// 1. Update filterBy* function in search-filters.js
+// 2. Add dropdown in HTML
+// 3. Initialize in populate-dropdowns.js
+// 4. Attach listener in initializeFiltersAndSort()
+
+// Add new sort option:
+// 1. Add case in sortResults() switch statement
+// 2. Add option in populateSortDropdown()
+```
+
+**3. Module Communication:**
+
+- `ntg-funnelback.js` → Fetches data, calls initialization functions
+- `populate-dropdowns.js` → Extracts metadata, populates UI
+- `search-filters.js` → Stores data, handles filter/sort logic
+- `search-card-template.js` → Renders results (called by all)
+
+**4. Common Tasks:**
+
+**Add new metadata field to cards:**
+
+```javascript
+// 1. Update mapping in processResults() (ntg-funnelback.js)
+// 2. Update createSearchCard() (search-card-template.js)
+// 3. Add CSS class (search-card.css)
+```
+
+**Change API endpoint:**
+
+```javascript
+// Update defaults.baseURL in ntg-funnelback.js
+// Update apiURL in load-initial-results.js
+```
+
+**Exclude additional URLs:**
+
+```javascript
+// Add to excludedUrls array in processResults() (ntg-funnelback.js)
+```
+
+**5. Debug Commands:**
+
+```javascript
+// Check stored results:
+window.searchFilters = { results: allResults }; // Add to search-filters.js
+console.log(window.searchFilters.results);
+
+// Test filtering:
+const filtered = filterByWorkArea("Legal");
+console.log(filtered);
+
+// Test API call:
+window.ntgFunnelback.originalterm = "test";
+window.ntgFunnelback.callSearchAPI();
+```
+
+**6. Build Verification:**
+
+```bash
+# After code changes:
+npm run build
+
+# Check bundle size:
+ls -lh dist/
+
+# Verify imports:
+grep -r "import.*from" src/js/
+```
+
+## �🤝 Contributing
 
 ### Git Workflow
 
