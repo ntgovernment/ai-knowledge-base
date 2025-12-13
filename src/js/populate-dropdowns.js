@@ -1,4 +1,7 @@
 // Dynamically populate work area and sort dropdowns from search data
+import { initMultiSelect } from "./multi-select-dropdown.js";
+
+let multiSelectInstance = null;
 
 /**
  * Extract unique work areas from search results
@@ -65,6 +68,23 @@ function populateWorkAreaDropdown(workAreas) {
   });
 
   console.log(`Populated work area dropdown with ${workAreas.length} options`);
+
+  // Initialize multi-select after populating options
+  if (multiSelectInstance) {
+    // Destroy previous instance if exists
+    multiSelectInstance.destroy();
+    multiSelectInstance = null;
+  }
+
+  // Only initialize if not already initialized
+  if (
+    !dropdown.nextElementSibling ||
+    !dropdown.nextElementSibling.classList.contains(
+      "aikb-multiselect-container"
+    )
+  ) {
+    multiSelectInstance = initMultiSelect(dropdown);
+  }
 }
 
 /**

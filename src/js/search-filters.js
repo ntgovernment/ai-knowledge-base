@@ -13,11 +13,11 @@ export function storeResults(results) {
 
 /**
  * Filter results by work area
- * @param {string} workArea - Selected work area value
+ * @param {Array} selectedWorkAreas - Selected work area values
  * @returns {Array} - Filtered results
  */
-function filterByWorkArea(workArea) {
-  if (!workArea || workArea === "") {
+function filterByWorkArea(selectedWorkAreas) {
+  if (!selectedWorkAreas || selectedWorkAreas.length === 0) {
     return allResults; // Return all if no filter selected
   }
 
@@ -32,9 +32,12 @@ function filterByWorkArea(workArea) {
 
     const resultWorkAreas = result.listMetadata.keyword[0];
 
-    // Check if work area matches (handle comma-separated values)
+    // Check if any selected work area matches (handle comma-separated values)
     const workAreaArray = resultWorkAreas.split(",").map((area) => area.trim());
-    return workAreaArray.includes(workArea);
+
+    return selectedWorkAreas.some((selectedArea) =>
+      workAreaArray.includes(selectedArea)
+    );
   });
 }
 
@@ -105,23 +108,33 @@ function sortResults(results, sortBy) {
  * Apply filters and sorting, then render results
  */
 async function applyFiltersAndSort() {
-  const workAreaDropdown = document.getElementById("document_type");
+  const workAreaContainer = document.querySelector(
+    ".aikb-multiselect-container"
+  );
   const sortDropdown = document.getElementById("owner");
 
-  if (!workAreaDropdown || !sortDropdown) {
-    console.warn("Filter/sort dropdowns not found");
+  if (!sortDropdown) {
+    console.warn("Sort dropdown not found");
     return;
   }
 
-  const selectedWorkArea = workAreaDropdown.value;
+  // Get selected work areas from multi-select
+  let selectedWorkAreas = [];
+  if (workAreaContainer && workAreaContainer.__multiSelectInstance) {
+    selectedWorkAreas =
+      workAreaContainer.__multiSelectInstance.getSelectedValues();
+  }
+
   const selectedSort = sortDropdown.value || "relevance";
 
   console.log(
-    `Applying filters - Work Area: "${selectedWorkArea}", Sort: "${selectedSort}"`
+    `Applying filters - Work Areas: [${selectedWorkAreas.join(
+      ", "
+    )}], Sort: "${selectedSort}"`
   );
 
-  // Filter by work area
-  let filtered = filterByWorkArea(selectedWorkArea);
+  // Filter by work areas
+  let filtered = filterByWorkArea(selectedWorkAreas);
   console.log(`After filtering: ${filtered.length} results`);
 
   // Sort results
@@ -137,12 +150,14 @@ async function applyFiltersAndSort() {
  * Initialize filter and sort listeners
  */
 export function initializeFiltersAndSort() {
-  const workAreaDropdown = document.getElementById("document_type");
+  const workAreaContainer = document.querySelector(
+    ".aikb-multiselect-container"
+  );
   const sortDropdown = document.getElementById("owner");
 
-  if (workAreaDropdown) {
-    workAreaDropdown.addEventListener("change", function () {
-      console.log(`Work area filter changed to: ${this.value}`);
+  if (workAreaContainer) {
+    workAreaContainer.addEventListener("multiselect-change", function () {
+      console.log("Work area multi-select changed");
       applyFiltersAndSort();
     });
   }

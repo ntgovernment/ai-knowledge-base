@@ -7,3 +7,4 @@ import "./load-initial-results.js";
 import "./populate-dropdowns.js";
 import "./search-filters.js";
 import "./offline-search.js";
+import "./multi-select-dropdown.js";

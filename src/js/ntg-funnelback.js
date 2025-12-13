@@ -211,7 +211,9 @@ const ntgFunnelback = {
     // Render results using card template
     renderResults(mappedResults, "search-results-list");
 
-    console.log("Search results rendered successfully");
+    console.log(
+      "Funnelback API results rendered (updated from offline/fallback)"
+    );
   },
 };
 
