@@ -11,8 +11,8 @@
     "watch:js": "esbuild src/js/index.js --bundle --format=iife --sourcemap --watch --outfile=dist/aikb_scripts.min.js",
     "build:css": "postcss src/css/index.css --env production --map --output dist/AIKB_styles.min.css",
     "watch:css": "postcss src/css/index.css --watch --map --output dist/AIKB_styles.min.css",
-    "build": "npm-run-all clean prepare:dist build:js build:css",
-    "dev": "npm-run-all clean prepare:dist --parallel watch:js watch:css serve",
+    "build": "npm-run-all prepare:dist build:js build:css",
+    "dev": "npm-run-all prepare:dist --parallel watch:js watch:css serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

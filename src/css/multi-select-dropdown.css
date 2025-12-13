@@ -45,13 +45,21 @@
 }
 
 .aikb-multiselect-icon {
+  position: relative;
   width: 24px;
   height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--clr-icon-subtle, #878f9f);
   transition: transform 0.2s ease;
+}
+
+.aikb-multiselect-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f078";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
 }
 
 .aikb-multiselect-open .aikb-multiselect-icon {

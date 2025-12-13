@@ -71,10 +71,16 @@
   cursor: pointer;
 }
 
-.aikb-search-input-wrapper .search-icon .fal,
-.aikb-search-input-wrapper .search-icon .fa-search {
+.aikb-search-input-wrapper .search-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f002";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--clr-icon-subtle, #878f9f);
-  font-size: 20px;
 }
 
 /* Dropdown containers */
@@ -102,7 +108,7 @@
 .aikb-dropdown-inner {
   align-self: stretch;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   display: flex;
 }
 
@@ -131,20 +137,22 @@
 }
 
 .aikb-dropdown-icon {
+  position: relative;
+  pointer-events: none;
   width: 24px;
   height: 24px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
 }
 
-.aikb-dropdown-icon .fal,
-.aikb-dropdown-icon .fa-chevron-down {
+.aikb-dropdown-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f078";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--clr-icon-subtle, #878f9f);
-  font-size: 20px;
 }
 
 /* Responsive adjustments */

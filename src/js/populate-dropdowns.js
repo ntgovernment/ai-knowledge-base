@@ -163,6 +163,7 @@ function populateSortDropdown() {
 
 /**
  * Add chevron-down icons to dropdowns
+ * Icons are displayed via CSS ::before pseudo-elements
  */
 function addDropdownIcons() {
   // Add icon to work area dropdown
@@ -174,8 +175,6 @@ function addDropdownIcons() {
     const icon = document.createElement("div");
     icon.className = "aikb-dropdown-icon";
     icon.setAttribute("data-colour", "NTG Blue");
-    icon.innerHTML =
-      '<span class="fal fa-chevron-down" aria-hidden="true"></span>';
 
     const wrapper = workAreaDropdown.closest(".aikb-dropdown-wrapper");
     if (wrapper) {
@@ -195,8 +194,6 @@ function addDropdownIcons() {
     const icon = document.createElement("div");
     icon.className = "aikb-dropdown-icon";
     icon.setAttribute("data-colour", "NTG Blue");
-    icon.innerHTML =
-      '<span class="fal fa-chevron-down" aria-hidden="true"></span>';
 
     const wrapper = sortDropdown.closest(".aikb-dropdown-wrapper");
     if (wrapper) {
