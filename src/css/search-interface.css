@@ -93,6 +93,12 @@
   position: relative;
 }
 
+/* Sort dropdown - no vertical padding */
+#select-question-3 .aikb-dropdown-wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .aikb-dropdown-inner {
   align-self: stretch;
   justify-content: space-between;

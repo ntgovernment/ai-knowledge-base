@@ -91,14 +91,54 @@ function populateWorkAreaDropdown(workAreas) {
  * Populate sort dropdown with sort options
  */
 function populateSortDropdown() {
-  const dropdown = document.getElementById("owner");
-  if (!dropdown) {
-    console.warn("Sort dropdown #owner not found");
+  const container = document.getElementById("select-question-3");
+  if (!container) {
+    console.warn("Sort dropdown container #select-question-3 not found");
     return;
   }
 
-  // Clear existing options
-  dropdown.innerHTML = "";
+  // Check if dropdown already exists
+  let dropdown = document.getElementById("owner");
+
+  // If dropdown doesn't exist, create the entire structure
+  if (!dropdown) {
+    // Clear container content (except label)
+    const label = container.querySelector("label");
+    container.innerHTML = "";
+    if (label) {
+      container.appendChild(label);
+    } else {
+      // Create label if it doesn't exist
+      const newLabel = document.createElement("label");
+      newLabel.className = "ntgc-form-input--label";
+      newLabel.setAttribute("for", "select-input-2");
+      newLabel.textContent = "Sort";
+      container.appendChild(newLabel);
+    }
+
+    // Create dropdown wrapper
+    const wrapper = document.createElement("div");
+    wrapper.className = "aikb-dropdown-wrapper";
+
+    // Create inner wrapper
+    const inner = document.createElement("div");
+    inner.className = "aikb-dropdown-inner";
+
+    // Create select element
+    dropdown = document.createElement("select");
+    dropdown.name = "sort";
+    dropdown.className =
+      "ntgc-select ntgc-select--block ntgc-select-input--filter";
+    dropdown.id = "owner";
+
+    // Append elements
+    inner.appendChild(dropdown);
+    wrapper.appendChild(inner);
+    container.appendChild(wrapper);
+  } else {
+    // Clear existing options if dropdown exists
+    dropdown.innerHTML = "";
+  }
 
   // Define sort options
   const sortOptions = [
