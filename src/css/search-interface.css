@@ -35,6 +35,16 @@
   display: flex;
 }
 
+.aikb-search-input-wrapper:hover {
+  outline-color: #878f9f;
+  outline-width: 2px;
+}
+
+.aikb-search-input-wrapper:focus-within {
+  outline-color: #208820;
+  outline-width: 2px;
+}
+
 .aikb-search-input-inner {
   flex: 1 1 0;
   justify-content: space-between;
@@ -97,6 +107,16 @@
   align-items: flex-start;
   gap: 10px;
   position: relative;
+}
+
+.aikb-dropdown-wrapper:hover {
+  outline-color: #878f9f;
+  outline-width: 2px;
+}
+
+.aikb-dropdown-wrapper:focus-within {
+  outline-color: #208820;
+  outline-width: 2px;
 }
 
 /* Sort dropdown - no vertical padding */

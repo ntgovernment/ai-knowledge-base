@@ -1,3 +1,65 @@
+/**
+ * Dynamically create the search input and icon to match the attached design
+ */
+export function populateSearchInput() {
+  const container = document.getElementById("search-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  // Outer wrapper
+  const wrapper = document.createElement("div");
+  wrapper.style.width = "100%";
+  wrapper.style.height = "100%";
+  wrapper.style.padding = "24px";
+  wrapper.style.background = "var(--clr-surface-primary, white)";
+  wrapper.style.overflow = "hidden";
+  wrapper.style.outline = "1px var(--clr-stroke-default, #AFB5BF) solid";
+  wrapper.style.outlineOffset = "-1px";
+  wrapper.style.justifyContent = "flex-start";
+  wrapper.style.alignItems = "center";
+  wrapper.style.gap = "10px";
+  wrapper.style.display = "inline-flex";
+
+  // Inner flex
+  const inner = document.createElement("div");
+  inner.style.flex = "1 1 0";
+  inner.style.justifyContent = "space-between";
+  inner.style.alignItems = "center";
+  inner.style.display = "flex";
+
+  // Placeholder text
+  const placeholder = document.createElement("div");
+  placeholder.textContent = "Search for a AI prompt or use case...";
+  placeholder.style.color = "var(--clr-text-helper, #606A80)";
+  placeholder.style.fontSize = "16px";
+  placeholder.style.fontFamily = "Roboto";
+  placeholder.style.fontWeight = "400";
+  placeholder.style.lineHeight = "24px";
+  placeholder.style.wordWrap = "break-word";
+
+  // Icon container
+  const iconContainer = document.createElement("div");
+  iconContainer.setAttribute("data-colour", "NTGC blue");
+  iconContainer.style.width = "24px";
+  iconContainer.style.height = "24px";
+  iconContainer.style.position = "relative";
+  iconContainer.style.overflow = "hidden";
+
+  // Icon (small colored div)
+  const icon = document.createElement("div");
+  icon.style.width = "20px";
+  icon.style.height = "20px";
+  icon.style.left = "2px";
+  icon.style.top = "2px";
+  icon.style.position = "absolute";
+  icon.style.background = "var(--clr-icon-subtle, #878F9F)";
+
+  iconContainer.appendChild(icon);
+  inner.appendChild(placeholder);
+  inner.appendChild(iconContainer);
+  wrapper.appendChild(inner);
+  container.appendChild(wrapper);
+}
 // Dynamically populate work area and sort dropdowns from search data
 import { initMultiSelect } from "./multi-select-dropdown.js";
 
@@ -230,6 +292,9 @@ export function initializeDropdowns(results) {
  */
 export function initializeEmptyDropdowns() {
   console.log("Initializing dropdowns with default state...");
+
+  // Dynamically create the search input and icon
+  populateSearchInput();
 
   // Populate sort options (not data-dependent)
   populateSortDropdown();
