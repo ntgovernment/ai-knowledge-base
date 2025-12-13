@@ -1,0 +1,28 @@
+
+> ntgc-aikb@1.0.0 build
+> npm-run-all clean prepare:dist build:js build:css
+
+
+> ntgc-aikb@1.0.0 clean
+> rimraf dist
+
+
+> ntgc-aikb@1.0.0 prepare:dist
+> node -e "require('fs').mkdirSync('dist',{recursive:true})"
+
+
+> ntgc-aikb@1.0.0 build:js
+> esbuild src/js/index.js --bundle --format=iife --minify --sourcemap --outfile=dist/aikb_scripts.min.js
+
+
+  dist\aikb_scripts.min.js       9.2kb
+  dist\aikb_scripts.min.js.map  29.7kb
+
+Done in 83ms
+
+> ntgc-aikb@1.0.0 build:css
+> postcss src/css/index.css --env production --map --output dist/AIKB_styles.min.css
+
+
+[1m3[22m[1m:1[22m	[33m⚠  [39mC:\Projects\ntgc-aikb\src\css\call-to-action.css is empty[33m [postcss-import][39m
+
