@@ -4,9 +4,9 @@
   position: relative;
   width: 100%;
   min-width: 226px;
-  border: 1px solid var(--clr-stroke-default, #afb5bf);
-  border-radius: 4px;
-  transition: border-color 0.2s;
+  border: 1px solid #afb5bf;
+  /* border-radius: 4px; */
+  /* transition: border-color 0.2s; */
   box-sizing: border-box;
 }
 
@@ -14,7 +14,7 @@
 .aikb-multiselect-container.aikb-multiselect-open,
 .aikb-multiselect-container:focus-within {
   border-color: var(--clr-primary, #208820);
-  border-width: 2px;
+  border-width: 1px;
 }
 
 /* Display Button */
@@ -24,7 +24,7 @@
   background: var(--clr-surface-primary, white);
   border: none;
   outline: 1px var(--clr-stroke-default, #afb5bf) solid;
-  outline-offset: -1px;
+  /* outline-offset: -1px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,7 +37,8 @@
 }
 
 .aikb-multiselect-button:hover {
-  outline-color: var(--clr-stroke-hover, #878f9f);
+  outline-color: var(--clr-stroke-hover, #102040);
+  /* outline-offset: -1px; */
 }
 
 .aikb-multiselect-button:focus {
@@ -94,7 +95,7 @@
   left: 0;
   right: 0;
   background: var(--clr-surface-primary, white);
-  border: 1px solid var(--clr-stroke-default, #afb5bf);
+  border: 1px solid #afb5bf;
   box-shadow: 0 4px 12px rgba(16, 32, 64, 0.1);
   z-index: 1000;
   max-height: 320px;
@@ -159,7 +160,7 @@
 
 .aikb-multiselect-options::-webkit-scrollbar-thumb {
   background: var(--clr-stroke-default, #afb5bf);
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .aikb-multiselect-options::-webkit-scrollbar-thumb:hover {

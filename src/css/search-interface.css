@@ -1,3 +1,18 @@
+/* Reinforce border color for .ntgc-select */
+.ntgc-select {
+  border: 1px solid #afb5bf !important;
+  box-sizing: border-box;
+}
+/* Set border color for .ntgc-text-input (search input) */
+.ntgc-text-input {
+  border: 1px solid #afb5bf;
+  box-sizing: border-box;
+}
+/* Set border color for .ntgc-select dropdowns */
+.ntgc-select {
+  border: 1px solid #afb5bf;
+  box-sizing: border-box;
+}
 /* Always fill width for page filters container */
 #ntgc-page-filters {
   width: 100%;
@@ -59,13 +74,13 @@
 }
 
 .aikb-search-input-wrapper:hover {
-  outline-color: #878f9f;
-  outline-width: 2px;
+  outline-color: #102040;
+  outline-width: 1px;
 }
 
 .aikb-search-input-wrapper:focus-within {
   outline-color: #208820;
-  outline-width: 2px;
+  outline-width: 1px;
 }
 
 .aikb-search-input-inner {
@@ -137,13 +152,13 @@
 }
 
 .aikb-dropdown-wrapper:hover {
-  outline-color: #878f9f;
-  outline-width: 2px;
+  outline-color: #102040;
+  outline-width: 1px;
 }
 
 .aikb-dropdown-wrapper:focus-within {
   outline-color: #208820;
-  outline-width: 2px;
+  outline-width: 1px;
 }
 
 /* Sort dropdown - no vertical padding */
