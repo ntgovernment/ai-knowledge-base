@@ -5,6 +5,10 @@
  */
 
 import { loadInitialResults } from "./load-initial-results.js";
+import { renderResults } from "./search-card-template.js";
+import { searchLocalData, getCachedData } from "./offline-search.js";
+import { storeResults } from "./search-filters.js";
+import { initializeDropdowns } from "./populate-dropdowns.js";
 
 (function initSearchForm() {
   // Only initialize if jQuery is available
@@ -54,15 +58,44 @@ import { loadInitialResults } from "./load-initial-results.js";
       $container.html('<div class="aikb-loading">Searching...</div>');
     }
 
-    // Trigger Funnelback API call
+    // Trigger Funnelback API call with offline search fallback
     if (
       window.ntgFunnelback &&
       typeof window.ntgFunnelback.callSearchAPI === "function"
     ) {
-      // Set originalterm and call API
+      // Set originalterm and call API with offline fallback
       window.ntgFunnelback.originalterm = params.query;
       window.ntgFunnelback.currentPage = 1;
-      window.ntgFunnelback.callSearchAPI();
+
+      // Pass onError callback for offline search
+      window.ntgFunnelback.callSearchAPI(params.query, function (error) {
+        // Offline search fallback when both API and fallback JSON fail
+        console.log("Activating offline search mode");
+
+        const cachedData = getCachedData();
+        if (!cachedData || cachedData.length === 0) {
+          console.error("Offline search: No cached data available");
+          const $container = window.$("#search-results-list");
+          if ($container.length > 0) {
+            $container.html(
+              '<p class="aikb-error">Unable to load search results. Please check your connection and try again.</p>'
+            );
+          }
+          return;
+        }
+
+        // Perform offline search
+        const offlineResults = searchLocalData(params.query, cachedData);
+
+        // Store and render offline results
+        storeResults(offlineResults);
+        initializeDropdowns(offlineResults);
+        renderResults(offlineResults, "search-results-list");
+
+        console.log(
+          `Offline search: Displayed ${offlineResults.length} results`
+        );
+      });
     } else {
       console.error("Funnelback API not initialized");
     }

@@ -99,6 +99,10 @@ function processAndRenderResults(data, source = "unknown") {
   // Store results for filtering/sorting
   storeResults(mappedResults);
 
+  // Cache results for offline search
+  window.aikbSearchCache = mappedResults;
+  console.log(`Cached ${mappedResults.length} results for offline search`);
+
   // Initialize dropdowns with work area data
   initializeDropdowns(mappedResults);
 

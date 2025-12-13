@@ -36,7 +36,7 @@ const ntgFunnelback = {
     }
   },
 
-  callSearchAPI: function (query) {
+  callSearchAPI: function (query, onError) {
     // If query parameter provided, set originalterm
     if (query !== undefined && query !== null) {
       ntgFunnelback.originalterm = query;
@@ -113,7 +113,12 @@ const ntgFunnelback = {
           },
           error: function () {
             console.error("Failed to load fallback search data");
-            if (container) {
+
+            // Invoke onError callback if provided (for offline search)
+            if (typeof onError === "function") {
+              console.log("Triggering offline search fallback");
+              onError(new Error("Both API and fallback JSON failed"));
+            } else if (container) {
               container.innerHTML =
                 "<p>Unable to load search results. Please try again later.</p>";
             }
