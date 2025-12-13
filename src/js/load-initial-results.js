@@ -1,5 +1,7 @@
 // Load initial search results from Funnelback API on page load
 import { renderResults } from "./search-card-template.js";
+import { initializeDropdowns } from "./populate-dropdowns.js";
+import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 
 (function () {
   function loadInitialResults() {
@@ -84,9 +86,20 @@ import { renderResults } from "./search-card-template.js";
           })
         : "",
       liveUrl: result.liveUrl || "",
+      rank: result.rank || 0,
+      score: result.score || 0,
     }));
 
     console.log("Rendering", mappedResults.length, "cards");
+
+    // Store results for filtering/sorting
+    storeResults(mappedResults);
+
+    // Initialize dropdowns with work area data
+    initializeDropdowns(mappedResults);
+
+    // Initialize filter and sort listeners
+    initializeFiltersAndSort();
 
     // Render cards using the template
     renderResults(mappedResults, "search-results-list");

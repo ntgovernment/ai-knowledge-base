@@ -1,4 +1,7 @@
 // In-page Funnelback search (unminified source)
+import { renderResults } from "./search-card-template.js";
+import { initializeDropdowns } from "./populate-dropdowns.js";
+import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 
 const ntgFunnelback = {
   originalterm: "",
@@ -166,39 +169,34 @@ const ntgFunnelback = {
         ? dataset.response.resultPacket.results
         : [];
 
-    // Output JSON directly to #search-results-list
-    const prettyJSON = JSON.stringify(results, null, 2);
-    const htmlContent =
-      "<pre><code>" + htmlEscape(prettyJSON) + "</code></pre>";
+    console.log(`Processing ${results.length} search results`);
 
-    const container = document.getElementById("search-results-list");
-    if (container) {
-      container.innerHTML = htmlContent;
-      console.log("JSON output written to #search-results-list");
-    } else {
-      console.warn(
-        "#search-results-list container not found, logging results instead"
-      );
-      console.log("Funnelback Results:", results);
-    }
+    // Map results to card template format
+    const mappedResults = results.map((result) => ({
+      title: result.title || "",
+      summary: result.summary || "",
+      listMetadata: result.listMetadata || {},
+      date: result.date || "",
+      liveUrl: result.liveUrl || "",
+      rank: result.rank || 0,
+      score: result.score || 0,
+    }));
 
-    console.log("Funnelback Full Response:", dataset);
+    // Store results for filtering/sorting
+    storeResults(mappedResults);
+
+    // Initialize dropdowns with work area data
+    initializeDropdowns(mappedResults);
+
+    // Initialize filter and sort listeners
+    initializeFiltersAndSort();
+
+    // Render results using card template
+    renderResults(mappedResults, "search-results-list");
+
+    console.log("Search results rendered successfully");
   },
 };
-
-// Helper function to escape HTML
-function htmlEscape(text) {
-  const map = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;",
-  };
-  return text.replace(/[&<>"']/g, function (m) {
-    return map[m];
-  });
-}
 
 // Expose globally for legacy usage
 window.ntgFunnelback = ntgFunnelback;

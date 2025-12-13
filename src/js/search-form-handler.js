@@ -26,7 +26,7 @@
   function getSearchParams() {
     return {
       query: $searchInput.val() || "",
-      area: window.$("#select-input-2").val() || "",
+      area: window.$("#document_type").val() || "",
     };
   }
 

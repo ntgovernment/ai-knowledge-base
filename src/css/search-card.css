@@ -84,6 +84,15 @@
   gap: 16px;
 }
 
+.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right {
+  font-size: 1rem;
+  color: #208820;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  transition: right 300ms ease;
+}
+
 .aikb-search-card__metadata {
   display: flex;
   flex-direction: column;
