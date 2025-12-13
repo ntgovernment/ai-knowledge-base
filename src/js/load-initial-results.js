@@ -3,120 +3,117 @@ import { renderResults } from "./search-card-template.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 
-(function () {
-  function loadInitialResults() {
-    // Check if we're on a page with search results container
-    const searchResultsContainer = document.getElementById(
-      "search-results-list"
-    );
-    if (!searchResultsContainer) {
-      console.warn("search-results-list container not found on page");
-      return; // Not on search results page
-    }
-
-    console.log("Loading initial results (fallback first, then API)...");
-
-    // Load fallback JSON immediately for fast initial display
-    fetch("src/data/search.json")
-      .then((response) => {
-        console.log(
-          "Fallback JSON response status:",
-          response.status,
-          response.ok
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Fallback JSON data loaded successfully:", data);
-        processAndRenderResults(data, "fallback");
-      })
-      .catch((fallbackError) => {
-        console.error("Error loading fallback search.json:", fallbackError);
-        searchResultsContainer.innerHTML =
-          '<p class="aikb-error">Error loading search data: ' +
-          fallbackError.message +
-          "</p>";
-      });
-
-    // Fetch from Funnelback API in background (will update results when ready)
-    const apiURL =
-      "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull";
-
-    fetch(apiURL)
-      .then((response) => {
-        console.log(
-          "Funnelback API response status:",
-          response.status,
-          response.ok
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(
-          "Funnelback API data loaded successfully, updating results:",
-          data
-        );
-        processAndRenderResults(data, "api");
-      })
-      .catch((error) => {
-        console.warn(
-          "Funnelback API failed or timed out, keeping fallback data:",
-          error
-        );
-        // Don't show error - fallback data already displayed
-      });
+// Export for use in search-form-handler
+export function loadInitialResults() {
+  // Check if we're on a page with search results container
+  const searchResultsContainer = document.getElementById("search-results-list");
+  if (!searchResultsContainer) {
+    console.warn("search-results-list container not found on page");
+    return; // Not on search results page
   }
 
-  function processAndRenderResults(data, source = "unknown") {
-    // Extract results from Funnelback response structure
-    const results =
-      data.response && data.response.resultPacket
-        ? data.response.resultPacket.results
-        : [];
+  console.log("Loading initial results (fallback first, then API)...");
 
-    // Map to card template format
-    const mappedResults = results.map((result) => ({
-      title: result.title || "",
-      summary: result.summary || "",
-      listMetadata: result.listMetadata || {},
-      date: result.date
-        ? new Date(result.date).toLocaleDateString("en-AU", {
-            year: "numeric",
-            month: "long",
-          })
-        : "",
-      liveUrl: result.liveUrl || "",
-      rank: result.rank || 0,
-      score: result.score || 0,
-    }));
+  // Load fallback JSON immediately for fast initial display
+  fetch("src/data/search.json")
+    .then((response) => {
+      console.log(
+        "Fallback JSON response status:",
+        response.status,
+        response.ok
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Fallback JSON data loaded successfully:", data);
+      processAndRenderResults(data, "fallback");
+    })
+    .catch((fallbackError) => {
+      console.error("Error loading fallback search.json:", fallbackError);
+      searchResultsContainer.innerHTML =
+        '<p class="aikb-error">Error loading search data: ' +
+        fallbackError.message +
+        "</p>";
+    });
 
-    console.log(`Rendering ${mappedResults.length} cards from ${source}`);
+  // Fetch from Funnelback API in background (will update results when ready)
+  const apiURL =
+    "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull";
 
-    // Store results for filtering/sorting
-    storeResults(mappedResults);
+  fetch(apiURL)
+    .then((response) => {
+      console.log(
+        "Funnelback API response status:",
+        response.status,
+        response.ok
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(
+        "Funnelback API data loaded successfully, updating results:",
+        data
+      );
+      processAndRenderResults(data, "api");
+    })
+    .catch((error) => {
+      console.warn(
+        "Funnelback API failed or timed out, keeping fallback data:",
+        error
+      );
+      // Don't show error - fallback data already displayed
+    });
+}
 
-    // Initialize dropdowns with work area data
-    initializeDropdowns(mappedResults);
+function processAndRenderResults(data, source = "unknown") {
+  // Extract results from Funnelback response structure
+  const results =
+    data.response && data.response.resultPacket
+      ? data.response.resultPacket.results
+      : [];
 
-    // Initialize filter and sort listeners (only once)
-    if (source === "fallback") {
-      initializeFiltersAndSort();
-    }
+  // Map to card template format
+  const mappedResults = results.map((result) => ({
+    title: result.title || "",
+    summary: result.summary || "",
+    listMetadata: result.listMetadata || {},
+    date: result.date
+      ? new Date(result.date).toLocaleDateString("en-AU", {
+          year: "numeric",
+          month: "long",
+        })
+      : "",
+    liveUrl: result.liveUrl || "",
+    rank: result.rank || 0,
+    score: result.score || 0,
+  }));
 
-    // Render cards using the template
-    renderResults(mappedResults, "search-results-list");
+  console.log(`Rendering ${mappedResults.length} cards from ${source}`);
+
+  // Store results for filtering/sorting
+  storeResults(mappedResults);
+
+  // Initialize dropdowns with work area data
+  initializeDropdowns(mappedResults);
+
+  // Initialize filter and sort listeners (only once)
+  if (source === "fallback") {
+    initializeFiltersAndSort();
   }
 
-  // Wait for complete page load (not just DOM ready)
-  window.addEventListener("load", function () {
-    console.log("Page load event fired, loading initial results...");
-    // Extra delay after full page load to ensure all scripts initialized
-    setTimeout(loadInitialResults, 200);
-  });
-})();
+  // Render cards using the template
+  renderResults(mappedResults, "search-results-list");
+}
+
+// Wait for complete page load (not just DOM ready)
+window.addEventListener("load", function () {
+  console.log("Page load event fired, loading initial results...");
+  // Extra delay after full page load to ensure all scripts initialized
+  setTimeout(loadInitialResults, 200);
+});

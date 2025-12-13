@@ -4,6 +4,8 @@
  * and populate #search-results-list with results
  */
 
+import { loadInitialResults } from "./load-initial-results.js";
+
 (function initSearchForm() {
   // Only initialize if jQuery is available
   if (typeof window.$ === "undefined") {
@@ -39,9 +41,10 @@
 
     const params = getSearchParams();
 
-    // Validate that at least a query is provided
+    // If search is empty, reload initial results (top items)
     if (!params.query.trim()) {
-      console.warn("Search query is empty");
+      console.log("Empty search - reloading initial results");
+      loadInitialResults();
       return;
     }
 
@@ -67,14 +70,12 @@
 
   /**
    * Handle clear input button click
-   * Clear the search field and reset results
+   * Clear the search field and reload initial results
    */
   function handleClearInput() {
     $searchInput.val("");
-    const $container = window.$("#search-results-list");
-    if ($container.length > 0) {
-      $container.html("");
-    }
+    console.log("Search cleared - reloading initial results");
+    loadInitialResults();
   }
 
   // Attach form submission handler
