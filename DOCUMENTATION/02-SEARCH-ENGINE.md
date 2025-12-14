@@ -2,9 +2,45 @@
 
 ## Overview
 
-The AI Knowledge Base uses **Funnelback Enterprise Search** as its core search engine. This document covers how searches are initiated, processed, filtered, and how results are rendered.
+The AI Knowledge Base uses a **dual-search approach**: offline keyword search for immediate results plus background Funnelback API updates. This document covers how searches are initiated, processed, filtered, and how results are rendered.
 
-> Current runtime status: The in-page search runs through `ntgFunnelback` in `ntgov-funnelback-search.js`. It sanitizes input, removes noise words, computes `start_rank`/`num_ranks=10`, calls the Funnelback REST endpoint directly, and renders the pretty-printed JSON response into the main container. Header/global search remains the legacy Coveo-powered site search and is unchanged.
+> **Current Implementation (Dec 2025):** Search uses cached local data (`dist/search.json`) for instant offline filtering with real-time keyword matching. User presses Enter to trigger search; results display immediately from cached data while Funnelback API updates in background. Filters (work area, sort) apply via custom multi-select dropdown with OK/Cancel controls. Legacy header/global search remains Coveo-powered and unchanged.
+
+---
+
+## Search Architecture
+
+### Offline-First Approach
+
+The landing page uses an **offline-first search** strategy:
+
+**Data Source:**
+
+- Cached results stored in `window.aikbSearchCache`
+- Fallback data at `dist/search.json`
+- Updated via Funnelback API in background
+
+**Search Trigger:**
+
+- User presses **Enter** key in search input (`#search`)
+- Empty Enter reloads initial results
+- No automatic search-as-you-type
+
+**Search Flow:**
+
+1. User enters search term and presses Enter
+2. Offline search runs immediately on cached data
+3. Results render instantly (no API wait)
+4. Funnelback API called in background
+5. Cache updates when API returns
+6. Filter/sort listeners initialized after each result update
+
+**Modules:**
+
+- `src/js/offline-search.js` - Keyword scoring and matching
+- `src/js/load-initial-results.js` - Cache management and initialization
+- `src/js/search-form-handler.js` - Enter key trigger and search coordination
+- `src/js/search-filters.js` - Filter application and result rendering
 
 ---
 

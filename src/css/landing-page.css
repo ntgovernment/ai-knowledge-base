@@ -1,0 +1,34 @@
+/* Import all CSS modules for landing page bundle (except content-page.css) */
+@import "./search-interface.css";
+@import "./search-card.css";
+@import "./multi-select-dropdown.css";
+@import "./call-to-action.css";
+@import "./search-results.css";
+
+/* Hide the extra search icon span that appears in the HTML */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Highly scoped search icon placement to avoid affecting multi-select and cards */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px; /* reserve space for icon inside the input */
+}
+
+#policy-search-form .search-input-container::after {
+  content: "\f002"; /* Font Awesome search icon */
+  position: absolute;
+  right: 24px; /* 24px from input's right border */
+  top: calc(50% + 12px); /* 12px below center */
+  transform: translateY(-50%);
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  font-weight: 400;
+  font-size: 18px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}

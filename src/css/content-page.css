@@ -1,0 +1,26 @@
+/* Content page specific styles */
+@import "./copy-to-clipboard.css";
+
+@import "./sidebar.css";
+
+@import "./aikb-pre-block.css";
+
+/* Remove top margin from first child heading in main content */
+#aikb-main-content > h1:first-child,
+#aikb-main-content > h2:first-child,
+#aikb-main-content > h3:first-child,
+#aikb-main-content > h4:first-child,
+#aikb-main-content > h5:first-child,
+#aikb-main-content > h6:first-child {
+  margin-top: 0;
+}
+
+/* Back to search button styling */
+.ntgc-btn.ntgc-btn--tertiary .fa-arrow-left {
+  color: #208820;
+  transition: transform 0.3s ease;
+}
+
+.ntgc-btn.ntgc-btn--tertiary:hover .fa-arrow-left {
+  transform: translateX(-4px);
+}

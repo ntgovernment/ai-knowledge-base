@@ -1,6 +1,11 @@
+.aikb-search-card__actions .ntgc-btn span {
+  line-height: 16px;
+}
 /* Search result card styles */
 .aikb-search-card {
   width: 100%;
+  max-width: 1208px;
+  box-sizing: border-box;
   padding: 24px 48px;
   background: var(--clr-surface-primary, white);
   border-bottom: 0.5px solid var(--clr-stroke-default, #afb5bf);
@@ -82,6 +87,34 @@
   justify-content: center;
   align-items: flex-end;
   gap: 16px;
+}
+
+.aikb-search-card__actions .ntgc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  width: 108px;
+  height: 42px;
+  font-size: 1rem;
+  border-radius: 100px;
+  padding: 6px 24px;
+  position: relative;
+}
+
+.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right {
+  font-size: 1.25em;
+  color: #208820;
+  margin-left: 0.5em;
+  position: static;
+  top: auto;
+  right: auto;
+  transition: color 200ms;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.aikb-search-card__actions .ntgc-btn:hover .fa-long-arrow-right {
+  color: white;
 }
 
 .aikb-search-card__metadata {

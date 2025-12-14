@@ -1,0 +1,213 @@
+/* Multi-Select Dropdown Styles */
+
+.aikb-multiselect-container {
+  position: relative;
+  width: 100%;
+  min-width: 226px;
+  border: 1px solid #afb5bf;
+  /* border-radius: 4px; */
+  /* transition: border-color 0.2s; */
+  box-sizing: border-box;
+}
+
+/* Highlight border when open or focused */
+.aikb-multiselect-container.aikb-multiselect-open,
+.aikb-multiselect-container:focus-within {
+  border-color: var(--clr-primary, #208820);
+  border-width: 1px;
+}
+
+/* Display Button */
+.aikb-multiselect-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--clr-surface-primary, white);
+  border: none;
+  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
+  /* outline-offset: -1px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  transition: outline-color 0.2s ease;
+}
+
+.aikb-multiselect-button:hover {
+  outline-color: var(--clr-stroke-hover, #102040);
+  /* outline-offset: -1px; */
+}
+
+.aikb-multiselect-button:focus {
+  outline-width: 2px;
+  outline-color: var(--clr-primary, #208820);
+}
+
+/* Keep border when open */
+.aikb-multiselect-open.aikb-multiselect-button,
+.aikb-multiselect-button.aikb-multiselect-open,
+.aikb-multiselect-button:focus,
+.aikb-multiselect-button:active {
+  outline-width: 2px;
+  outline-color: var(--clr-primary, #208820);
+}
+
+.aikb-multiselect-text {
+  color: var(--clr-text-helper, #606a80);
+  font-weight: 400;
+  text-align: left;
+  flex: 1;
+}
+
+.aikb-multiselect-text.aikb-multiselect-has-selection {
+  color: var(--clr-text-default, #102040);
+}
+
+.aikb-multiselect-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.aikb-multiselect-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f078";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
+}
+
+.aikb-multiselect-open .aikb-multiselect-icon {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Panel */
+.aikb-multiselect-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--clr-surface-primary, white);
+  border: 1px solid #afb5bf;
+  box-shadow: 0 4px 12px rgba(16, 32, 64, 0.1);
+  z-index: 1000;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Options List */
+.aikb-multiselect-options {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  max-height: 240px;
+}
+
+.aikb-multiselect-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  user-select: none;
+}
+
+.aikb-multiselect-option:hover {
+  background-color: var(--clr-surface-secondary, #f5f6f7);
+}
+
+.aikb-multiselect-option-all {
+  border-bottom: 1px solid var(--clr-stroke-default, #afb5bf);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.aikb-multiselect-checkbox {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--clr-primary, #208820);
+}
+
+.aikb-multiselect-label {
+  flex: 1;
+  color: var(--clr-text-default, #102040);
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+/* Scrollbar styling */
+.aikb-multiselect-options::-webkit-scrollbar {
+  width: 8px;
+}
+
+.aikb-multiselect-options::-webkit-scrollbar-track {
+  background: var(--clr-surface-secondary, #f5f6f7);
+}
+
+.aikb-multiselect-options::-webkit-scrollbar-thumb {
+  background: var(--clr-stroke-default, #afb5bf);
+  /* border-radius: 4px; */
+}
+
+.aikb-multiselect-options::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-icon-subtle, #878f9f);
+}
+
+/* Action Buttons */
+.aikb-multiselect-actions {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--clr-stroke-default, #afb5bf);
+}
+
+.aikb-multiselect-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: var(--clr-surface-primary, white);
+  color: var(--clr-text-default, #102040);
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.aikb-multiselect-btn:hover {
+  background-color: var(--clr-surface-secondary, #f5f6f7);
+}
+
+.aikb-multiselect-btn:active {
+  background-color: var(--clr-stroke-default, #afb5bf);
+}
+
+.aikb-multiselect-btn-ok {
+  border-right: 1px solid var(--clr-stroke-default, #afb5bf);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aikb-multiselect-panel {
+    max-height: 280px;
+  }
+
+  .aikb-multiselect-options {
+    max-height: 200px;
+  }
+}

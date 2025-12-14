@@ -6,6 +6,68 @@ This document covers all interactive UI components, form elements, filters, and 
 
 ---
 
+## Content Page Components (2025 Update)
+
+### Sidebar Component
+
+**Container:** `.aikb-sidebar` with `.aikb-sidebar__inner`
+
+**Responsive Behavior:**
+
+- Mobile/tablet: Full width of column
+- Medium+ (1024px+): Max-width 300px for optimal readability
+
+**Structure:**
+
+```html
+<div class="aikb-sidebar">
+  <div class="aikb-sidebar__inner">
+    <div class="aikb-sidebar__section">
+      <div class="aikb-sidebar__row">
+        <div class="aikb-sidebar__label">Label</div>
+        <div class="aikb-sidebar__value">Value</div>
+      </div>
+    </div>
+    <div class="aikb-sidebar__divider"></div>
+  </div>
+</div>
+```
+
+### Code Example Blocks
+
+**Runtime Wrapping:**
+
+- JS automatically wraps `h2`-`h6` + `<pre>` into `.aikb-pre-block` for unified styling
+- Copy button injected in `.copy-pre-btn-wrapper` outside `<pre>` (not included in copied text)
+
+**Copy Button States:**
+
+- Default: "Copy" text + copy icon (dual-page SVG)
+- Success: "Copied" text + checkmark icon for ~1.6s, then reverts
+- No toast overlay; button state change only
+
+**Styling:**
+
+- Borderless button, top-right aligned
+- Contents wrap without horizontal scroll (`white-space: pre-wrap`, `word-break: break-word`)
+
+### Back to Search Button
+
+**Styling:**
+
+- Icon color: `#208820` (green)
+- Hover: Icon smoothly moves 4px left with 0.3s ease transition
+
+**HTML:**
+
+```html
+<a href="..." class="ntgc-btn ntgc-btn--tertiary">
+  <span class="fal fa-arrow-left mr-2"></span>Back to search
+</a>
+```
+
+---
+
 ## Component Architecture
 
 ### Component Initialization
@@ -65,42 +127,108 @@ $(document).ready(function () {
 
 ### Text Search Filter
 
-**Purpose:** Free-form search input
+**Purpose:** Free-form keyword search
 
 **HTML:**
 
 ```html
-<div id="text-question" class="ntgc-filter">
-  <label for="search">Search</label>
+<div id="text-question" class="search-input-container">
+  <label for="search" class="ntgc-form-input--label">Search</label>
   <input
     type="text"
     id="search"
-    name="search"
-    placeholder="Enter keywords..."
+    name="query"
+    placeholder="Search for a AI prompt or use case..."
     class="ntgc-text-input ntgc-text-input--block"
   />
-
-  <button type="button" class="search-icon">
-    <i class="fal fa-search"></i>
-    <span class="sr-only">Search</span>
-  </button>
+  <!-- Search icon added via CSS ::after pseudo-element -->
 </div>
+```
+
+**CSS-Based Search Icon:**
+
+```css
+/* Module: src/css/landing-page.css */
+
+/* Hide any HTML-based search icon spans */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Position container for absolute icon */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+/* Add space for icon inside input */
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px;
+}
+
+/* Search icon via pseudo-element */
+#policy-search-form .search-input-container::after {
+  content: "\f002"; /* Font Awesome search icon */
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  position: absolute;
+  right: 24px; /* 24px from input's right border */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
 ```
 
 **JavaScript Handling:**
 
 ```javascript
-$("#search").on("keypress", function (e) {
-  if (e.which == 13) {
-    // Enter key
-    $("#policy-search-form").trigger("submit");
+// Module: src/js/search-form-handler.js
+
+// Enter key triggers search
+$("#search").on("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const query = $(this).val().trim();
+
+    if (query === "") {
+      // Empty Enter reloads initial results
+      loadInitialResults();
+    } else {
+      // Execute offline search immediately
+      triggerSearch(query);
+    }
   }
 });
 
-$(".search-icon").on("click", function () {
-  $("#policy-search-form").trigger("submit");
-});
+function triggerSearch(query) {
+  // 1. Run offline search on cached data (instant)
+  const results = searchLocalData(query);
+  storeResults(results);
+
+  // 2. Initialize dropdowns and filters
+  initializeDropdowns(results);
+  initializeFiltersAndSort();
+
+  // 3. Render results immediately
+  renderResults(results);
+
+  // 4. Call Funnelback API in background (no blocking)
+  fetchFunnelbackResults(query).then((apiResults) => {
+    storeResults(apiResults);
+    initializeDropdowns(apiResults);
+    initializeFiltersAndSort();
+  });
+}
 ```
+
+**Key Features:**
+
+- Search triggered **only on Enter key** (no auto-search)
+- Empty Enter reloads initial results
+- Offline search runs immediately on cached data
+- API updates cache in background without blocking UI
+- URL stays clean (no `?query=` parameter added)
+
+````
 
 ### Document Type Filter (Dropdown)
 
@@ -134,7 +262,7 @@ $(".search-icon").on("click", function () {
     <option value="Template">Template</option>
   </select>
 </div>
-```
+````
 
 **Enhancement with SumoSelect:**
 

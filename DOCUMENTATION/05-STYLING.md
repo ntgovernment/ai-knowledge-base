@@ -875,3 +875,128 @@ Large (lg):        1280px+
 ## Next Steps
 
 Read **[06-API-REFERENCE.md](06-API-REFERENCE.md)** to understand external APIs and integrations.
+
+---
+
+## Landing vs Content Page Styles (2025 Update)
+
+- Use `landing-page.css` for landing page only styles.
+- Use `content-page.css` for content page only styles.
+- Do not share or import styles between these files.
+- Reference only the relevant CSS in your HTML for each page type.
+
+### Search Icon Styling (landing page)
+
+The search input displays a Font Awesome search icon via CSS pseudo-element:
+
+```css
+/* Hide legacy HTML-based icon */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Scoped to search form container */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+/* Reserve space for icon */
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px;
+}
+
+/* Icon positioned 24px from input's right border */
+#policy-search-form .search-input-container::after {
+  content: "\f002";
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
+```
+
+**Why scoped selectors?**
+
+- Prevents styling conflicts with multi-select dropdown
+- Avoids affecting search result cards
+- Maintains clean separation of concerns
+
+### Search Icon Styling (landing page)
+
+The search input displays a Font Awesome search icon via CSS pseudo-element:
+
+```css
+/* Hide legacy HTML-based icon */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Scoped to search form container */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+/* Reserve space for icon */
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px;
+}
+
+/* Icon positioned 24px from input's right border */
+#policy-search-form .search-input-container::after {
+  content: "\f002";
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
+```
+
+**Why scoped selectors?**
+
+- Prevents styling conflicts with multi-select dropdown
+- Avoids affecting search result cards
+- Maintains clean separation of concerns
+
+### Code Example Styling (content pages)
+
+- Runtime JS wraps each heading (`h2`-`h6`) immediately followed by `pre` into `.aikb-pre-block` for unified styling and spacing.
+- Copy button is injected in `.copy-pre-btn-wrapper`, aligned top-right, borderless, with a default copy icon. On successful copy it swaps to text “Copied” and a checkmark icon for ~1.6s.
+- Wrapping rules keep contents within the container width (no horizontal scrollbars); code uses `white-space: pre-wrap` and `word-break: break-word`.
+- Related CSS lives in `src/css/aikb-pre-block.css` and `src/css/copy-to-clipboard.css`; JS in `src/js/wrap-pre-blocks.js` and `src/js/copy-to-clipboard.js`.
+
+### Sidebar Styling (content pages)
+
+- `.aikb-sidebar__inner` has a max-width of 300px on medium breakpoints (1024px+) for optimal readability.
+- Mobile/tablet: Full width within column.
+- Border, padding, and flexbox layout per design system.
+
+### Navigation & Buttons
+
+**Back to Search Button:**
+
+- `.ntgc-btn.ntgc-btn--tertiary .fa-arrow-left` has color `#208820` (green)
+- On hover, icon animates 4px to the left with `transform: translateX(-4px)` and 0.3s ease transition
+
+**First Heading Margin:**
+
+- First child heading in `#aikb-main-content` has `margin-top: 0` to eliminate excess space at top of content area.
+  Example:
+
+```html
+<!-- Landing page -->
+<link rel="stylesheet" href="dist/landing-page.min.css" />
+<!-- Content page -->
+<link rel="stylesheet" href="dist/content-page.min.css" />
+```
