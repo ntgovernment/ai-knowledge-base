@@ -3,5 +3,27 @@
 @import "./search-card.css";
 @import "./multi-select-dropdown.css";
 @import "./call-to-action.css";
-
 @import "./search-results.css";
+
+/* Highly scoped search icon placement to avoid affecting multi-select and cards */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px; /* reserve space for icon inside the input */
+}
+
+#policy-search-form .search-input-container::after {
+  content: "\f002"; /* Font Awesome search icon */
+  position: absolute;
+  right: 24px; /* 24px from input's right border */
+  top: 50%;
+  transform: translateY(calc(-50% + 4px));
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  font-weight: 400;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
