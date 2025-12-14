@@ -883,6 +883,13 @@ Read **[06-API-REFERENCE.md](06-API-REFERENCE.md)** to understand external APIs 
 - Do not share or import styles between these files.
 - Reference only the relevant CSS in your HTML for each page type.
 
+### Code Example Styling (content pages)
+
+- Runtime JS wraps each heading (`h2`-`h6`) immediately followed by `pre` into `.aikb-pre-block` for unified styling and spacing.
+- Copy button is injected in `.copy-pre-btn-wrapper`, aligned top-right, borderless, with a default copy icon. On successful copy it swaps to text “Copied” and a checkmark icon for ~1.6s.
+- Wrapping rules keep contents within the container width (no horizontal scrollbars); code uses `white-space: pre-wrap` and `word-break: break-word`.
+- Related CSS lives in `src/css/aikb-pre-block.css` and `src/css/copy-to-clipboard.css`; JS in `src/js/wrap-pre-blocks.js` and `src/js/copy-to-clipboard.js`.
+
 Example:
 
 ```html

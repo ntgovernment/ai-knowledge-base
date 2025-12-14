@@ -2,9 +2,7 @@
 
 ## Overview
 
-This documentation covers the **AI Knowledge Base Portal** for NTG Central (Northern Territory Government), a sophisticated enterprise intranet search and resource discovery platform saved as of December 11, 2025.
-
-**Original URL:** [removed for local dev]
+This documentation covers the **AI Knowledge Base Portal** for NTG Central (Northern Territory Government). The current codebase is an actively maintained, modular build with separate landing and content bundles, runtime JS enhancements (search UI, sidebar, code block wrapping, copy-to-clipboard), and a streamlined build pipeline using esbuild and PostCSS.
 
 **Purpose:** Help NT government employees discover AI-related guidance, policies, and resources to boost workplace productivity.
 
@@ -29,34 +27,34 @@ This documentation is organized into the following modules:
 
 ## Quick Reference
 
-### Key Statistics
+### Key Snapshot (current build)
 
-- **Total HTML Lines:** 1,638
-- **Main CSS File:** [main.css](AI%20knowledge%20base%20_%20NTG%20Central_files/main.css)
-- **Key JavaScript:** [ntgov-coveo-search.js](AI%20knowledge%20base%20_%20NTG%20Central_files/ntgov-coveo-search.js)
-- **Libraries:** jQuery 3.4.1, Coveo Search, Australian Design System (AUS)
-- **Font Families:** Roboto (Google), neue-haas-grotesk (Adobe Typekit)
+- **Bundles (dist):** landing-page.min.{js,css}, content-page.min.{js,css}
+- **Source (src):** modular CSS/JS per page type plus shared utilities (e.g., wrap-pre-blocks.js, copy-to-clipboard.js)
+- **Libraries:** jQuery 3.4.1, PostCSS (autoprefixer/cssnano), esbuild, AU Design System assets preserved
+- **Fonts:** Roboto, neue-haas-grotesk (Typekit)
 
 ### Technology Stack
 
 **Frontend:**
 
 - jQuery 3.4.1
+- ES modules bundled via esbuild
 - Australian Design System (AUS)
 - Bootstrap Grid 4.1.3
 - SumoSelect 3.4.9 (enhanced dropdowns)
 
 **Search & Discovery:**
 
-- Funnelback Enterprise Search API (Squiz Cloud) for in-page search results
-- Direct AJAX integration with noise word filtering
-- Pagination support (10 results per page)
-- Header/global search remains the NTG Central Coveo-powered site search (unchanged)
+- Funnelback Enterprise Search API (Squiz Cloud) for in-page results
+- AJAX integration with noise-word filtering
+- Pagination (10 results per page)
+- Header/global search remains NTG Central Coveo-powered (unchanged)
 
 **Styling:**
 
-- Responsive CSS framework
-- 5-tier notification system
+- Modular CSS per page type (landing vs content)
+- Dedicated styling for sidebar and code blocks (.aikb-pre-block, copy button)
 - Accessibility-first approach
 
 **Analytics:**
@@ -65,13 +63,11 @@ This documentation is organized into the following modules:
 
 ---
 
-## Important Notes
+### Important Notes
 
-### Code Status
-
-- **All code is READ-ONLY** for this project
-- This is a saved HTML complete snapshot
-- No modifications to source files should be made
+- Codebase is actively maintained; source lives in `src/` and builds to `dist/`.
+- Landing and content pages ship distinct CSS/JS bundles—do not mix imports between them.
+- Runtime JS wraps heading+pre blocks, injects copy buttons (with icon swap on success), and styles sidebars/search UI.
 
 ### Asset Locations
 
@@ -124,7 +120,7 @@ The saved page includes test user data:
 ## Document Metadata
 
 - **Created:** December 12, 2025
-- **Last Updated:** December 12, 2025
+- **Last Updated:** December 14, 2025
 - **Format:** Markdown with code examples
 - **Audience:** Full-stack developers, AI agents, technical teams
 - **Audience Level:** Intermediate (includes beginner explanations)

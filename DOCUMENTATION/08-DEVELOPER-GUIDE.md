@@ -6,9 +6,9 @@ This guide covers setup, development workflow, debugging, and best practices for
 
 ---
 
-## Important: Read-Only Status
+## Important: Active Codebase
 
-⚠️ **This codebase is READ-ONLY for this project.** This documentation is provided for understanding and educational purposes. Do not modify source files.
+This codebase is actively maintained. Source lives in `src/` (modular CSS/JS per page type plus shared utilities) and builds to `dist/` via npm scripts.
 
 ---
 
@@ -16,36 +16,22 @@ This guide covers setup, development workflow, debugging, and best practices for
 
 ```
 ntgc-aikb/
-├── AI knowledge base _ NTG Central.html         (Main HTML file - 1,638 lines)
-├── AI knowledge base _ NTG Central_files/       (Assets directory)
-│   ├── all.css                                  (Font Awesome icons)
-│   ├── auds.js                                  (AU Design System components)
-│   ├── components.js                            (Component initialization)
-│   ├── global-v2.js                             (Global utilities)
-│   ├── imageslider-fotorama.css                (Image carousel styles)
-│   ├── imageslider-fotorama.js                 (Image carousel script)
-│   ├── jquery-3.4.1.min.js                     (jQuery library)
-│   ├── jquery.sumoselect.min.js                (SumoSelect dropdown)
-│   ├── jquery.tablesort.min.js                 (Table sorting)
-│   ├── js/                                      (Google Analytics)
-│   ├── logo-ntg-color.svg                      (NTG logo)
-│   ├── main.css                                 (Primary stylesheet)
-│   ├── moment.min.js                           (Date utilities)
-│   ├── ntg-central-update-user-profile.js      (Profile sync)
-│   ├── ntgov-funnelback-search.js              (In-page search engine - active)
-│   ├── ntgov-coveo-search.js                   (Header/global search - legacy)
-│   ├── dist/                                   (Build outputs)
-│   │   ├── landing-page.min.js                 (Landing page JS bundle)
-│   │   ├── landing-page.min.css                (Landing page CSS bundle)
-│   │   ├── content-page.min.js                 (Content page JS bundle)
-│   │   └── content-page.min.css                (Content page CSS bundle)
-│   ├── pagination.min.js                       (Pagination)
-│   ├── profile-menu.js                         (Profile UI)
-│   ├── roboto.css                              (Roboto font)
-│   ├── status-toolbar.css                      (Admin toolbar)
-│   ├── status-toolbar.js                       (Admin toolbar)
-│   └── yht7rxj.css                             (Adobe Typekit fonts)
-└── DOCUMENTATION/                              (This documentation)
+├── src/
+│   ├── css/
+│   │   ├── landing-page.css
+│   │   ├── content-page.css
+│   │   └── aikb-pre-block.css (code block & copy-button styling)
+│   └── js/
+│       ├── landing-page.js
+│       ├── content-page.js
+│       ├── wrap-pre-blocks.js (runtime heading+pre wrapper)
+│       └── copy-to-clipboard.js (copy button + state toggle)
+├── dist/
+│   ├── landing-page.min.{js,css}
+│   └── content-page.min.{js,css}
+├── AI knowledge base _ NTG Central.html (legacy snapshot)
+├── AI knowledge base _ NTG Central_files/ (legacy assets)
+└── DOCUMENTATION/
 ```
 
 ---
@@ -134,12 +120,12 @@ console.table(ntgCOVEO.searchresults.all); // Table format
 - View "Response" tab to see JSON
 - View "Headers" to see query parameters
 
-### Build & Watch (new)
+### Build & Watch
 
-- JS build: `npm run build:js` bundles `src/js/index.js` with esbuild → `dist/aikb_scripts.min.js`
-- CSS build: `npm run build:css` processes `src/css/index.css` with PostCSS (autoprefixer + cssnano in prod) → `dist/AIKB_styles.min.css`
-- Full build: `npm run build`
-- Dev/watch + server: `npm run dev` (JS/CSS watchers plus `npm run serve`)
+- Full build: `npm run build` (runs PostCSS + esbuild for landing/content bundles)
+- Landing only: `npm run build:landing-css`, `npm run build:landing-js`
+- Content only: `npm run build:content-css`, `npm run build:content-js`
+- Dist folder is recreated/updated on each build.
 
 ### Application/Storage Tab
 
@@ -741,18 +727,7 @@ git log --oneline
 
 ### Making Changes (Read-Only Note)
 
-⚠️ **Remember:** This codebase is READ-ONLY. These commands are for reference:
-
-```bash
-# Stage changes
-git add file.js
-
-# Commit changes
-git commit -m "Description of changes"
-
-# Push to remote
-git push origin main
-```
+Standard git workflow applies; commit changes to your feature branch and open a PR when ready.
 
 ---
 
@@ -807,7 +782,7 @@ git push origin main
 - **Created:** December 12, 2025
 - **Status:** Comprehensive Documentation
 - **Audience:** Full-stack developers, AI agents, technical teams
-- **Read-Only:** All source code is read-only for this project
+- **Notes:** Active development with modular src → dist builds; copy button uses icon swap on success instead of toast.
 
 ---
 
