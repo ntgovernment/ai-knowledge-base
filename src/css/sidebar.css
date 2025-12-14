@@ -1,23 +1,35 @@
 .aikb-sidebar {
   width: 100%;
   height: 100%;
-  padding: 24px;
-  overflow: hidden;
-  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
-  outline-offset: -1px;
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
   display: inline-flex;
+  margin-top: 72px;
 }
 
 .aikb-sidebar__inner {
+  padding: 24px;
+  overflow: hidden;
+  outline: 1px var(--clr-stroke-default, #afb5bf) solid;
+  outline-offset: -1px;
   flex: 1 1 0;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
   gap: 24px;
   display: inline-flex;
+}
+
+@media (min-width: 1024px) {
+  .aikb-sidebar__inner {
+    max-width: 300px;
+  }
+
+  .aikb-sidebar {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
 }
 
 .aikb-sidebar__section {

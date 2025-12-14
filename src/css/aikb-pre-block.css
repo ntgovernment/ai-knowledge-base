@@ -31,7 +31,6 @@
   align-items: flex-start;
   gap: 10px;
   display: inline-flex;
-  margin-bottom: 2rem;
 }
 .aikb-pre-block > * {
   align-self: stretch;

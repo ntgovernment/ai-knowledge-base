@@ -890,7 +890,23 @@ Read **[06-API-REFERENCE.md](06-API-REFERENCE.md)** to understand external APIs 
 - Wrapping rules keep contents within the container width (no horizontal scrollbars); code uses `white-space: pre-wrap` and `word-break: break-word`.
 - Related CSS lives in `src/css/aikb-pre-block.css` and `src/css/copy-to-clipboard.css`; JS in `src/js/wrap-pre-blocks.js` and `src/js/copy-to-clipboard.js`.
 
-Example:
+### Sidebar Styling (content pages)
+
+- `.aikb-sidebar__inner` has a max-width of 300px on medium breakpoints (1024px+) for optimal readability.
+- Mobile/tablet: Full width within column.
+- Border, padding, and flexbox layout per design system.
+
+### Navigation & Buttons
+
+**Back to Search Button:**
+
+- `.ntgc-btn.ntgc-btn--tertiary .fa-arrow-left` has color `#208820` (green)
+- On hover, icon animates 4px to the left with `transform: translateX(-4px)` and 0.3s ease transition
+
+**First Heading Margin:**
+
+- First child heading in `#aikb-main-content` has `margin-top: 0` to eliminate excess space at top of content area.
+  Example:
 
 ```html
 <!-- Landing page -->

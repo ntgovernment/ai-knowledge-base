@@ -6,6 +6,68 @@ This document covers all interactive UI components, form elements, filters, and 
 
 ---
 
+## Content Page Components (2025 Update)
+
+### Sidebar Component
+
+**Container:** `.aikb-sidebar` with `.aikb-sidebar__inner`
+
+**Responsive Behavior:**
+
+- Mobile/tablet: Full width of column
+- Medium+ (1024px+): Max-width 300px for optimal readability
+
+**Structure:**
+
+```html
+<div class="aikb-sidebar">
+  <div class="aikb-sidebar__inner">
+    <div class="aikb-sidebar__section">
+      <div class="aikb-sidebar__row">
+        <div class="aikb-sidebar__label">Label</div>
+        <div class="aikb-sidebar__value">Value</div>
+      </div>
+    </div>
+    <div class="aikb-sidebar__divider"></div>
+  </div>
+</div>
+```
+
+### Code Example Blocks
+
+**Runtime Wrapping:**
+
+- JS automatically wraps `h2`-`h6` + `<pre>` into `.aikb-pre-block` for unified styling
+- Copy button injected in `.copy-pre-btn-wrapper` outside `<pre>` (not included in copied text)
+
+**Copy Button States:**
+
+- Default: "Copy" text + copy icon (dual-page SVG)
+- Success: "Copied" text + checkmark icon for ~1.6s, then reverts
+- No toast overlay; button state change only
+
+**Styling:**
+
+- Borderless button, top-right aligned
+- Contents wrap without horizontal scroll (`white-space: pre-wrap`, `word-break: break-word`)
+
+### Back to Search Button
+
+**Styling:**
+
+- Icon color: `#208820` (green)
+- Hover: Icon smoothly moves 4px left with 0.3s ease transition
+
+**HTML:**
+
+```html
+<a href="..." class="ntgc-btn ntgc-btn--tertiary">
+  <span class="fal fa-arrow-left mr-2"></span>Back to search
+</a>
+```
+
+---
+
 ## Component Architecture
 
 ### Component Initialization
