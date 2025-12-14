@@ -10,7 +10,20 @@ import { searchLocalData, getCachedData } from "./offline-search.js";
 import { storeResults } from "./search-filters.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 
+// Dynamically create the search icon inside the input wrapper on page load
 (function initSearchForm() {
+  window.addEventListener("DOMContentLoaded", function () {
+    // Find the search input wrapper (the parent of the input)
+    var $input = document.getElementById("search");
+    if ($input) {
+      var wrapper = $input.closest(".aikb-search-input-wrapper");
+      if (wrapper && !wrapper.querySelector(".search-icon")) {
+        var icon = document.createElement("span");
+        icon.className = "search-icon";
+        wrapper.appendChild(icon);
+      }
+    }
+  });
   // Only initialize if jQuery is available
   if (typeof window.$ === "undefined") {
     console.warn("jQuery not loaded; search form handler disabled");

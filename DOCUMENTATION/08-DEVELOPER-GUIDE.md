@@ -35,8 +35,10 @@ ntgc-aikb/
 │   ├── ntgov-funnelback-search.js              (In-page search engine - active)
 │   ├── ntgov-coveo-search.js                   (Header/global search - legacy)
 │   ├── dist/                                   (Build outputs)
-│   │   ├── aikb_scripts.min.js                 (Built JS bundle)
-│   │   └── AIKB_styles.min.css                 (Built CSS bundle)
+│   │   ├── landing-page.min.js                 (Landing page JS bundle)
+│   │   ├── landing-page.min.css                (Landing page CSS bundle)
+│   │   ├── content-page.min.js                 (Content page JS bundle)
+│   │   └── content-page.min.css                (Content page CSS bundle)
 │   ├── pagination.min.js                       (Pagination)
 │   ├── profile-menu.js                         (Profile UI)
 │   ├── roboto.css                              (Roboto font)
@@ -812,3 +814,68 @@ git push origin main
 **Thank you for reading the complete NTG Central AI Knowledge Base documentation!**
 
 For questions or clarifications, refer to the specific documentation section or examine the source code directly.
+
+---
+
+src/
+css/
+landing-page.css # Landing page specific styles
+content-page.css # Content page specific styles
+js/
+landing-page.js # Landing page specific scripts
+content-page.js # Content page specific scripts
+dist/
+
+## Landing vs Content Page Asset Structure (2025 Update)
+
+### File Structure
+
+```
+src/
+  css/
+    landing-page.css      # Landing page specific styles
+    content-page.css      # Content page specific styles
+  js/
+    landing-page.js       # Landing page specific scripts
+    content-page.js       # Content page specific scripts
+
+
+  landing-page.min.css    # Compiled landing page CSS
+  content-page.min.css    # Compiled content page CSS
+  landing-page.min.js     # Compiled landing page JS
+  content-page.min.js     # Compiled content page JS
+```
+
+### Naming Conventions
+
+- Use `landing-` and `content-` prefixes for all page-specific CSS and JS files.
+- Do not share styles/scripts between landing and content pages. Keep them separate for clarity and maintainability.
+
+### Build Process
+
+- Only build changed assets for each page type.
+- Example build commands (see `package.json`):
+  - `npm run build:landing-css`
+  - `npm run build:content-css`
+  - `npm run build:landing-js`
+  - `npm run build:content-js`
+
+### HTML Usage
+
+- Reference only the relevant CSS/JS for each page type in your HTML templates.
+- Example:
+
+```html
+<!-- Landing page -->
+<link rel="stylesheet" href="dist/landing-page.min.css" />
+<script src="dist/landing-page.min.js"></script>
+
+<!-- Content page -->
+<link rel="stylesheet" href="dist/content-page.min.css" />
+<script src="dist/content-page.min.js"></script>
+```
+
+### Further Notes
+
+- Do not factor shared code into a common file. Keep landing and content page assets fully separate.
+- If you add new page types, follow the same naming and build conventions.

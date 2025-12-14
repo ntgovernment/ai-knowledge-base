@@ -114,31 +114,34 @@ ntgc-aikb/
 │
 ├── 📁 src/                                     # Source files (EDIT THESE)
 │   ├── 📁 js/
-│   │   ├── index.js                            # Entry point - imports all modules
-│   │   ├── search-card-template.js             # Card rendering logic (228 lines)
-│   │   ├── ntg-funnelback.js                   # Funnelback API integration (221 lines)
-│   │   ├── search-form-handler.js              # Form submission handler (124 lines)
-│   │   ├── load-initial-results.js             # Auto-load with parallel strategy (128 lines)
-│   │   ├── populate-dropdowns.js               # Dynamic dropdown population (200 lines)
-│   │   ├── search-filters.js                   # Client-side filtering & sorting (171 lines)
-│   │   ├── multi-select-dropdown.js            # Multi-select component (344 lines)
-│   │   ├── offline-search.js                   # Offline keyword search (120 lines)
-│   │   └── cta-button-alias.js                 # CTA button styling (15 lines)
+│   │   ├── landing-page.js                     # Landing page JS (all main logic)
+│   │   ├── content-page.js                     # Content page JS (if needed)
+│   │   ├── search-card-template.js             # Card rendering logic
+│   │   ├── ntg-funnelback.js                   # Funnelback API integration
+│   │   ├── search-form-handler.js              # Form submission handler
+│   │   ├── load-initial-results.js             # Auto-load with parallel strategy
+│   │   ├── populate-dropdowns.js               # Dynamic dropdown population
+│   │   ├── search-filters.js                   # Client-side filtering & sorting
+│   │   ├── multi-select-dropdown.js            # Multi-select component
+│   │   ├── offline-search.js                   # Offline keyword search
+│   │   └── cta-button-alias.js                 # CTA button styling
 │   │
 │   ├── 📁 css/
-│   │   ├── index.css                           # Entry point - imports all styles
-│   │   ├── search-card.css                     # Card styling (158 lines)
-│   │   ├── search-interface.css                # Search UI styling (155 lines)
-│   │   ├── multi-select-dropdown.css           # Multi-select dropdown styling (168 lines)
+│   │   ├── landing-page.css                    # Landing page CSS (all main styles)
+│   │   ├── content-page.css                    # Content page CSS (if needed)
+│   │   ├── search-card.css                     # Card styling
+│   │   ├── search-interface.css                # Search UI styling
+│   │   ├── multi-select-dropdown.css           # Multi-select dropdown styling
 │   │   └── call-to-action.css                  # CTA styling (empty placeholder)
 │   │
 │   └── 📁 data/
 │       └── search.json                         # Fallback search data (Funnelback format)
 │
 ├── 📁 dist/                                    # Build output (AUTO-GENERATED)
-│   ├── aikb_scripts.min.js                     # Bundled JS (22.0kb)
-│   ├── aikb_scripts.min.js.map                 # Source map (75.4kb)
-│   └── AIKB_styles.min.css                     # Bundled CSS (2.4kb)
+│   ├── landing-page.min.js                     # Landing page JS (main bundle)
+│   ├── landing-page.min.css                    # Landing page CSS (main bundle)
+│   ├── content-page.min.js                     # Content page JS (if needed)
+│   └── content-page.min.css                    # Content page CSS (if needed)
 │
 ├── 📁 DOCUMENTATION/                           # Project documentation
 │   ├── 00-README.md                            # Original documentation
@@ -158,17 +161,19 @@ ntgc-aikb/
 ### npm Scripts
 
 ```bash
-npm run clean          # Delete dist folder
-npm run prepare:dist   # Create dist directory
-npm run build:js       # Build JavaScript only
-npm run build:css      # Build CSS only
-npm run build          # Full build (recommended)
-npm start              # Start local server (if using server.js)
+npm run clean            # Delete dist folder
+npm run prepare:dist     # Create dist directory
+npm run build            # Build all landing/content assets (recommended)
+npm run build:landing-js # Build landing page JS only
+npm run build:landing-css# Build landing page CSS only
+npm run build:content-js # Build content page JS only
+npm run build:content-css# Build content page CSS only
+npm start                # Start local server (if using server.js)
 ```
 
 ### Development Workflow
 
-1. **Edit source files** in `src/` directory
+1. **Edit source files** in `src/js/landing-page.js` and `src/css/landing-page.css` (or content-page equivalents)
 2. **Build the project**: `npm run build`
 3. **Refresh browser** to see changes
 4. **Commit changes**: `git add -A && git commit -m "message"`
@@ -183,11 +188,11 @@ export function myFunction() {
   // ...
 }
 
-// 2. Import in src/js/index.js
+// 2. Import in src/js/landing-page.js (or content-page.js)
 import "./my-module.js";
 
 // 3. Build
-npm run build
+npm run build:landing-js
 ```
 
 **CSS Module:**
@@ -198,11 +203,11 @@ npm run build
   /* ... */
 }
 
-/* 2. Import in src/css/index.css */
+/* 2. Import in src/css/landing-page.css (or content-page.css) */
 @import "./my-styles.css";
 
 /* 3. Build */
-npm run build:css
+npm run build:landing-css
 ```
 
 ### Local Development Notes
@@ -837,42 +842,46 @@ input::placeholder {
 - Stacked layout
 - Tags wrap
 
-### Key CSS Classes
+### Build System
 
-```css
-.aikb-search-card                        /* Card container */
-/* Card container */
-/* Card container */
-/* Card container */
-.aikb-search-card__title                 /* H3 title (margin-top: 0 !important) */
-.aikb-search-card__summary               /* Description text */
-.aikb-search-card__tag                   /* Work area tag */
-.aikb-search-card__useful-for            /* "Useful for" metadata */
-.aikb-search-card__date                  /* Submission date */
-.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right; /* Arrow icon positioning */
-```
+### esbuild Configuration
 
-**Arrow Icon Styles:**
-
-```css
-.aikb-search-card__actions .ntgc-btn .fa-long-arrow-right {
-  font-size: 1rem;
-  color: #208820;
-  position: absolute;
-  right: 2rem;
-  top: 1rem;
-  transition: right 300ms ease;
+```javascript
+// Landing page JS
+{
+  entryPoint: "src/js/landing-page.js",
+  bundle: true,
+  format: "iife",
+  minify: true,
+  sourcemap: true,
+  outfile: "dist/landing-page.min.js"
+}
+// Content page JS (if needed)
+{
+  entryPoint: "src/js/content-page.js",
+  ...
+  outfile: "dist/content-page.min.js"
 }
 ```
 
-## 🔌 API Integration
+### PostCSS Configuration
 
-### Funnelback Response Format
+```javascript
+// Landing page CSS
+postcss src/css/landing-page.css --env production --map --output dist/landing-page.min.css
+// Content page CSS (if needed)
+postcss src/css/content-page.css --env production --map --output dist/content-page.min.css
+```
 
-```json
-{
-  "response": {
-    "resultPacket": {
+### Build Output
+
+```
+dist/landing-page.min.js      # Landing page JS
+dist/landing-page.min.css     # Landing page CSS
+dist/content-page.min.js      # Content page JS (if needed)
+dist/content-page.min.css     # Content page CSS (if needed)
+```
+
       "results": [
         {
           "title": "Use case title",
@@ -885,9 +894,11 @@ input::placeholder {
         }
       ]
     }
-  }
+
 }
-```
+}
+
+````
 
 ### Card Template Mapping
 
@@ -902,7 +913,7 @@ input::placeholder {
   }),
   liveUrl: result.liveUrl || ""
 }
-```
+````
 
 ### Work Area Tags
 

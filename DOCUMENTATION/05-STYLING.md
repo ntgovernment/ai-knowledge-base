@@ -875,3 +875,19 @@ Large (lg):        1280px+
 ## Next Steps
 
 Read **[06-API-REFERENCE.md](06-API-REFERENCE.md)** to understand external APIs and integrations.
+
+## Landing vs Content Page Styles (2025 Update)
+
+- Use `landing-page.css` for landing page only styles.
+- Use `content-page.css` for content page only styles.
+- Do not share or import styles between these files.
+- Reference only the relevant CSS in your HTML for each page type.
+
+Example:
+
+```html
+<!-- Landing page -->
+<link rel="stylesheet" href="dist/landing-page.min.css" />
+<!-- Content page -->
+<link rel="stylesheet" href="dist/content-page.min.css" />
+```

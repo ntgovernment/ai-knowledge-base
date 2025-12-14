@@ -59,6 +59,7 @@
 }
 
 /* Search input container */
+
 .aikb-search-input-wrapper {
   flex: 1 1 0;
   height: 48px;
@@ -71,6 +72,7 @@
   align-items: center;
   gap: 10px;
   display: flex;
+  position: relative;
 }
 
 .aikb-search-input-wrapper:hover {
@@ -102,7 +104,7 @@
   font-weight: 400;
   line-height: 24px;
   padding: 0;
-  padding-right: 24px;
+  padding-right: 48px; /* Ensure text does not overlap icon */
 }
 
 .aikb-search-input-wrapper input[type="text"]::placeholder {
@@ -110,17 +112,26 @@
 }
 
 .aikb-search-input-wrapper .search-icon {
-  width: 24px;
-  height: 24px;
   position: absolute;
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 2;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 3;
+  transition: transform 0.2s ease;
+}
+
+.aikb-search-input-wrapper .search-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f002";
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-icon-subtle, #878f9f);
 }
 
 .aikb-search-input-wrapper .search-icon::before {
