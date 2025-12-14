@@ -1,44 +1,3 @@
-/* Content page specific styles */
-pre {
-  white-space: pre-wrap; /* Allows wrapping inside <pre> */
-  word-wrap: break-word; /* Breaks long words if needed */
-  overflow-x: auto; /* Adds horizontal scroll if necessary */
-  max-width: 100%; /* Keeps it inside the container */
-}
-pre.copyable {
-  position: relative;
-  padding-top: 2.25rem; /* ensures button won't overlap first line */
-  overflow: auto;
-}
-.copy-pre-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 6px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border: 1px solid #cbd5e1;
-  cursor: pointer;
-  z-index: 1;
-}
-.copy-pre-btn:hover {
-  opacity: 1;
-  background: #f8fafc;
-}
-.copy-toast {
-  position: absolute;
-  top: 8px;
-  right: 72px; /* left of the button */
-  background: #10b981;
-  color: #fff;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  opacity: 0.95;
-}
-.ntgc-btn.ntgc-btn--tertiary::before {
-  content: "" !important;
-}
 .aikb-sidebar {
   width: 100%;
   height: 100%;
@@ -51,6 +10,7 @@ pre.copyable {
   gap: 10px;
   display: inline-flex;
 }
+
 .aikb-sidebar__inner {
   flex: 1 1 0;
   flex-direction: column;
@@ -59,6 +19,7 @@ pre.copyable {
   gap: 24px;
   display: inline-flex;
 }
+
 .aikb-sidebar__section {
   align-self: stretch;
   flex-direction: column;
@@ -67,6 +28,7 @@ pre.copyable {
   gap: 16px;
   display: flex;
 }
+
 .aikb-sidebar__row {
   align-self: stretch;
   flex-direction: column;
@@ -75,6 +37,7 @@ pre.copyable {
   gap: 4px;
   display: flex;
 }
+
 .aikb-sidebar__label {
   align-self: stretch;
   color: var(--clr-text-default, #102040);
@@ -85,6 +48,7 @@ pre.copyable {
   line-height: 24px;
   word-wrap: break-word;
 }
+
 .aikb-sidebar__value {
   align-self: stretch;
   color: var(--clr-text-body, #384560);
@@ -95,12 +59,14 @@ pre.copyable {
   line-height: 24px;
   word-wrap: break-word;
 }
+
 .aikb-sidebar__divider {
   align-self: stretch;
   height: 0px;
   outline: 1px var(--clr-stroke-default, #afb5bf) solid;
   outline-offset: -0.5px;
 }
+
 .aikb-sidebar__value--link {
   text-decoration: underline;
 }
