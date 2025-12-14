@@ -53,7 +53,7 @@ const server = http.createServer((req, res) => {
 
   // Serve static files
   let filePath =
-    req.url === "/" ? "/AI knowledge base _ NTG Central.html" : req.url;
+    req.url === "/" ? "/Summarise meeting notes _ NTG Central.html" : req.url;
 
   // Decode URL for spaces and special characters
   filePath = decodeURIComponent(filePath);

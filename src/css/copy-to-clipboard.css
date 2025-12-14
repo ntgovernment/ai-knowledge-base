@@ -1,0 +1,45 @@
+pre {
+  white-space: pre-wrap; /* Allows wrapping inside <pre> */
+  word-wrap: break-word; /* Breaks long words if needed */
+  overflow-x: auto; /* Adds horizontal scroll if necessary */
+  max-width: 100%; /* Keeps it inside the container */
+}
+
+pre.copyable {
+  position: relative;
+  padding-top: 2.25rem; /* ensures button won't overlap first line */
+  overflow: auto;
+}
+
+.copy-pre-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.copy-pre-btn:hover {
+  opacity: 1;
+  background: #f8fafc;
+}
+
+.copy-toast {
+  position: absolute;
+  top: 8px;
+  right: 72px; /* left of the button */
+  background: #10b981;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  opacity: 0.95;
+}
+
+.ntgc-btn.ntgc-btn--tertiary::before {
+  content: "" !important;
+}
