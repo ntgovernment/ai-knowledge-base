@@ -10,18 +10,63 @@ import { searchLocalData, getCachedData } from "./offline-search.js";
 import { storeResults } from "./search-filters.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 
-// Dynamically create the search icon inside the input wrapper on page load
+// Dynamically create the search input container markup on page load
 (function initSearchForm() {
   window.addEventListener("DOMContentLoaded", function () {
-    // Find the search input wrapper (the parent of the input)
-    var $input = document.getElementById("search");
-    if ($input) {
-      var wrapper = $input.closest(".aikb-search-input-wrapper");
-      if (wrapper && !wrapper.querySelector(".search-icon")) {
-        var icon = document.createElement("span");
-        icon.className = "search-icon";
-        wrapper.appendChild(icon);
-      }
+    var textQuestion = document.getElementById("text-question");
+    if (textQuestion) {
+      // Remove any existing .search-input-container
+      var old = textQuestion.querySelector(".search-input-container");
+      if (old) old.remove();
+
+      // Create the container
+      var container = document.createElement("div");
+      container.className = "search-input-container";
+
+      // Label
+      var label = document.createElement("label");
+      label.className = "ntgc-form-input--label";
+      label.setAttribute("for", "search");
+      label.textContent = "Search";
+      container.appendChild(label);
+
+      // Inner wrapper
+      var inner = document.createElement("div");
+      inner.style.position = "relative";
+
+      // Input
+      var input = document.createElement("input");
+      input.type = "text";
+      input.name = "query";
+      input.id = "search";
+      input.className =
+        "ntgc-text-input ntgc-text-input--block ntgc-select-input--filter";
+      input.placeholder = "Search for a AI prompt or use case...";
+      input.value = "";
+      input.style.maxWidth = "100%";
+      input.style.paddingRight = "44px"; // Make space for icon
+      inner.appendChild(input);
+
+      // Search icon
+      var icon = document.createElement("span");
+      icon.className = "search-icon";
+      icon.style.position = "absolute";
+      icon.style.right = "16px";
+      icon.style.top = "50%";
+      icon.style.transform = "translateY(-50%)";
+      icon.style.fontFamily =
+        "'Font Awesome 5 Pro', 'Font Awesome 5 Free', 'FontAwesome'";
+      icon.style.fontWeight = "400";
+      icon.style.fontSize = "20px";
+      icon.style.color = "#888";
+      icon.style.pointerEvents = "none";
+      icon.style.zIndex = "2";
+      icon.innerHTML = "&#xf002;"; // Font Awesome search icon unicode
+      inner.appendChild(icon);
+
+      container.appendChild(inner);
+      textQuestion.prepend(container);
+      textQuestion.prepend(container);
     }
   });
   // Only initialize if jQuery is available

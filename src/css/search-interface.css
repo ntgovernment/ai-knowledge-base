@@ -104,9 +104,26 @@
   font-weight: 400;
   line-height: 24px;
   padding: 0;
-  padding-right: 48px; /* Ensure text does not overlap icon */
+  padding-right: 44px !important; /* Make space for the icon */
 }
 
+.aikb-search-input-wrapper {
+  position: relative;
+}
+
+.aikb-search-input-wrapper::after {
+  content: "\f002"; /* Font Awesome search icon (unicode) */
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  font-weight: 400;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  z-index: 2;
+}
 .aikb-search-input-wrapper input[type="text"]::placeholder {
   color: var(--clr-text-helper, #606a80);
 }
