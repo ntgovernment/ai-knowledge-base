@@ -5,6 +5,11 @@
 @import "./call-to-action.css";
 @import "./search-results.css";
 
+/* Hide the extra search icon span that appears in the HTML */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
 /* Highly scoped search icon placement to avoid affecting multi-select and cards */
 #policy-search-form .search-input-container {
   position: relative;
@@ -19,7 +24,7 @@
   position: absolute;
   right: 24px; /* 24px from input's right border */
   top: 50%;
-  transform: translateY(calc(-50% + 4px));
+  transform: translateY(-50%);
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 400;
   font-size: 20px;

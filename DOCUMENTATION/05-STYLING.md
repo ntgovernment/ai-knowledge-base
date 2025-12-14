@@ -876,12 +876,98 @@ Large (lg):        1280px+
 
 Read **[06-API-REFERENCE.md](06-API-REFERENCE.md)** to understand external APIs and integrations.
 
+---
+
 ## Landing vs Content Page Styles (2025 Update)
 
 - Use `landing-page.css` for landing page only styles.
 - Use `content-page.css` for content page only styles.
 - Do not share or import styles between these files.
 - Reference only the relevant CSS in your HTML for each page type.
+
+### Search Icon Styling (landing page)
+
+The search input displays a Font Awesome search icon via CSS pseudo-element:
+
+```css
+/* Hide legacy HTML-based icon */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Scoped to search form container */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+/* Reserve space for icon */
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px;
+}
+
+/* Icon positioned 24px from input's right border */
+#policy-search-form .search-input-container::after {
+  content: "\f002";
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
+```
+
+**Why scoped selectors?**
+
+- Prevents styling conflicts with multi-select dropdown
+- Avoids affecting search result cards
+- Maintains clean separation of concerns
+
+### Search Icon Styling (landing page)
+
+The search input displays a Font Awesome search icon via CSS pseudo-element:
+
+```css
+/* Hide legacy HTML-based icon */
+#policy-search-form .fal.fa-search {
+  display: none;
+}
+
+/* Scoped to search form container */
+#policy-search-form .search-input-container {
+  position: relative;
+}
+
+/* Reserve space for icon */
+#policy-search-form .search-input-container #search.ntgc-text-input {
+  padding-right: 48px;
+}
+
+/* Icon positioned 24px from input's right border */
+#policy-search-form .search-input-container::after {
+  content: "\f002";
+  font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
+```
+
+**Why scoped selectors?**
+
+- Prevents styling conflicts with multi-select dropdown
+- Avoids affecting search result cards
+- Maintains clean separation of concerns
 
 ### Code Example Styling (content pages)
 
