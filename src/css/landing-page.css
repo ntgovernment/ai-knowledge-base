@@ -23,14 +23,12 @@
   content: "\f002"; /* Font Awesome search icon */
   position: absolute;
   right: 24px; /* 24px from input's right border */
-  top: 50%;
+  top: calc(50% + 12px); /* 12px below center */
   transform: translateY(-50%);
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 400;
-  font-size: 18px; /* Slightly smaller for better vertical alignment */
+  font-size: 18px;
   color: #888;
   pointer-events: none;
   line-height: 1;
-  display: flex;
-  align-items: center;
 }
