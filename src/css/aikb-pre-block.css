@@ -41,7 +41,6 @@
 .aikb-pre-block h5,
 .aikb-pre-block h6 {
   color: var(--clr-text-default, #102040);
-  font-size: 20px;
   font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
     Arial, sans-serif;
   font-weight: 700;
