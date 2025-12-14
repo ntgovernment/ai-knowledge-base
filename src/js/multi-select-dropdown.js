@@ -196,6 +196,9 @@ export class MultiSelectDropdown {
       }
     });
 
+    // Sync the hidden native select so downstream code sees selectedOptions
+    this.syncNativeSelect();
+
     // Update display text
     this.updateDisplayText();
 
@@ -291,7 +294,29 @@ export class MultiSelectDropdown {
     });
     this.container.dispatchEvent(event);
 
+    // Also emit a native change event on the original select so listeners fire
+    if (this.selectElement) {
+      const changeEvent = new Event("change", { bubbles: true });
+      this.selectElement.dispatchEvent(changeEvent);
+    }
+
     console.log("Multi-select changed:", Array.from(this.selectedValues));
+  }
+
+  syncNativeSelect() {
+    if (!this.selectElement) return;
+
+    // Clear existing selection
+    Array.from(this.selectElement.options).forEach((opt) => {
+      opt.selected = false;
+    });
+
+    // Apply new selections
+    Array.from(this.selectElement.options).forEach((opt) => {
+      if (this.selectedValues.has(opt.value)) {
+        opt.selected = true;
+      }
+    });
   }
 
   getSelectedValues() {

@@ -8,3 +8,8 @@ import "./ntg-funnelback.js";
 import "./multi-select-dropdown.js";
 import "./load-initial-results.js";
 import "./cta-button-alias.js";
+
+// Confirm bundle loaded successfully
+console.log("[aikb] Landing page bundle loaded successfully");
+console.log("[aikb] jQuery available:", typeof window.jQuery !== "undefined");
+console.log("[aikb] DOM ready state:", document.readyState);

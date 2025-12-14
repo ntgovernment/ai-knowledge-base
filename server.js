@@ -51,9 +51,15 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Serve static files
-  let filePath =
-    req.url === "/" ? "/Summarise meeting notes _ NTG Central.html" : req.url;
+  // Serve static files and route pages
+  let filePath = req.url;
+
+  // Route specific pages
+  if (req.url === "/" || req.url === "/landing") {
+    filePath = "/AI knowledge base _ NTG Central.html";
+  } else if (req.url === "/content") {
+    filePath = "/Summarise meeting notes _ NTG Central.html";
+  }
 
   // Decode URL for spaces and special characters
   filePath = decodeURIComponent(filePath);
@@ -104,7 +110,9 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
   console.log(`Serving files from: ${__dirname}`);
-  console.log(
-    `Funnelback API proxy available at: http://localhost:${PORT}/api/funnelback?...`
-  );
+  console.log(`\nRoute mapping:`);
+  console.log(`  /                 → AI knowledge base (landing page)`);
+  console.log(`  /landing          → AI knowledge base (landing page)`);
+  console.log(`  /content          → Summarise meeting notes (content page)`);
+  console.log(`  /api/funnelback   → Funnelback API proxy`);
 });

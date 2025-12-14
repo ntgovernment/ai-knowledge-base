@@ -108,21 +108,25 @@ function sortResults(results, sortBy) {
  * Apply filters and sorting, then render results
  */
 async function applyFiltersAndSort() {
-  const workAreaContainer = document.querySelector(
-    ".aikb-multiselect-container"
-  );
-  const sortDropdown = document.getElementById("owner");
+  // Get work area dropdown (may be multi-select)
+  const workAreaDropdown = document.getElementById("document_type");
+  // Support both legacy id="owner" and current id="sort"
+  const sortDropdown =
+    document.getElementById("sort") || document.getElementById("owner");
 
-  if (!sortDropdown) {
-    console.warn("Sort dropdown not found");
+  if (!workAreaDropdown || !sortDropdown) {
+    console.warn("Required dropdowns not found (document_type or sort)");
     return;
   }
 
-  // Get selected work areas from multi-select
+  // Get selected work areas
   let selectedWorkAreas = [];
-  if (workAreaContainer && workAreaContainer.__multiSelectInstance) {
-    selectedWorkAreas =
-      workAreaContainer.__multiSelectInstance.getSelectedValues();
+  if (workAreaDropdown) {
+    const selectedOptions = Array.from(workAreaDropdown.selectedOptions || []);
+    // Remove empty/default values so an unselected state returns all results
+    selectedWorkAreas = selectedOptions
+      .map((opt) => opt.value)
+      .filter((val) => val && val.trim().length > 0);
   }
 
   const selectedSort = sortDropdown.value || "relevance";
@@ -150,16 +154,36 @@ async function applyFiltersAndSort() {
  * Initialize filter and sort listeners
  */
 export function initializeFiltersAndSort() {
-  const workAreaContainer = document.querySelector(
-    ".aikb-multiselect-container"
-  );
-  const sortDropdown = document.getElementById("owner");
+  const workAreaDropdown = document.getElementById("document_type");
+  // Support both legacy id="owner" and current id="sort"
+  const sortDropdown =
+    document.getElementById("sort") || document.getElementById("owner");
 
-  if (workAreaContainer) {
-    workAreaContainer.addEventListener("multiselect-change", function () {
-      console.log("Work area multi-select changed");
+  if (workAreaDropdown) {
+    workAreaDropdown.addEventListener("change", function () {
+      console.log("Work area filter changed");
       applyFiltersAndSort();
     });
+
+    // Listen for custom multi-select events (our custom component) to reapply filters
+    const multiSelectContainer = workAreaDropdown.nextElementSibling;
+    if (
+      multiSelectContainer &&
+      multiSelectContainer.classList.contains("aikb-multiselect-container")
+    ) {
+      multiSelectContainer.addEventListener("multiselect-change", () => {
+        console.log("Work area filter applied via custom multi-select");
+        applyFiltersAndSort();
+      });
+    }
+
+    // Legacy SumoSelect support: trigger filtering when the OK button is clicked/closed
+    if (typeof window.$ !== "undefined") {
+      window.$(workAreaDropdown).on("sumo:closed", function () {
+        console.log("Work area filter applied via SumoSelect OK");
+        applyFiltersAndSort();
+      });
+    }
   }
 
   if (sortDropdown) {

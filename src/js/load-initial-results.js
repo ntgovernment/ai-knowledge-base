@@ -15,7 +15,7 @@ export function loadInitialResults() {
   console.log("Loading initial results (fallback first, then API)...");
 
   // Load fallback JSON immediately for fast initial display
-  fetch("src/data/search.json")
+  fetch("./dist/search.json")
     .then((response) => {
       console.log(
         "Fallback JSON response status:",
@@ -33,10 +33,8 @@ export function loadInitialResults() {
     })
     .catch((fallbackError) => {
       console.error("Error loading fallback search.json:", fallbackError);
-      searchResultsContainer.innerHTML =
-        '<p class="aikb-error">Error loading search data: ' +
-        fallbackError.message +
-        "</p>";
+      console.error("Attempted path: ./dist/search.json");
+      // Continue anyway - API might still work
     });
 
   // Fetch from Funnelback API in background (will update results when ready)
@@ -63,11 +61,17 @@ export function loadInitialResults() {
       processAndRenderResults(data, "api");
     })
     .catch((error) => {
-      console.warn(
-        "Funnelback API failed or timed out, keeping fallback data:",
-        error
-      );
-      // Don't show error - fallback data already displayed
+      console.warn("Funnelback API failed:", error);
+      console.warn("API URL:", apiURL);
+      console.warn("Error type:", error.message);
+      // Check if we have cached data
+      if (!window.aikbSearchCache || window.aikbSearchCache.length === 0) {
+        const container = document.getElementById("search-results-list");
+        if (container) {
+          container.innerHTML =
+            '<p class="aikb-error">Search unavailable. Please try again later.</p>';
+        }
+      }
     });
 }
 
@@ -106,10 +110,8 @@ function processAndRenderResults(data, source = "unknown") {
   // Initialize dropdowns with work area data
   initializeDropdowns(mappedResults);
 
-  // Initialize filter and sort listeners (only once)
-  if (source === "fallback") {
-    initializeFiltersAndSort();
-  }
+  // Initialize filter and sort listeners after each results update
+  initializeFiltersAndSort();
 
   // Render cards using the template
   renderResults(mappedResults, "search-results-list");

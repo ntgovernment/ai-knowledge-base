@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "node server.js",
     "clean": "rimraf dist",
-    "prepare:dist": "node -e \"require('fs').mkdirSync('dist',{recursive:true})\"",
+    "prepare:dist": "node scripts/prepare-dist.js",
     "build:landing-css": "postcss src/css/landing-page.css --env production --map --output dist/landing-page.min.css",
     "build:content-css": "postcss src/css/content-page.css --env production --map --output dist/content-page.min.css",
     "build:landing-js": "esbuild src/js/landing-page.js --bundle --format=iife --minify --sourcemap --outfile=dist/landing-page.min.js",

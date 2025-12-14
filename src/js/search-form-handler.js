@@ -7,68 +7,11 @@
 import { loadInitialResults } from "./load-initial-results.js";
 import { renderResults } from "./search-card-template.js";
 import { searchLocalData, getCachedData } from "./offline-search.js";
-import { storeResults } from "./search-filters.js";
+import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 
-// Dynamically create the search input container markup on page load
+// Initialize search form handler
 (function initSearchForm() {
-  window.addEventListener("DOMContentLoaded", function () {
-    var textQuestion = document.getElementById("text-question");
-    if (textQuestion) {
-      // Remove any existing .search-input-container
-      var old = textQuestion.querySelector(".search-input-container");
-      if (old) old.remove();
-
-      // Create the container
-      var container = document.createElement("div");
-      container.className = "search-input-container";
-
-      // Label
-      var label = document.createElement("label");
-      label.className = "ntgc-form-input--label";
-      label.setAttribute("for", "search");
-      label.textContent = "Search";
-      container.appendChild(label);
-
-      // Inner wrapper
-      var inner = document.createElement("div");
-      inner.style.position = "relative";
-
-      // Input
-      var input = document.createElement("input");
-      input.type = "text";
-      input.name = "query";
-      input.id = "search";
-      input.className =
-        "ntgc-text-input ntgc-text-input--block ntgc-select-input--filter";
-      input.placeholder = "Search for a AI prompt or use case...";
-      input.value = "";
-      input.style.maxWidth = "100%";
-      input.style.paddingRight = "44px"; // Make space for icon
-      inner.appendChild(input);
-
-      // Search icon
-      var icon = document.createElement("span");
-      icon.className = "search-icon";
-      icon.style.position = "absolute";
-      icon.style.right = "16px";
-      icon.style.top = "50%";
-      icon.style.transform = "translateY(-50%)";
-      icon.style.fontFamily =
-        "'Font Awesome 5 Pro', 'Font Awesome 5 Free', 'FontAwesome'";
-      icon.style.fontWeight = "400";
-      icon.style.fontSize = "20px";
-      icon.style.color = "#888";
-      icon.style.pointerEvents = "none";
-      icon.style.zIndex = "2";
-      icon.innerHTML = "&#xf002;"; // Font Awesome search icon unicode
-      inner.appendChild(icon);
-
-      container.appendChild(inner);
-      textQuestion.prepend(container);
-      textQuestion.prepend(container);
-    }
-  });
   // Only initialize if jQuery is available
   if (typeof window.$ === "undefined") {
     console.warn("jQuery not loaded; search form handler disabled");
@@ -95,30 +38,74 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
   }
 
   /**
-   * Handle form submission
-   * Prevent default navigation and trigger API search
+   * Prevent form submission (search is triggered by Enter key only)
    */
   function handleFormSubmit(event) {
     event.preventDefault();
+    // Form submission prevented - search only happens on Enter key press
+  }
 
-    const params = getSearchParams();
+  /**
+   * Handle clear input button click
+   * Clear the search field and reload initial results
+   */
+  function handleClearInput() {
+    $searchInput.val("");
+    console.log("Search cleared - reloading initial results");
+    loadInitialResults();
+  }
 
-    // If search is empty, reload initial results (top items)
-    if (!params.query.trim()) {
-      console.log("Empty search - reloading initial results");
-      loadInitialResults();
-      return;
+  // Attach form submission handler
+  $form.on("submit", handleFormSubmit);
+
+  // Attach clear input handler
+  window.$("#clear-input").on("click", handleClearInput);
+
+  // Show/hide clear button based on input state (but don't search yet)
+  $searchInput.on("input", function () {
+    const $clearBtn = window.$("#clear-input");
+    if (window.$(this).val().length > 0) {
+      $clearBtn.attr("hidden", false);
+    } else {
+      $clearBtn.attr("hidden", "");
     }
+  });
+
+  // Trigger search when user presses Enter in the search input
+  $searchInput.on("keydown", function (event) {
+    if (event.key === "Enter" || event.keyCode === 13) {
+      event.preventDefault();
+      const searchText = window.$(this).val();
+      if (searchText.trim()) {
+        triggerSearch(searchText);
+      } else {
+        console.log("Empty search via Enter - reloading initial results");
+        loadInitialResults();
+      }
+    }
+  });
+
+  /**
+   * Trigger search with the given query text
+   * @param {string} queryText - The search query from the input field
+   */
+  function triggerSearch(queryText) {
+    if (!queryText.trim()) {
+      return; // Don't search for empty text
+    }
+
+    console.log(`Triggered search for: "${queryText}"`);
 
     // Perform offline search immediately for fast results
     const cachedData = getCachedData();
     if (cachedData && cachedData.length > 0) {
       console.log("Performing immediate offline search for fast results");
-      const offlineResults = searchLocalData(params.query, cachedData);
+      const offlineResults = searchLocalData(queryText, cachedData);
 
       // Store and render offline results immediately
       storeResults(offlineResults);
       initializeDropdowns(offlineResults);
+      initializeFiltersAndSort();
       renderResults(offlineResults, "search-results-list");
 
       console.log(
@@ -138,11 +125,11 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
       typeof window.ntgFunnelback.callSearchAPI === "function"
     ) {
       // Set originalterm and call API
-      window.ntgFunnelback.originalterm = params.query;
+      window.ntgFunnelback.originalterm = queryText;
       window.ntgFunnelback.currentPage = 1;
 
       // Pass onError callback (will only trigger if both API and fallback JSON fail)
-      window.ntgFunnelback.callSearchAPI(params.query, function (error) {
+      window.ntgFunnelback.callSearchAPI(queryText, function (error) {
         // Only show error if we didn't already show offline results
         if (!cachedData || cachedData.length === 0) {
           console.error("Search failed and no cached data available");
@@ -157,35 +144,11 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
         }
       });
     } else {
-      console.error("Funnelback API not initialized");
+      console.warn(
+        "Funnelback API not initialized - using offline search only"
+      );
     }
   }
-
-  /**
-   * Handle clear input button click
-   * Clear the search field and reload initial results
-   */
-  function handleClearInput() {
-    $searchInput.val("");
-    console.log("Search cleared - reloading initial results");
-    loadInitialResults();
-  }
-
-  // Attach form submission handler
-  $form.on("submit", handleFormSubmit);
-
-  // Attach clear input handler
-  window.$("#clear-input").on("click", handleClearInput);
-
-  // Show/hide clear button based on input state
-  $searchInput.on("input", function () {
-    const $clearBtn = window.$("#clear-input");
-    if (window.$(this).val().length > 0) {
-      $clearBtn.attr("hidden", false);
-    } else {
-      $clearBtn.attr("hidden", "");
-    }
-  });
 
   console.log("Search form handler initialized");
 })();
