@@ -163,11 +163,11 @@ function createSearchCard(result) {
     metadata.appendChild(usefulRow);
   }
 
-  // Submitted date
+  // Last updated date
   if (result.date) {
     const dateEl = document.createElement("div");
     dateEl.className = "aikb-search-card__date";
-    dateEl.textContent = `Submitted: ${formatDate(result.date)}`;
+    dateEl.textContent = `Last updated: ${formatDate(result.date)}`;
     metadata.appendChild(dateEl);
   }
 

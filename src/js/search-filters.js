@@ -23,10 +23,7 @@ function filterByWorkArea(selectedWorkAreas) {
   }
 
   return allResults.filter((result) => {
-    if (
-      !result.listMetadata ||
-      !result.listMetadata["Work area"]
-    ) {
+    if (!result.listMetadata || !result.listMetadata["Work area"]) {
       return false;
     }
 

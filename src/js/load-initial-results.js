@@ -106,8 +106,8 @@ function processAndRenderResults(data, source = "unknown") {
       Roles: result.roles || [],
       Benefits: result.benefits || [],
     },
-    date: result["date-published"]
-      ? new Date(result["date-published"]).toLocaleDateString("en-AU", {
+    date: result["last-updated"]
+      ? new Date(result["last-updated"]).toLocaleDateString("en-AU", {
           year: "numeric",
           month: "long",
         })
