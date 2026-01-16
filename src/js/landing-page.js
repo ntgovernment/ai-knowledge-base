@@ -1,15 +1,22 @@
 // Import all JS modules for landing page bundle (except content-page.js)
+import "./config.js";
 import "./search-form-handler.js";
 import "./search-filters.js";
 import "./search-card-template.js";
 import "./populate-dropdowns.js";
 import "./offline-search.js";
-import "./ntg-funnelback.js";
 import "./multi-select-dropdown.js";
 import "./load-initial-results.js";
 import "./cta-button-alias.js";
+import { initClearAllButton } from "./applied-filters.js";
 
 // Confirm bundle loaded successfully
 console.log("[aikb] Landing page bundle loaded successfully");
 console.log("[aikb] jQuery available:", typeof window.jQuery !== "undefined");
 console.log("[aikb] DOM ready state:", document.readyState);
+
+// Initialize clear all button after page loads
+window.addEventListener("load", function () {
+  initClearAllButton();
+  console.log("[aikb] Applied filters initialized");
+});

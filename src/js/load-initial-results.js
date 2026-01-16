@@ -1,7 +1,12 @@
-// Load initial search results from Funnelback API on page load
+// Load initial search results from local search or live API on page load
 import { renderResults } from "./search-card-template.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
+import {
+  getPrimaryDataSource,
+  getFallbackDataSource,
+  getConfig,
+} from "./config.js";
 
 // Export for use in search-form-handler
 export function loadInitialResults() {
@@ -12,39 +17,21 @@ export function loadInitialResults() {
     return; // Not on search results page
   }
 
-  console.log("Loading initial results (fallback first, then API)...");
+  const config = getConfig();
+  const primarySource = getPrimaryDataSource();
+  const fallbackSource = getFallbackDataSource();
 
-  // Load fallback JSON immediately for fast initial display
-  fetch("./dist/search.json")
+  console.log(
+    `Loading initial results from ${
+      config.isProduction ? "live API" : "local JSON"
+    }...`
+  );
+
+  // Fetch from primary data source
+  fetch(primarySource)
     .then((response) => {
       console.log(
-        "Fallback JSON response status:",
-        response.status,
-        response.ok
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Fallback JSON data loaded successfully:", data);
-      processAndRenderResults(data, "fallback");
-    })
-    .catch((fallbackError) => {
-      console.error("Error loading fallback search.json:", fallbackError);
-      console.error("Attempted path: ./dist/search.json");
-      // Continue anyway - API might still work
-    });
-
-  // Fetch from Funnelback API in background (will update results when ready)
-  const apiURL =
-    "https://ntgov-search.funnelback.squiz.cloud/s/search.json?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull";
-
-  fetch(apiURL)
-    .then((response) => {
-      console.log(
-        "Funnelback API response status:",
+        `Primary source (${primarySource}) response status:`,
         response.status,
         response.ok
       );
@@ -55,47 +42,78 @@ export function loadInitialResults() {
     })
     .then((data) => {
       console.log(
-        "Funnelback API data loaded successfully, updating results:",
+        `Primary source data loaded successfully (${
+          config.isProduction ? "live API" : "local JSON"
+        }):`,
         data
       );
-      processAndRenderResults(data, "api");
+      processAndRenderResults(data, config.isProduction ? "live-api" : "local");
     })
-    .catch((error) => {
-      console.warn("Funnelback API failed:", error);
-      console.warn("API URL:", apiURL);
-      console.warn("Error type:", error.message);
-      // Check if we have cached data
-      if (!window.aikbSearchCache || window.aikbSearchCache.length === 0) {
-        const container = document.getElementById("search-results-list");
-        if (container) {
-          container.innerHTML =
-            '<p class="aikb-error">Search unavailable. Please try again later.</p>';
-        }
+    .catch((primaryError) => {
+      console.error(
+        `Error loading from primary source (${primarySource}):`,
+        primaryError
+      );
+
+      // Only try fallback if in production
+      if (fallbackSource) {
+        console.log("Attempting fallback to local JSON...");
+        fetch(fallbackSource)
+          .then((response) => {
+            console.log(
+              "Fallback JSON response status:",
+              response.status,
+              response.ok
+            );
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Fallback JSON data loaded successfully:", data);
+            processAndRenderResults(data, "fallback");
+          })
+          .catch((fallbackError) => {
+            console.error("Error loading fallback search.json:", fallbackError);
+            displayErrorMessage();
+          });
+      } else {
+        // Local dev with no fallback - show error
+        displayErrorMessage();
       }
     });
 }
 
+function displayErrorMessage() {
+  const container = document.getElementById("search-results-list");
+  if (container) {
+    container.innerHTML =
+      '<p class="aikb-error">Unable to load search results. Please check your connection and try again later.</p>';
+  }
+}
+
 function processAndRenderResults(data, source = "unknown") {
-  // Extract results from Funnelback response structure
-  const results =
-    data.response && data.response.resultPacket
-      ? data.response.resultPacket.results
-      : [];
+  // Handle array data directly (local JSON format)
+  const results = Array.isArray(data) ? data : [];
 
   // Map to card template format
   const mappedResults = results.map((result) => ({
     title: result.title || "",
-    summary: result.summary || "",
-    listMetadata: result.listMetadata || {},
-    date: result.date
-      ? new Date(result.date).toLocaleDateString("en-AU", {
+    summary: result.description || result.summary || "",
+    listMetadata: {
+      "Work area": result["work-area"] || [],
+      Roles: result.roles || [],
+      Benefits: result.benefits || [],
+    },
+    date: result["date-published"]
+      ? new Date(result["date-published"]).toLocaleDateString("en-AU", {
           year: "numeric",
           month: "long",
         })
       : "",
-    liveUrl: result.liveUrl || "",
-    rank: result.rank || 0,
-    score: result.score || 0,
+    liveUrl: result.url || result.liveUrl || "",
+    submittedBy: result["submitted-by"] || "",
   }));
 
   console.log(`Rendering ${mappedResults.length} cards from ${source}`);

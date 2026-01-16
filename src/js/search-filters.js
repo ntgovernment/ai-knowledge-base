@@ -1,4 +1,5 @@
 // Client-side filtering and sorting for search results
+import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
 
 let allResults = []; // Store all results for filtering/sorting
 
@@ -24,19 +25,21 @@ function filterByWorkArea(selectedWorkAreas) {
   return allResults.filter((result) => {
     if (
       !result.listMetadata ||
-      !result.listMetadata.keyword ||
-      !result.listMetadata.keyword[0]
+      !result.listMetadata["Work area"]
     ) {
       return false;
     }
 
-    const resultWorkAreas = result.listMetadata.keyword[0];
+    const resultWorkAreas = result.listMetadata["Work area"];
 
-    // Check if any selected work area matches (handle comma-separated values)
-    const workAreaArray = resultWorkAreas.split(",").map((area) => area.trim());
+    // If result has "All work areas", it appears in all filtered views
+    if (resultWorkAreas.includes("All work areas")) {
+      return true;
+    }
 
+    // Check if any selected work area matches
     return selectedWorkAreas.some((selectedArea) =>
-      workAreaArray.includes(selectedArea)
+      resultWorkAreas.includes(selectedArea)
     );
   });
 }
@@ -148,6 +151,10 @@ async function applyFiltersAndSort() {
   // Render filtered and sorted results
   const { renderResults } = await import("./search-card-template.js");
   renderResults(sorted, "search-results-list");
+
+  // Display applied filters
+  const currentFilters = getCurrentFilters();
+  displayAppliedFilters(currentFilters);
 }
 
 /**

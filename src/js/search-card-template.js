@@ -47,9 +47,11 @@ function formatDate(dateStr) {
  * @param {string} result.title - Card title
  * @param {string} result.summary - Card summary/description
  * @param {Object} result.listMetadata - Metadata object
- * @param {Array<string>} result.listMetadata.keyword - Array of keywords [category, usefulFor]
+ * @param {Array<string>} result.listMetadata["Work area"] - Array of work area tags
+ * @param {Array<string>} result.listMetadata["Roles"] - Array of roles for "Useful for"
  * @param {string} result.date - Submission date
  * @param {string} result.liveUrl - URL for "See more" button
+ * @param {string} result.submittedBy - Person who submitted
  * @returns {HTMLElement|null} Card element or null if required fields missing
  */
 function createSearchCard(result) {
@@ -89,28 +91,28 @@ function createSearchCard(result) {
 
   content.appendChild(textSection);
 
-  // Tags section (split comma-separated categories into individual tags)
-  const category =
-    result.listMetadata && result.listMetadata.keyword
-      ? result.listMetadata.keyword[0]
-      : null;
-  if (category) {
+  // Tags section (work areas from JSON payload)
+  const workAreas =
+    result.listMetadata && result.listMetadata["Work area"]
+      ? result.listMetadata["Work area"]
+      : [];
+  if (workAreas && workAreas.length > 0) {
     const tagsContainer = document.createElement("div");
     tagsContainer.className = "aikb-search-card__tags";
 
-    // Split by comma to create multiple tags if needed
-    const categories = category.split(",");
-    categories.forEach((cat) => {
-      const trimmedCat = cat.trim();
-      if (trimmedCat) {
+    // Create a tag for each work area
+    workAreas.forEach((workArea) => {
+      if (workArea && workArea.trim()) {
         const tag = document.createElement("div");
         tag.className = "aikb-search-card__tag";
-        tag.textContent = trimmedCat;
+        tag.textContent = workArea.trim();
         tagsContainer.appendChild(tag);
       }
     });
 
-    content.appendChild(tagsContainer);
+    if (tagsContainer.children.length > 0) {
+      content.appendChild(tagsContainer);
+    }
   }
 
   inner.appendChild(content);
@@ -139,12 +141,12 @@ function createSearchCard(result) {
   const metadata = document.createElement("div");
   metadata.className = "aikb-search-card__metadata";
 
-  // "Useful for" row (only if keyword[1] exists)
-  const usefulFor =
-    result.listMetadata && result.listMetadata.keyword
-      ? result.listMetadata.keyword[1]
-      : null;
-  if (usefulFor) {
+  // "Useful for" row (roles from JSON payload)
+  const roles =
+    result.listMetadata && result.listMetadata["Roles"]
+      ? result.listMetadata["Roles"]
+      : [];
+  if (roles && roles.length > 0) {
     const usefulRow = document.createElement("div");
     usefulRow.className = "aikb-search-card__useful-for";
 
@@ -155,7 +157,7 @@ function createSearchCard(result) {
 
     const value = document.createElement("span");
     value.className = "aikb-search-card__useful-value";
-    value.textContent = usefulFor;
+    value.textContent = roles.join(", ");
     usefulRow.appendChild(value);
 
     metadata.appendChild(usefulRow);

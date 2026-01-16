@@ -47,12 +47,6 @@ const ntgFunnelback = {
       ntgFunnelback.originalterm
     );
 
-    // Clear container while loading
-    const container = document.getElementById("search-results-list");
-    if (container) {
-      container.innerHTML = '<div class="aikb-loading">Searching...</div>';
-    }
-
     // Remove noise words from the query
     ntgFunnelback.filterQuery();
     console.log("After filterQuery, filteredterm:", ntgFunnelback.filteredterm);
@@ -91,39 +85,46 @@ const ntgFunnelback = {
     // Add pagination
     fbUrl += `&num_ranks=10&start_rank=${startRank}`;
 
-    console.log("Calling Funnelback API:", fbUrl);
+    console.log("Loading fallback first, then calling Funnelback API");
+
+    // Load fallback JSON first for instant results
+    $.ajax({
+      url: "dist/search.json",
+      dataType: "JSON",
+      type: "GET",
+      timeout: 2000,
+      success: function (fallbackData) {
+        console.log("Loaded fallback search data first (instant results)");
+        ntgFunnelback.processResults(fallbackData);
+      },
+      error: function (xhr, status, error) {
+        console.warn("Fallback JSON failed:", error);
+        // Continue to API anyway
+      },
+    });
+
+    // Then call Funnelback API in background to update with fresh results
+    console.log("Calling Funnelback API in background:", fbUrl);
 
     $.ajax({
       url: fbUrl,
       dataType: "JSON",
       type: "GET",
+      timeout: 3000, // 3 second timeout - fail fast if Funnelback unreachable
       success: function (dataset) {
+        console.log("Funnelback API succeeded, updating results");
         ntgFunnelback.processResults(dataset);
       },
       error: function (xhr, status, error) {
-        console.warn("Funnelback API error, loading fallback data:", error);
-        // Load fallback search.json
-        $.ajax({
-          url: "src/data/search.json",
-          dataType: "JSON",
-          type: "GET",
-          success: function (fallbackData) {
-            console.log("Loaded fallback search data");
-            ntgFunnelback.processResults(fallbackData);
-          },
-          error: function () {
-            console.error("Failed to load fallback search data");
+        console.warn(
+          "Funnelback API error (fallback already displayed):",
+          error
+        );
 
-            // Invoke onError callback if provided (for offline search)
-            if (typeof onError === "function") {
-              console.log("Triggering offline search fallback");
-              onError(new Error("Both API and fallback JSON failed"));
-            } else if (container) {
-              container.innerHTML =
-                "<p>Unable to load search results. Please try again later.</p>";
-            }
-          },
-        });
+        // Invoke onError callback if provided and no fallback was loaded
+        if (typeof onError === "function") {
+          onError(new Error("Funnelback API failed"));
+        }
       },
     });
   },

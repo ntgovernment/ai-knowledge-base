@@ -25,11 +25,30 @@ export class MultiSelectDropdown {
     // Create custom dropdown structure
     this.createDropdownStructure();
 
+    // Select all options by default
+    this.selectAllByDefault();
+
     // Bind event listeners
     this.bindEvents();
 
     // Store instance reference on container for external access
     this.container.__multiSelectInstance = this;
+  }
+
+  selectAllByDefault() {
+    // Add all option values to selectedValues
+    this.options.forEach((option) => {
+      this.selectedValues.add(option.value);
+    });
+
+    // Sync with native select
+    this.syncNativeSelect();
+
+    // Update display text
+    this.updateDisplayText();
+
+    // Update checkboxes
+    this.tempSelectedValues = new Set(this.selectedValues);
   }
 
   createDropdownStructure() {

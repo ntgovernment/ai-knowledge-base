@@ -1,0 +1,128 @@
+/* Applied Filters Section */
+#appliedFiltersSection {
+  padding: 16px 24px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#appliedFiltersSection strong {
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+}
+
+#appliedFiltersSection p {
+  margin: 0;
+}
+
+#appliedFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-pill {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 16px;
+  gap: 8px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pill-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.pill-value {
+  font-weight: 400;
+}
+
+.pill-remove {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.pill-remove:hover {
+  opacity: 1;
+}
+
+.pill-remove:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+#clearAllBtn {
+  color: #0056b3;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#clearAllBtn:hover {
+  text-decoration: underline;
+}
+
+#clearAllBtn[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Bootstrap badge color classes */
+.badge.bg-success {
+  background-color: #28a745 !important;
+  color: #fff;
+}
+
+.badge.bg-primary {
+  background-color: #007bff !important;
+  color: #fff;
+}
+
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+  color: #fff;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: #fff;
+}
+
+/* Utility classes for spacing */
+.my-3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

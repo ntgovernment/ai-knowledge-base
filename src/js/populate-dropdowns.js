@@ -74,19 +74,17 @@ function extractWorkAreas(results) {
   const workAreaSet = new Set();
 
   results.forEach((result) => {
-    if (
-      result.listMetadata &&
-      result.listMetadata.keyword &&
-      result.listMetadata.keyword[0]
-    ) {
-      const workArea = result.listMetadata.keyword[0];
-      // Split comma-separated values and add each individually
-      workArea.split(",").forEach((area) => {
-        const trimmed = area.trim();
-        if (trimmed) {
-          workAreaSet.add(trimmed);
-        }
-      });
+    if (result.listMetadata && result.listMetadata["Work area"]) {
+      const workAreas = result.listMetadata["Work area"];
+      // Work areas is already an array
+      if (Array.isArray(workAreas)) {
+        workAreas.forEach((area) => {
+          const trimmed = area.trim();
+          if (trimmed) {
+            workAreaSet.add(trimmed);
+          }
+        });
+      }
     }
   });
 
