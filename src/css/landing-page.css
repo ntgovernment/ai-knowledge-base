@@ -6,6 +6,7 @@
 @import "./search-results.css";
 @import "./applied-filters.css";
 @import "./pagination.css";
+@import "./tags.css";
 
 /* Hide the extra search icon span that appears in the HTML */
 #policy-search-form .fal.fa-search {

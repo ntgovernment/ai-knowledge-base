@@ -4,11 +4,11 @@
     "url": "https://ntgcentral.nt.gov.au/ai-knowledge-base/articles/summarise-meeting-notes",
     "description": "Find out how to use AI in the workplace to summarize meeting notes instantly, streamline documentation, and boost productivity.",
     "work-area": ["Administration"],
-    "roles": ["Admin staff", "Secretariats"],
-    "benefits": ["Admin staff", "Secretariats"],
+    "roles": ["Admin staff", "Secretariats", "Managers"],
+    "benefits": ["Admin staff", "Secretariats", "Managers"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
-    "last-updated": "2026-01-16 15:41:42"
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-17 10:52:37"
   },
   {
     "title": "Generate meeting summary",
@@ -18,7 +18,7 @@
     "roles": ["Admin staff", "Secretariats"],
     "benefits": ["Admin staff", "Secretariats"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:41:45"
   },
   {
@@ -29,7 +29,7 @@
     "roles": ["Admin staff", "Secretariats"],
     "benefits": ["Admin staff", "Secretariats"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:41:48"
   },
   {
@@ -40,7 +40,7 @@
     "roles": ["Admin staff", "Secretariats"],
     "benefits": ["Admin staff", "Secretariats"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:41:53"
   },
   {
@@ -51,7 +51,7 @@
     "roles": ["Everyone"],
     "benefits": ["Everyone"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:41:56"
   },
   {
@@ -62,7 +62,7 @@
     "roles": ["Managers", "Executives"],
     "benefits": ["Managers", "Executives"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:41:59"
   },
   {
@@ -73,7 +73,7 @@
     "roles": ["Communications professionals"],
     "benefits": ["Communications professionals"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:06"
   },
   {
@@ -84,7 +84,7 @@
     "roles": ["Managers", "Workforce professionals"],
     "benefits": ["Managers", "Workforce professionals"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:09"
   },
   {
@@ -95,7 +95,7 @@
     "roles": ["Risk analysts", "Managers"],
     "benefits": ["Risk analysts", "Managers"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:12"
   },
   {
@@ -106,7 +106,7 @@
     "roles": ["Police", "Fire", "Emergency services"],
     "benefits": ["Police", "Fire", "Emergency services"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:15"
   },
   {
@@ -117,7 +117,7 @@
     "roles": ["Managers", "Executives"],
     "benefits": ["Managers", "Executives"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:18"
   },
   {
@@ -128,7 +128,7 @@
     "roles": ["Legal secretaries", "Communications professionals"],
     "benefits": ["Legal secretaries", "Communications professionals"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:20"
   },
   {
@@ -139,7 +139,7 @@
     "roles": ["Data analysts", "Tech leads"],
     "benefits": ["Data analysts", "Tech leads"],
     "submitted-by": "Sarah Strzelecki",
-    "orgID": "68",
+    "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:23"
   }
 ]
