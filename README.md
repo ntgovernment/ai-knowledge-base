@@ -2,6 +2,8 @@
 
 **Modern search interface for AI use cases in the Northern Territory Government**
 
+> **Note:** All search and filtering is performed client-side in the browser. No server-side or external API search is used at runtime.
+
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
 [![Bundle Size](https://img.shields.io/badge/bundle-22.3kb-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
@@ -29,409 +31,149 @@ The AI Knowledge Base is a searchable repository that helps NT Government employ
 - **Multi-select work area filter** with OK/Cancel buttons
 - **Offline search capability** using cached local data
 - **Parallel loading strategy** (immediate fallback + API updates)
-- **Funnelback API integration** with local JSON fallback
+- **API integration** with local JSON fallback
 - **Auto-loading results** on page initialization
 - **Responsive design** optimized for desktop and mobile
 - **Modular architecture** built with ES6 modules and PostCSS
 
 ### Key Features
 
-✅ **Search Functionality**
+- **Client-side search and filtering**: All search logic, filtering, and sorting are performed in the browser using local data (no server-side search).
+- **Offline support**: Results are available instantly from cached data, even when offline.
+- **Multi-select work area filter**: Select multiple work areas with checkboxes and OK/Cancel buttons.
+- **Dynamic sorting**: Sort by relevance, date, or title instantly.
+- **Responsive card-based results**: Modern UI with tags, metadata, and accessible design.
 
-- **Immediate offline search**: Displays cached results instantly while API loads in background
-- **Offline fallback**: Client-side keyword search when API completely unavailable
-- Dynamic query parameter switching: `&s=` for top items, `&query=` for searches
-- Primary: Funnelback API (`ntgov~sp-ntgc-ai-knowledge-base` collection)
-- Fallback: Local `search.json` file when API unavailable
-- Auto-load top items on page load with parallel loading (fallback + API)
-- Manual search via form submission with noise word filtering
-- URL exclusion filter (e.g., configuration pages)
-- Scoring algorithm for offline search: Title matches ×3, Summary ×1, Metadata ×2
+# AI Knowledge Base - NTG Central
 
-✅ **Dynamic Filters & Sorting**
+**Modern, client-side search interface for AI use cases in the Northern Territory Government.**
 
-- **Multi-select work area filter** with checkboxes and OK/Cancel buttons
-- Select All functionality with indeterminate state
-- Sort by: Relevance, Date (newest/oldest), Title (A-Z/Z-A)
-- Client-side filtering and sorting for instant results
-- Preserves search state during filter/sort operations
-- Multiple work area filtering with OR logic
+> **Note:** All search and filtering is performed client-side in the browser. No server-side or external API search is used at runtime.
 
-✅ **Card-Based Results**
+## Overview
 
-- Title, summary, work area tags (comma-separated tags split)
-- "Good for" metadata and submission dates
-- Responsive layout (breakpoint at 768px)
-- "See more" button with Font Awesome arrow icons (positioned absolutely)
-- Validation ensures required fields (title, summary, liveUrl)
+The AI Knowledge Base helps NT Government employees discover practical AI applications and use cases. All search, filtering, and sorting is performed instantly in the browser using local data. No server-side search is used.
 
-✅ **Build System**
+### Key Features
 
-- esbuild for JavaScript bundling (ES6 → IIFE)
-- PostCSS for CSS processing
-- Source maps for debugging
-- ~22.3kb total bundle size (22.0kb JS + 2.4kb CSS minified)
+- Instant, client-side search and filtering
+- Offline support (works with cached data)
+- Multi-select work area filter
+- Dynamic sorting (relevance, date, title)
+- Responsive, accessible UI
+- Small bundle size
 
-## 🚀 Quick Start
+## Quick Start
 
-### Prerequisites
+1. Clone the repository and `cd ai-knowledge-base`
+2. Run `npm install` and `npm run build`
+3. Start a local server (e.g. `npx http-server -p 8000`)
+4. Open the main HTML file in your browser
 
-```bash
-Node.js 14+ and npm
-Local web server (http-server, Live Server, etc.)
-```
+## Project Structure
 
-### Installation
+- Main HTML: `AI knowledge base _ NTG Central.html`
+- Source: `src/js/` (JavaScript), `src/css/` (CSS), `src/data/search.json` (local data)
+- Build output: `dist/`
+- Docs: `DOCUMENTATION/`
 
-```bash
-# Clone the repository
-git clone <repository-url>
-cd ntgc-aikb
+## Development
 
-# Install dependencies
-npm install
+- Edit source files in `src/js/` and `src/css/`
+- Build with `npm run build`
+- Refresh browser to see changes
+- Add new JS or CSS files in `src/` and import as needed. Rebuild to apply changes.
 
-# Build the project
-npm run build
+## Architecture
 
-# Start local server
-npx http-server -p 8000 -c-1
-```
+- All search, filtering, and sorting is performed in the browser using local data.
+- No server-side or external API search is performed at runtime.
+- Key modules: search-card-template.js, ntg-funnelback.js, offline-search.js, populate-dropdowns.js, multi-select-dropdown.js, search-filters.js, search-form-handler.js
 
-### Access the Application
+## Styling System
 
-Open `http://localhost:8000/AI%20knowledge%20base%20_%20NTG%20Central.html` in your browser.
+- Modular CSS in `src/css/`, built with PostCSS
+- Responsive, accessible design
 
-## 📁 Project Structure
+## Testing
 
-```
-ntgc-aikb/
-├── 📄 AI knowledge base _ NTG Central.html    # Main HTML page
-├── 📁 AI knowledge base _ NTG Central_files/   # Legacy assets
-│   ├── global-v2.js                            # Modified for local dev (favorites disabled)
-│   ├── jquery-3.4.1.min.js                     # jQuery 3.4.1
-│   ├── ntgov-funnelback-search.js             # Legacy Funnelback script (not used)
-│   └── [other legacy assets]
-│
-├── 📁 src/                                     # Source files (EDIT THESE)
-│   ├── 📁 js/
-│   │   ├── landing-page.js                     # Landing page JS (all main logic)
-│   │   ├── content-page.js                     # Content page JS (if needed)
-│   │   ├── search-card-template.js             # Card rendering logic
-│   │   ├── ntg-funnelback.js                   # Funnelback API integration
-│   │   ├── search-form-handler.js              # Form submission handler
-│   │   ├── load-initial-results.js             # Auto-load with parallel strategy
-│   │   ├── populate-dropdowns.js               # Dynamic dropdown population
-│   │   ├── search-filters.js                   # Client-side filtering & sorting
-│   │   ├── multi-select-dropdown.js            # Multi-select component
-│   │   ├── offline-search.js                   # Offline keyword search
-│   │   └── cta-button-alias.js                 # CTA button styling
-│   │
-│   ├── 📁 css/
-│   │   ├── landing-page.css                    # Landing page CSS (all main styles)
-│   │   ├── content-page.css                    # Content page CSS (if needed)
-│   │   ├── search-card.css                     # Card styling
-│   │   ├── search-interface.css                # Search UI styling
-│   │   ├── multi-select-dropdown.css           # Multi-select dropdown styling
-│   │   └── call-to-action.css                  # CTA styling (empty placeholder)
-│   │
-│   └── 📁 data/
-│       └── search.json                         # Fallback search data (Funnelback format)
-│
-├── 📁 dist/                                    # Build output (AUTO-GENERATED)
-│   ├── landing-page.min.js                     # Landing page JS (main bundle)
-│   ├── landing-page.min.css                    # Landing page CSS (main bundle)
-│   ├── content-page.min.js                     # Content page JS (if needed)
-│   └── content-page.min.css                    # Content page CSS (if needed)
-│
-├── 📁 DOCUMENTATION/                           # Project documentation
-│   ├── 00-README.md                            # Original documentation
-│   ├── 01-ARCHITECTURE.md                      # System architecture
-│   ├── 02-SEARCH-ENGINE.md                     # Search implementation
-│   ├── 04-COMPONENTS.md                        # Component details
-│   ├── 05-STYLING.md                           # CSS architecture
-│   └── [other docs]
-│
-├── 📄 package.json                             # Dependencies & scripts
-├── 📄 postcss.config.js                        # PostCSS configuration
-└── 📄 server.js                                # Optional local server
-```
+- Manual: Load the app, search, filter, and sort results in the browser
+- Offline: Block network and verify search still works
 
-## 💻 Development
+## Dependencies
 
-### npm Scripts
+- jQuery 3.4.1 (DOM/AJAX)
+- Font Awesome (icons)
+- esbuild, postcss, autoprefixer, cssnano (build/dev)
 
-```bash
-npm run clean            # Delete dist folder
-npm run prepare:dist     # Create dist directory
-npm run build            # Build all landing/content assets (recommended)
-npm run build:landing-js # Build landing page JS only
-npm run build:landing-css# Build landing page CSS only
-npm run build:content-js # Build content page JS only
-npm run build:content-css# Build content page CSS only
-npm start                # Start local server (if using server.js)
-```
+# AI Knowledge Base – NTG Central
 
-### Development Workflow
+**A fast, client-side search tool for AI use cases in the Northern Territory Government.**
 
-1. **Edit source files** in `src/js/landing-page.js` and `src/css/landing-page.css` (or content-page equivalents)
-2. **Build the project**: `npm run build`
-3. **Refresh browser** to see changes
-4. **Commit changes**: `git add -A && git commit -m "message"`
+## What is it?
 
-### Adding a New Module
+This project provides a searchable knowledge base for NTG staff to discover practical AI applications. All search, filtering, and sorting is performed instantly in the browser using local data—no server-side or external API search is used.
 
-**JavaScript Module:**
+## Features
 
-```javascript
-// 1. Create src/js/my-module.js
-export function myFunction() {
-  // ...
-}
+- Instant, offline-capable search and filtering
+- Multi-select work area filter
+- Dynamic sorting (relevance, date, title)
+- Responsive, accessible UI
 
-// 2. Import in src/js/landing-page.js (or content-page.js)
-import "./my-module.js";
+## Getting Started
 
-// 3. Build
-npm run build:landing-js
-```
+1. Clone the repository and enter the folder
+2. Run `npm install` and `npm run build`
+3. Start a local server (e.g. `npx http-server -p 8000`)
+4. Open the main HTML file in your browser
 
-**CSS Module:**
+## Structure
 
-```css
-/* 1. Create src/css/my-styles.css */
-.my-class {
-  /* ... */
-}
+- Main HTML: `AI knowledge base _ NTG Central.html`
+- Source: `src/js/`, `src/css/`, `src/data/search.json`
+- Build output: `dist/`
+- Docs: `DOCUMENTATION/`
 
-/* 2. Import in src/css/landing-page.css (or content-page.css) */
-@import "./my-styles.css";
+## Development
 
-/* 3. Build */
-npm run build:landing-css
-```
+- Edit files in `src/js/` and `src/css/`, then rebuild
+- See [COPILOT_INSTRUCTIONS.md](COPILOT_INSTRUCTIONS.md) and [AGENTS.md](AGENTS.md) for agent and Copilot usage
 
-### Local Development Notes
+## Support
 
-**Disabled for Local Dev:**
+- See `/DOCUMENTATION/` for more details
+- Check browser console for errors
 
-- Roboto fonts (commented out to prevent CORS)
-- Favorites API (mocked in `global-v2.js`)
-- Some external CDN assets
+---
 
-**Important Element IDs:**
+**Last Updated:** December 13, 2025  
+**Version:** 1.1.0  
+**License:** MIT
+<p class="aikb-search-card__summary">...</p>
+</div>
+<div class="aikb-search-card__tags">
+<div class="aikb-search-card__tag">...</div>
+</div>
+</div>
+<div class="aikb-search-card__actions">
+<a class="ntgc-btn ntgc-btn--secondary">
+<span>See more</span>
+<span class="fal fa-arrow-right"></span>
+</a>
+<div class="aikb-search-card__metadata">
+<div class="aikb-search-card__useful-for">...</div>
+<div class="aikb-search-card__date">...</div>
+</div>
+</div>
 
-- `#search-results-list` - Main results container (line 1173)
-- `#policy-search-form` - Search form (line 1060)
-- `#search` - Search input field (line 1069)
-- `#document_type` - Work area filter dropdown (line 1088)
-- `#owner` - Sort dropdown (line 1118)
-- `#clear-input` - Clear search button (line 1077)
-- `.search-icon` - Search icon trigger (line 1073)
-
-## 🏗 Architecture
-
-### Data Flow
-
-**Initial Page Load:**
-
-```
-Page Load
-    ↓
-load-initial-results.js
-    ↓
-Parallel Loading:
-├─→ Fetch search.json (immediate display)
-│       ↓
-│   processAndRenderResults(data, "fallback")
-│       ↓
-│   Cache to window.aikbSearchCache
-│       ↓
-│   Filter excluded URLs → Map to card format
-│       ↓
-│   storeResults() → initializeDropdowns() → renderResults()
-│
-└─→ Fetch Funnelback API (background update)
-        ↓
-    processAndRenderResults(data, "api")
-        ↓
-    Update cache → Filter → Map
-        ↓
-    Re-render with API results (updates fallback)
-```
-
-**User Search (with Offline Priority):**
-
-```
-User enters "English" in #search input
-    ↓
-Form submission (search-form-handler.js)
-    ↓
-Immediate Offline Search:
-├─→ getCachedData() from window.aikbSearchCache
-│       ↓
-│   searchLocalData("English", cachedData)
-│       ↓
-│   Score results: Title ×3, Summary ×1, Metadata ×2
-│       ↓
-│   Display offline results instantly
-│
-└─→ Fetch Funnelback API (background update)
-        ↓
-    Set originalterm = "English"
-        ↓
-    filterQuery() → Remove noise words → filteredterm = "English"
-        ↓
-    Build URL: ?collection=...&query=English
-        ↓
-    Fetch API → processResults()
-        ↓
-    Update display with API results (replaces offline)
-        ↓
-    If API fails: Keep offline results displayed
-```
-
-**Filter/Sort (Multi-Select):**
-
-```
-User clicks multi-select dropdown
-    ↓
-Opens panel with checkboxes + Select All
-    ↓
-User checks multiple work areas
-    ↓
-User clicks OK button
-    ↓
-multiselect-change event fires
-    ↓
-filterByWorkArea(selectedWorkAreas[])
-    ↓
-Filter with OR logic (any match)
-    ↓
-sortResults() → Re-render filtered/sorted results
-```
-
-### Module Dependencies
-
-```
-index.js
-├── ntg-funnelback.js
-│   ├── → search-card-template.js (renderResults)
-│   ├── → populate-dropdowns.js (initializeDropdowns)
-│   └── → search-filters.js (storeResults, initializeFiltersAndSort)
-├── cta-button-alias.js
-├── search-card-template.js
-├── search-form-handler.js
-│   ├── → offline-search.js (searchLocalData, getCachedData)
-│   ├── → search-card-template.js (renderResults)
-│   ├── → search-filters.js (storeResults)
-│   └── → populate-dropdowns.js (initializeDropdowns)
-├── populate-dropdowns.js
-│   └── → multi-select-dropdown.js (initMultiSelect)
-├── search-filters.js
-├── multi-select-dropdown.js
-├── offline-search.js
-└── load-initial-results.js
-    ├── → search-card-template.js (renderResults)
-    ├── → populate-dropdowns.js (initializeDropdowns)
-    └── → search-filters.js (storeResults, initializeFiltersAndSort)
-```
-
-### Key Modules
-
-#### `search-card-template.js` (228 lines)
-
-**Purpose:** Renders search results as styled card DOM elements
-
-**Exports:**
-
-```javascript
-export function renderResults(results, containerId = "search-results-list")
-```
-
-**Functions:**
-
-- `createSearchCard(result)` - Creates a single card DOM element
-- `formatDate(dateStr)` - Formats dates to "Month YYYY"
-- `renderResults(results, containerId)` - Main rendering function
-
-**Card Structure:**
-
-```html
-<div class="aikb-search-card">
-  <div class="aikb-search-card__inner">
-    <div class="aikb-search-card__content">
-      <div class="aikb-search-card__text">
-        <h3 class="aikb-search-card__title">...</h3>
-        <p class="aikb-search-card__summary">...</p>
-      </div>
-      <div class="aikb-search-card__tags">
-        <div class="aikb-search-card__tag">...</div>
-      </div>
-    </div>
-    <div class="aikb-search-card__actions">
-      <a class="ntgc-btn ntgc-btn--secondary">
-        <span>See more</span>
-        <span class="fal fa-arrow-right"></span>
-      </a>
-      <div class="aikb-search-card__metadata">
-        <div class="aikb-search-card__useful-for">...</div>
-        <div class="aikb-search-card__date">...</div>
-      </div>
-    </div>
   </div>
 </div>
 ```
 
-#### `ntg-funnelback.js` (221 lines)
+#### `ntg-funnelback.js`
 
-**Purpose:** Funnelback API integration with dynamic query parameters and offline fallback
-
-**Key Properties:**
-
-```javascript
-defaults: {
-  baseURL: "https://ntgov-search.funnelback.squiz.cloud/s/search.json",
-  collection: "ntgov~sp-ntgc-ai-knowledge-base",
-  defaultQuery: "!FunDoesNotExist:PadreNull",
-  sourceField: "#search",
-  minChars: 3
-}
-```
-
-**Key Methods:**
-
-```javascript
-init(query); // Initialize with optional querystring parameter
-callSearchAPI(query, onError); // Makes AJAX request (accepts query + error callback)
-filterQuery(); // Removes noise words from originalterm → filteredterm
-processResults(data); // Filters URLs, maps results, initializes dropdowns/filters, renders
-```
-
-**Query Parameter Logic:**
-
-```javascript
-// Initial load or no search term:
-?collection=ntgov~sp-ntgc-ai-knowledge-base&s=!FunDoesNotExist:PadreNull
-
-// User searches for "English":
-?collection=ntgov~sp-ntgc-ai-knowledge-base&query=English
-```
-
-**URL Exclusion:**
-
-```javascript
-const excludedUrls = [
-  "https://ntgcentral.nt.gov.au/dev/aikb/configuration/listing/articles/_nocache",
-];
-const filteredResults = results.filter(
-  (r) => !excludedUrls.includes(r.liveUrl)
-);
-```
-
-**Noise Words:** Filters out common words (a, the, and, etc.) before API call
-
-**Fallback:** Loads `src/data/search.json` if API fails
+**Purpose:** Handles loading and processing of local data, filtering, and search logic in the browser.
 
 #### `load-initial-results.js` (128 lines)
 
@@ -468,183 +210,25 @@ const filteredResults = results.filter(
 - Caches results for offline search capability
 - Logs source: "from fallback" or "from api"
 
-#### `offline-search.js` (120 lines)
+#### `offline-search.js`
 
-**Purpose:** Client-side keyword search using cached data when API unavailable
+**Purpose:** Performs all keyword search and scoring in the browser using cached data. No network requests are made for search.
 
-**Exports:**
+#### `populate-dropdowns.js`
 
-```javascript
-export function searchLocalData(keywords, results)
-export function getCachedData()
-```
+**Purpose:** Populates work area and sort dropdowns dynamically from local data.
 
-**Scoring Algorithm:**
+#### `multi-select-dropdown.js`
 
-```javascript
-// Match count scoring (simple, no TF-IDF)
-Title matches:    3 points per occurrence (prioritized)
-Summary matches:  1 point per occurrence
-Metadata matches: 2 points per keyword match
+**Purpose:** Provides a custom multi-select dropdown with checkboxes, Select All, and OK/Cancel buttons.
 
-// Results sorted by total score descending
-```
+#### `search-filters.js`
 
-**Features:**
+**Purpose:** Handles all client-side filtering and sorting of results.
 
-- Regex-based partial matching (case-insensitive)
-- Special character removal for normalization
-- Filters out zero-score results
-- Console logs: search query, result count, top 3 matches with scores
-- Returns scored results with `_offlineScore` and `_offlineMatches` metadata
+#### `search-form-handler.js`
 
-**Usage:**
-
-```javascript
-const cachedData = getCachedData(); // Get window.aikbSearchCache
-const results = searchLocalData("English", cachedData);
-// Returns: [{...result, _offlineScore: 5, _offlineMatches: {title: 1, summary: 2}}]
-```
-
-#### `populate-dropdowns.js` (200 lines)
-
-**Purpose:** Dynamically populate work area and sort dropdowns
-
-**Exports:**
-
-```javascript
-export function initializeDropdowns(results)
-export function initializeEmptyDropdowns()
-```
-
-**Functions:**
-
-- `extractWorkAreas(results)` - Gets unique work areas from results (splits comma-separated)
-- `populateWorkAreaDropdown(workAreas)` - Populates `#document_type` dropdown
-- `populateSortDropdown()` - Populates `#owner` with sort options
-- `addDropdownIcons()` - Adds Font Awesome chevron-down icons
-
-**Sort Options:**
-
-- Relevance (default)
-- Date (newest first)
-- Date (oldest first)
-- Title (A-Z)
-- Title (Z-A)
-
-#### `multi-select-dropdown.js` (344 lines)
-
-**Purpose:** Custom multi-select dropdown component with OK/Cancel buttons
-
-**Class:** `MultiSelectDropdown`
-
-**Features:**
-
-- Replaces standard `<select>` with custom component
-- Checkboxes for each option
-- "Select All" with indeterminate state support
-- OK/Cancel buttons (changes only applied on OK)
-- Click outside to cancel (same as Cancel button)
-- Display shows: "Select Options", item count, or item names (max 2 shown)
-- Stores instance reference on container: `container.__multiSelectInstance`
-
-**Methods:**
-
-```javascript
-constructor(selectElement); // Initialize with <select> element
-init(); // Setup component
-createDropdownStructure(); // Build custom DOM
-open() / close(); // Toggle dropdown
-handleOk(); // Apply selections and close
-handleCancel(); // Revert to previous state
-handleSelectAll(e); // Select/deselect all items
-getSelectedValues(); // Returns array of selected values
-reset(); // Clear all selections
-destroy(); // Remove component, restore original select
-```
-
-**Events:**
-
-```javascript
-// Dispatched on OK click
-container.addEventListener("multiselect-change", (e) => {
-  console.log(e.detail.values); // Array of selected values
-});
-```
-
-**Helper Function:**
-
-```javascript
-export function initMultiSelect(selector)
-// Accepts CSS selector string or DOM element
-// Returns MultiSelectDropdown instance
-```
-
-#### `search-filters.js` (171 lines)
-
-**Purpose:** Client-side filtering and sorting
-
-**Exports:**
-
-```javascript
-export function storeResults(results)
-export function initializeFiltersAndSort()
-```
-
-**Functions:**
-
-- `storeResults(results)` - Stores results in module-level array
-- `filterByWorkArea(workArea)` - Filters by work area (handles comma-separated)
-- `sortResults(results, sortBy)` - Sorts by relevance/date/title
-- `applyFiltersAndSort()` - Combines filtering + sorting + rendering
-- `initializeFiltersAndSort()` - Attaches change event listeners to dropdowns
-
-**Filtering Logic:**
-
-```javascript
-// "Management, Health" matches both "Management" and "Health"
-const workAreaArray = result.listMetadata.keyword[0]
-  .split(",")
-  .map((a) => a.trim());
-return workAreaArray.includes(selectedWorkArea);
-```
-
-**Sorting Logic:**
-
-- **Relevance:** Sort by rank (lower better) or score (higher better)
-- **Date:** Parse date field, sort by timestamp
-- **Title:** Locale-aware alphabetical sort
-
-#### `search-form-handler.js` (124 lines)
-
-**Purpose:** Handle search form submissions with immediate offline search
-
-**Features:**
-
-- **Immediate offline search**: Displays cached results instantly while API loads
-- Prevents default form submission
-- Shows loading state (only if no cached data)
-- Calls `ntgFunnelback.callSearchAPI()` with `onError` callback
-- Handles clear input button
-- Shows/hides clear button based on input
-- Reloads initial results on empty search
-
-**Offline Search Integration:**
-
-```javascript
-// 1. Perform offline search immediately
-const cachedData = getCachedData();
-if (cachedData) {
-  const offlineResults = searchLocalData(query, cachedData);
-  renderResults(offlineResults); // Display instantly
-}
-
-// 2. Fetch API in background
-callSearchAPI(query, function onError(error) {
-  // Only triggers if both API and fallback JSON fail
-  // Offline results remain displayed
-});
-```
+**Purpose:** Handles search form submissions and triggers instant client-side search and filtering.
 
 ## 🎨 Styling System
 
@@ -1383,7 +967,7 @@ chore: update dependencies
 **1.0.0** (December 13, 2025)
 
 - ✅ Initial implementation
-- ✅ Funnelback API integration
+- ✅ API integration
 - ✅ Card-based search results
 - ✅ Auto-load functionality
 - ✅ Responsive design
