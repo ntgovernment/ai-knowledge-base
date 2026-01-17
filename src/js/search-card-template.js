@@ -48,7 +48,7 @@ function formatDate(dateStr) {
  * @param {string} result.summary - Card summary/description
  * @param {Object} result.listMetadata - Metadata object
  * @param {Array<string>} result.listMetadata["Work area"] - Array of work area tags
- * @param {Array<string>} result.listMetadata["Roles"] - Array of roles for "Useful for"
+ * @param {Array<string>} result.listMetadata["Roles"] - Array of roles for "Good for"
  * @param {string} result.date - Submission date
  * @param {string} result.liveUrl - URL for "See more" button
  * @param {string} result.submittedBy - Person who submitted
@@ -141,7 +141,7 @@ function createSearchCard(result) {
   const metadata = document.createElement("div");
   metadata.className = "aikb-search-card__metadata";
 
-  // "Useful for" row (roles from JSON payload)
+  // "Good for" row (roles from JSON payload)
   const roles =
     result.listMetadata && result.listMetadata["Roles"]
       ? result.listMetadata["Roles"]
@@ -152,7 +152,7 @@ function createSearchCard(result) {
 
     const label = document.createElement("span");
     label.className = "aikb-search-card__useful-label";
-    label.textContent = "Useful for: ";
+    label.textContent = "Good for: ";
     usefulRow.appendChild(label);
 
     const value = document.createElement("span");

@@ -59,7 +59,7 @@ The AI Knowledge Base is a searchable repository that helps NT Government employ
 ✅ **Card-Based Results**
 
 - Title, summary, work area tags (comma-separated tags split)
-- "Useful for" metadata and submission dates
+- "Good for" metadata and submission dates
 - Responsive layout (breakpoint at 768px)
 - "See more" button with Font Awesome arrow icons (positioned absolutely)
 - Validation ensures required fields (title, summary, liveUrl)
@@ -889,7 +889,7 @@ dist/content-page.min.css     # Content page CSS (if needed)
           "liveUrl": "https://...",
           "date": 1765584000000,
           "listMetadata": {
-            "keyword": ["Work Area Category", "Useful for audience"]
+            "keyword": ["Work Area Category", "Good for audience"]
           }
         }
       ]
@@ -1101,7 +1101,7 @@ API failed but offline results already displayed
 - [ ] Cards show title, summary, tags
 - [ ] Work area tags split on commas
 - [ ] Dates format as "Month YYYY"
-- [ ] "Useful for" displays when available
+- [ ] "Good for" displays when available
 - [ ] Arrow icons positioned absolutely (right: 2rem, top: 1rem)
 
 **Search Functionality:**
