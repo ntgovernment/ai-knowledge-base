@@ -19,6 +19,7 @@
 - [Build System](#build-system)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [AI Agent & Copilot Usage](#ai-agent--copilot-usage)
 
 ## 🎯 Overview
 
@@ -1086,6 +1087,15 @@ Offline search: Retrieved 14 cached results
 Offline search: Searching for "test" in 14 cached results
 API failed but offline results already displayed
 ```
+
+## 🤖 AI Agent & Copilot Usage
+
+This project supports both human and AI contributors. For best practices, prompt engineering, and agent collaboration guidelines, see:
+
+- [COPILOT_INSTRUCTIONS.md](COPILOT_INSTRUCTIONS.md) — Tips for using GitHub Copilot and prompt engineering
+- [AGENTS.md](AGENTS.md) — Agent behaviors, troubleshooting, escalation, and handoff guidelines
+
+These resources help ensure consistent, high-quality contributions from both developers and coding agents.
 
 ## 🧪 Testing
 
