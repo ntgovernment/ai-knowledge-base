@@ -54,13 +54,7 @@ export function displayAppliedFilters(filters) {
     }
   }
 
-  // Add sort pill (info blue) - only if not default
-  if (filters.sort && filters.sort !== "relevance") {
-    hasFilters = true;
-    const sortLabel = getSortLabel(filters.sort);
-    const pill = createFilterPill("Sort", sortLabel, "bg-info", "sort");
-    container.appendChild(pill);
-  }
+  // Do not add sort pill
 
   // Always show Clear All button when any filter is active
   if (clearAllBtn) {
@@ -209,16 +203,7 @@ async function removeFilter(filterType, filterValue) {
       }
       break;
 
-    case "sort":
-      // Reset sort to default (relevance)
-      const sortDropdown =
-        document.getElementById("sort") || document.getElementById("owner");
-      if (sortDropdown) {
-        sortDropdown.value = "relevance";
-        const changeEvent = new Event("change", { bubbles: true });
-        sortDropdown.dispatchEvent(changeEvent);
-      }
-      break;
+    // ...existing code...
   }
 }
 
@@ -257,11 +242,10 @@ export async function clearAllFilters() {
     }
   }
 
-  // Reset sort to relevance
-  const sortDropdown =
-    document.getElementById("sort") || document.getElementById("owner");
-  if (sortDropdown) {
-    sortDropdown.value = "relevance";
+  // Hide applied filters section
+  const section = document.getElementById("appliedFiltersSection");
+  if (section) {
+    section.style.display = "none";
   }
 
   // Reload initial results
