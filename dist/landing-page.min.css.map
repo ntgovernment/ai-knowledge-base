@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/css/pagination.css"],
+  "sourcesContent": ["/* Pagination Component Styles */\r\n// ...existing code from previous message...\r\n"],
+  "mappings": "AACA,CAAC,EAAE,CAAC,CAAC,CAAC,SAAS,KAAK,KAAK,SAAS,OAAO,CAAC,CAAC",
+  "names": []
+}

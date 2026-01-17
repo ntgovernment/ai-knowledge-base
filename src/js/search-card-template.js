@@ -183,8 +183,13 @@ function createSearchCard(result) {
  * Render search results to the container
  * @param {Array<Object>} results - Array of result objects
  * @param {string} containerId - ID of the container element (default: "search-results-list")
+ * @param {boolean} usePagination - Whether to use pagination (default: true)
  */
-export function renderResults(results, containerId = "search-results-list") {
+export function renderResults(
+  results,
+  containerId = "search-results-list",
+  usePagination = true
+) {
   console.log(
     `renderResults called with ${results.length} results for container #${containerId}`
   );
@@ -212,12 +217,7 @@ export function renderResults(results, containerId = "search-results-list") {
   // Clear existing content
   container.innerHTML = "";
 
-  // Filter and render valid cards
-  const cards = results
-    .map((result) => createSearchCard(result))
-    .filter((card) => card !== null);
-
-  if (cards.length === 0) {
+  if (results.length === 0) {
     const noResults = document.createElement("p");
     noResults.textContent = "No results found.";
     noResults.style.padding = "24px 48px";
@@ -225,10 +225,52 @@ export function renderResults(results, containerId = "search-results-list") {
     return;
   }
 
-  cards.forEach((card) => container.appendChild(card));
+  // Initialize or update pagination
+  if (usePagination) {
+    // Dynamic import to avoid circular dependencies
+    import("./pagination.js").then(
+      ({ initializePagination, getCurrentPageResults }) => {
+        initializePagination(results, 10);
+        const pageResults = getCurrentPageResults();
 
-  console.log(`Rendered ${cards.length} search result cards`);
+        // Render cards for current page
+        const cards = pageResults
+          .map((result) => createSearchCard(result))
+          .filter((card) => card !== null);
+
+        cards.forEach((card) => container.appendChild(card));
+        console.log(
+          `Rendered ${cards.length} of ${results.length} search result cards (page 1)`
+        );
+      }
+    );
+  } else {
+    // Render all cards without pagination
+    const cards = results
+      .map((result) => createSearchCard(result))
+      .filter((card) => card !== null);
+
+    cards.forEach((card) => container.appendChild(card));
+    console.log(`Rendered ${cards.length} search result cards`);
+  }
 }
 
 // Expose globally for legacy usage
 window.aikbRenderResults = renderResults;
+
+// Listen for pagination page changes
+document.addEventListener("aikb-pagination-change", (event) => {
+  const { results } = event.detail;
+  const container = document.getElementById("search-results-list");
+
+  if (container && results) {
+    container.innerHTML = "";
+
+    const cards = results
+      .map((result) => createSearchCard(result))
+      .filter((card) => card !== null);
+
+    cards.forEach((card) => container.appendChild(card));
+    console.log(`Rendered ${cards.length} cards for page ${event.detail.page}`);
+  }
+});

@@ -1,7 +1,6 @@
 /* Applied Filters Section */
 #appliedFiltersSection {
   padding: 16px 24px;
-  background: #f8f9fa;
   border-radius: 4px;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -9,8 +8,8 @@
 
 #appliedFiltersSection strong {
   font-weight: 600;
-  color: #212529;
-  margin: 0;
+  color: #102040;
+  margin: 0 0 12px 0;
 }
 
 #appliedFiltersSection p {
@@ -22,22 +21,37 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
+  align-items: center;
 }
 
 .filter-pill {
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 16px;
+  border-radius: 32px;
   gap: 8px;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
+  border: 1px solid #d8dee6;
+  background-color: #fff;
+  color: #102040;
+}
+
+/* Ensure badge color utility classes don't override the outline/pill look */
+.filter-pill.badge,
+.filter-pill.badge.bg-success,
+.filter-pill.badge.bg-primary,
+.filter-pill.badge.bg-info,
+.filter-pill.badge.bg-secondary {
+  background-color: #fff !important;
+  color: #102040 !important;
 }
 
 .pill-label {
   font-weight: 600;
   margin-right: 4px;
+  color: #102040;
 }
 
 .pill-value {
@@ -47,7 +61,7 @@
 .pill-remove {
   background: none;
   border: none;
-  color: inherit;
+  color: #102040;
   cursor: pointer;
   padding: 0;
   margin-left: 6px;
@@ -68,10 +82,11 @@
 }
 
 #clearAllBtn {
-  color: #0056b3;
+  color: #102040;
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
+  margin-left: auto;
 }
 
 #clearAllBtn:hover {
@@ -84,25 +99,28 @@
   cursor: not-allowed;
 }
 
-/* Bootstrap badge color classes */
+/* Keep default badge utilities available but subdued when used outside filter pills */
 .badge.bg-success {
   background-color: #28a745 !important;
   color: #fff;
 }
-
 .badge.bg-primary {
   background-color: #007bff !important;
   color: #fff;
 }
-
 .badge.bg-info {
   background-color: #17a2b8 !important;
   color: #fff;
 }
-
 .badge.bg-secondary {
   background-color: #6c757d !important;
   color: #fff;
+}
+
+/* Results info text under pills */
+#appliedFiltersSection .results-info,
+#appliedFiltersSection .result-count {
+  color: #606c7b;
 }
 
 /* Utility classes for spacing */

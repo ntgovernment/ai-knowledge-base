@@ -4,6 +4,8 @@
 @import "./multi-select-dropdown.css";
 @import "./call-to-action.css";
 @import "./search-results.css";
+@import "./applied-filters.css";
+@import "./pagination.css";
 
 /* Hide the extra search icon span that appears in the HTML */
 #policy-search-form .fal.fa-search {

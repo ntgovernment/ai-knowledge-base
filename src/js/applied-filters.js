@@ -10,6 +10,7 @@
 export function displayAppliedFilters(filters) {
   const section = document.getElementById("appliedFiltersSection");
   const container = document.getElementById("appliedFilters");
+  const clearAllBtn = document.getElementById("clearAllBtn");
 
   if (!section || !container) {
     console.warn("Applied filters section not found");
@@ -59,6 +60,15 @@ export function displayAppliedFilters(filters) {
     const sortLabel = getSortLabel(filters.sort);
     const pill = createFilterPill("Sort", sortLabel, "bg-info", "sort");
     container.appendChild(pill);
+  }
+
+  // Always show Clear All button when any filter is active
+  if (clearAllBtn) {
+    clearAllBtn.style.display = hasFilters ? "inline-flex" : "none";
+    clearAllBtn.style.marginLeft = "8px";
+    clearAllBtn.style.verticalAlign = "middle";
+    clearAllBtn.style.alignItems = "center";
+    container.appendChild(clearAllBtn);
   }
 
   // Show/hide section based on whether filters are active
