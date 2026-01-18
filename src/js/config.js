@@ -19,7 +19,7 @@ export function getConfig() {
   const config = {
     isProduction: isProduction(),
     liveApiUrl:
-      "https://ntgcentral.nt.gov.au/ai-knowledge-base/configuration/listing/articles/_nocache",
+      "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/configuration/listing/articles/_nocache",
     fallbackJsonUrl: "./dist/search.json",
   };
 

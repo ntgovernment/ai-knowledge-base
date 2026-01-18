@@ -44,7 +44,7 @@ const ntgFunnelback = {
 
     console.log(
       "callSearchAPI called with originalterm:",
-      ntgFunnelback.originalterm
+      ntgFunnelback.originalterm,
     );
 
     // Remove noise words from the query
@@ -118,7 +118,7 @@ const ntgFunnelback = {
       error: function (xhr, status, error) {
         console.warn(
           "Funnelback API error (fallback already displayed):",
-          error
+          error,
         );
 
         // Invoke onError callback if provided and no fallback was loaded
@@ -176,7 +176,7 @@ const ntgFunnelback = {
 
     // Filter out excluded URLs
     const excludedUrls = [
-      "https://ntgcentral.nt.gov.au/dev/aikb/configuration/listing/articles/_nocache",
+      "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/configuration/listing/articles/_nocache",
     ];
 
     const filteredResults = results.filter((result) => {
@@ -186,7 +186,7 @@ const ntgFunnelback = {
     console.log(
       `After filtering: ${filteredResults.length} results (excluded ${
         results.length - filteredResults.length
-      })`
+      })`,
     );
 
     // Map results to card template format
@@ -213,7 +213,7 @@ const ntgFunnelback = {
     renderResults(mappedResults, "search-results-list");
 
     console.log(
-      "Funnelback API results rendered (updated from offline/fallback)"
+      "Funnelback API results rendered (updated from offline/fallback)",
     );
   },
 };
