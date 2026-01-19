@@ -3,7 +3,7 @@ pre {
   word-wrap: break-word; /* Breaks long words if needed */
   overflow-x: auto; /* Adds horizontal scroll if necessary */
   max-width: 100%; /* Keeps it inside the container */
-  padding-top: 2.25rem; /* Ensures copy button won't overlap first line */
+  padding-top: 3.25rem; /* Ensures copy button won't overlap first line */
 }
 
 pre.copyable {
