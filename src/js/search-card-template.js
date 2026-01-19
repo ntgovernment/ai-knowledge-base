@@ -152,14 +152,14 @@ function createSearchCard(result) {
 
     const value = document.createElement("span");
     value.className = "aikb-search-card__useful-value";
-    
+
     const label = document.createElement("strong");
     label.textContent = "Good for: ";
     value.appendChild(label);
-    
+
     const text = document.createTextNode(roles.join(", "));
     value.appendChild(text);
-    
+
     usefulRow.appendChild(value);
 
     metadata.appendChild(usefulRow);
@@ -190,10 +190,10 @@ function createSearchCard(result) {
 export function renderResults(
   results,
   containerId = "search-results-list",
-  usePagination = true
+  usePagination = true,
 ) {
   console.log(
-    `renderResults called with ${results.length} results for container #${containerId}`
+    `renderResults called with ${results.length} results for container #${containerId}`,
   );
 
   // Try multiple selection methods
@@ -211,7 +211,7 @@ export function renderResults(
     console.error(`Container #${containerId} not found`);
     console.log(
       "Available elements with id:",
-      Array.from(document.querySelectorAll("[id]")).map((el) => el.id)
+      Array.from(document.querySelectorAll("[id]")).map((el) => el.id),
     );
     return;
   }
@@ -242,9 +242,9 @@ export function renderResults(
 
         cards.forEach((card) => container.appendChild(card));
         console.log(
-          `Rendered ${cards.length} of ${results.length} search result cards (page 1)`
+          `Rendered ${cards.length} of ${results.length} search result cards (page 1)`,
         );
-      }
+      },
     );
   } else {
     // Render all cards without pagination
