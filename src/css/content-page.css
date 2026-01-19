@@ -23,3 +23,18 @@
 .ntgc-btn.ntgc-btn--tertiary:hover .fa-arrow-left {
   transform: translateX(-4px);
 }
+
+/* Remove vertical spacing to align bullets with paragraph text */
+#aikb-main-content ul:not([class]) > li {
+  margin-top: 0 !important;
+}
+
+#aikb-main-content ul:not([class]) > li > p {
+  margin-top: -24px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Add controlled spacing between list items */
+#aikb-main-content ul:not([class]) > li:not(:last-child) {
+  margin-bottom: 0.5rem !important;
+}
