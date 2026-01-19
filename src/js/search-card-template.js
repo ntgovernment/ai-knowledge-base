@@ -150,14 +150,16 @@ function createSearchCard(result) {
     const usefulRow = document.createElement("div");
     usefulRow.className = "aikb-search-card__useful-for";
 
-    const label = document.createElement("span");
-    label.className = "aikb-search-card__useful-label";
-    label.textContent = "Good for: ";
-    usefulRow.appendChild(label);
-
     const value = document.createElement("span");
     value.className = "aikb-search-card__useful-value";
-    value.textContent = roles.join(", ");
+    
+    const label = document.createElement("strong");
+    label.textContent = "Good for: ";
+    value.appendChild(label);
+    
+    const text = document.createTextNode(roles.join(", "));
+    value.appendChild(text);
+    
     usefulRow.appendChild(value);
 
     metadata.appendChild(usefulRow);

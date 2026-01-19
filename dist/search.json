@@ -4,7 +4,14 @@
     "url": "https://ntgcentral.nt.gov.au/ai-knowledge-base/articles/summarise-meeting-notes",
     "description": "Find out how to use AI in the workplace to summarize meeting notes instantly, streamline documentation, and boost productivity.",
     "work-area": ["Administration"],
-    "roles": ["Admin staff", "Secretariats", "Managers"],
+    "roles": [
+      "Admin staff",
+      "Secretariats",
+      "Managers",
+      "Executives",
+      "Legal secretaries",
+      "Communications professionals"
+    ],
     "benefits": ["Admin staff", "Secretariats", "Managers"],
     "submitted-by": "Sarah Strzelecki",
     "agency": "Department of Corporate and Digital Development",
