@@ -3,6 +3,7 @@
 @import "./sidebar.css";
 @import "./aikb-pre-block.css";
 @import "./tags.css";
+@import "./inset-text.css";
 
 /* Remove top margin from first child heading in main content */
 #aikb-main-content > h1:first-child,
