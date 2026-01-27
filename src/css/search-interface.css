@@ -13,6 +13,14 @@
   border: 1px solid #afb5bf;
   box-sizing: border-box;
 }
+
+/* Fix for au-grid row pseudo-elements */
+.au-grid .row:before,
+.au-grid .row:after {
+  content: none !important;
+  display: table;
+}
+
 /* Always fill width for page filters container */
 #ntgc-page-filters {
   width: 100%;
@@ -36,6 +44,12 @@
   min-width: 226px;
   max-width: 100%;
 }
+
+/* Align work area dropdown to the left */
+#select-question-2 {
+  justify-self: start;
+}
+
 /* Search interface styles matching design specifications */
 
 .aikb-search-section {

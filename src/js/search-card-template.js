@@ -260,19 +260,27 @@ export function renderResults(
 // Expose globally for legacy usage
 window.aikbRenderResults = renderResults;
 
+// Track if pagination listener has been added to prevent duplicates
+let paginationListenerAdded = false;
+
 // Listen for pagination page changes
-document.addEventListener("aikb-pagination-change", (event) => {
-  const { results } = event.detail;
-  const container = document.getElementById("search-results-list");
+if (!paginationListenerAdded) {
+  document.addEventListener("aikb-pagination-change", (event) => {
+    const { results } = event.detail;
+    const container = document.getElementById("search-results-list");
 
-  if (container && results) {
-    container.innerHTML = "";
+    if (container && results) {
+      container.innerHTML = "";
 
-    const cards = results
-      .map((result) => createSearchCard(result))
-      .filter((card) => card !== null);
+      const cards = results
+        .map((result) => createSearchCard(result))
+        .filter((card) => card !== null);
 
-    cards.forEach((card) => container.appendChild(card));
-    console.log(`Rendered ${cards.length} cards for page ${event.detail.page}`);
-  }
-});
+      cards.forEach((card) => container.appendChild(card));
+      console.log(
+        `Rendered ${cards.length} cards for page ${event.detail.page}`,
+      );
+    }
+  });
+  paginationListenerAdded = true;
+}

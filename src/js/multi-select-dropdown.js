@@ -289,17 +289,17 @@ export class MultiSelectDropdown {
     } else if (this.selectedValues.size === this.options.length) {
       textElement.textContent = "All selected";
       textElement.classList.add("aikb-multiselect-has-selection");
-    } else {
+    } else if (this.selectedValues.size === 1) {
+      // Show the label when only 1 item is selected
       const selectedLabels = Array.from(this.selectedValues).map((value) => {
         const option = this.options.find((opt) => opt.value === value);
         return option ? option.label : value;
       });
-
-      if (this.selectedValues.size <= 2) {
-        textElement.textContent = selectedLabels.join(", ");
-      } else {
-        textElement.textContent = `${this.selectedValues.size} selected`;
-      }
+      textElement.textContent = selectedLabels[0];
+      textElement.classList.add("aikb-multiselect-has-selection");
+    } else {
+      // Show "# selected" when more than 1 item is selected
+      textElement.textContent = `${this.selectedValues.size} selected`;
       textElement.classList.add("aikb-multiselect-has-selection");
     }
   }
@@ -387,10 +387,12 @@ export class MultiSelectDropdown {
           if (existingBadge) {
             existingBadge.remove();
           }
-          
+
           // Get base label text without count
-          let baseLabel = labelSpan.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
-          
+          let baseLabel = labelSpan.textContent
+            .replace(/\s*\(\d+\)\s*$/, "")
+            .trim();
+
           // Clear and rebuild label content
           labelSpan.textContent = baseLabel;
 
@@ -400,7 +402,7 @@ export class MultiSelectDropdown {
             badge.className = "aikb-count-badge";
             badge.textContent = count.toString();
             labelSpan.appendChild(badge);
-            
+
             // Update option in this.options array for display text calculation
             const optionIndex = this.options.findIndex(
               (opt) => opt.value === value,

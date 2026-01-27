@@ -7,7 +7,11 @@
 import { loadInitialResults } from "./load-initial-results.js";
 import { renderResults } from "./search-card-template.js";
 import { searchLocalData, getCachedData } from "./offline-search.js";
-import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
+import {
+  storeResults,
+  initializeFiltersAndSort,
+  applyFiltersAndSort,
+} from "./search-filters.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
 import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
 
@@ -48,12 +52,16 @@ import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
 
   /**
    * Handle clear input button click
-   * Clear the search field and reload initial results
+   * Clear the search field and restore filtered view of all results
    */
   function handleClearInput() {
     $searchInput.val("");
-    console.log("Search cleared - reloading initial results");
-    loadInitialResults();
+    console.log("Search cleared - restoring filtered view of all results");
+    const cachedData = getCachedData();
+    if (cachedData && cachedData.length > 0) {
+      storeResults(cachedData);
+      applyFiltersAndSort();
+    }
   }
 
   // Attach form submission handler
@@ -80,8 +88,14 @@ import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
       if (searchText.trim()) {
         triggerSearch(searchText);
       } else {
-        console.log("Empty search via Enter - reloading initial results");
-        loadInitialResults();
+        console.log(
+          "Empty search via Enter - restoring filtered view of all results",
+        );
+        const cachedData = getCachedData();
+        if (cachedData && cachedData.length > 0) {
+          storeResults(cachedData);
+          applyFiltersAndSort();
+        }
       }
     }
   });
@@ -103,24 +117,20 @@ import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
       console.log("Performing local search");
       const localResults = searchLocalData(queryText, cachedData);
 
-      // Store and render local search results
+      // Store search results and apply current filters
       storeResults(localResults);
-      initializeDropdowns(localResults);
-      initializeFiltersAndSort();
-      renderResults(localResults, "search-results-list");
+      applyFiltersAndSort();
 
-      // Display applied filters
-      const currentFilters = getCurrentFilters();
-      displayAppliedFilters(currentFilters);
-
-      console.log(`Local search: Displayed ${localResults.length} results`);
+      console.log(
+        `Local search: Found ${localResults.length} results, applying filters`,
+      );
     } else {
       // No cached data - show error
       console.error("No cached data available for search");
       const $container = window.$("#search-results-list");
       if ($container.length > 0) {
         $container.html(
-          '<p class="aikb-error">Unable to load search results. Please check your connection and try again.</p>'
+          '<p class="aikb-error">Unable to load search results. Please check your connection and try again.</p>',
         );
       }
     }

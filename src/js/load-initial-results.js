@@ -154,22 +154,48 @@ function processAndRenderResults(data, source = "unknown") {
 
   console.log(`Rendering ${mappedResults.length} cards from ${source}`);
 
+  // Deduplicate results before storing/caching
+  const seenKeys = new Set();
+  const deduplicatedResults = [];
+
+  mappedResults.forEach((result, index) => {
+    // Create unique identifier - use URL, title, or JSON stringify as final fallback
+    const uniqueKey =
+      result.liveUrl ||
+      result.url ||
+      result.title ||
+      JSON.stringify(result) + index;
+
+    if (!seenKeys.has(uniqueKey)) {
+      seenKeys.add(uniqueKey);
+      deduplicatedResults.push(result);
+    }
+  });
+
+  if (mappedResults.length !== deduplicatedResults.length) {
+    console.log(
+      `Removed ${mappedResults.length - deduplicatedResults.length} duplicate items from source data`,
+    );
+  }
+
   // Store results for filtering/sorting
-  storeResults(mappedResults);
+  storeResults(deduplicatedResults);
 
   // Cache results for offline search
-  window.aikbSearchCache = mappedResults;
-  console.log(`Cached ${mappedResults.length} results for offline search`);
+  window.aikbSearchCache = deduplicatedResults;
+  console.log(
+    `Cached ${deduplicatedResults.length} results for offline search`,
+  );
 
   // Initialize dropdowns with work area data
   // Pass fetched work areas if available
-  initializeDropdowns(mappedResults, fetchedWorkAreas);
+  initializeDropdowns(deduplicatedResults, fetchedWorkAreas);
 
   // Initialize filter and sort listeners after each results update
   initializeFiltersAndSort();
 
   // Render cards using the template
-  renderResults(mappedResults, "search-results-list");
+  renderResults(deduplicatedResults, "search-results-list");
 }
 
 // Wait for complete page load (not just DOM ready)

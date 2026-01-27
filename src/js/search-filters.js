@@ -5,11 +5,32 @@ let allResults = []; // Store all results for filtering/sorting
 
 /**
  * Store search results for filtering and sorting
+ * Deduplicates results based on URL to prevent duplicate entries
  * @param {Array} results - Array of search result objects
  */
 export function storeResults(results) {
-  allResults = results;
-  console.log(`Stored ${allResults.length} results for filtering/sorting`);
+  // Deduplicate results based on URL before storing
+  const seenKeys = new Set();
+  const deduplicatedResults = [];
+
+  results.forEach((result, index) => {
+    // Create unique identifier - use URL, title, or JSON stringify as final fallback
+    const uniqueKey =
+      result.liveUrl ||
+      result.url ||
+      result.title ||
+      JSON.stringify(result) + index;
+
+    if (!seenKeys.has(uniqueKey)) {
+      seenKeys.add(uniqueKey);
+      deduplicatedResults.push(result);
+    }
+  });
+
+  allResults = deduplicatedResults;
+  console.log(
+    `Stored ${allResults.length} results for filtering/sorting (${results.length - allResults.length} duplicates removed)`,
+  );
 }
 
 /**
@@ -22,23 +43,39 @@ function filterByWorkArea(selectedWorkAreas) {
     return allResults; // Return all if no filter selected
   }
 
-  return allResults.filter((result) => {
+  // Filter results and track unique items to prevent duplicates
+  const seenKeys = new Set();
+  const filtered = [];
+
+  allResults.forEach((result, index) => {
     if (!result.listMetadata || !result.listMetadata["Work area"]) {
-      return false;
+      return;
     }
 
     const resultWorkAreas = result.listMetadata["Work area"];
 
-    // If result has "All work areas", it appears in all filtered views
-    if (resultWorkAreas.includes("All work areas")) {
-      return true;
-    }
-
     // Check if any selected work area matches
-    return selectedWorkAreas.some((selectedArea) =>
-      resultWorkAreas.includes(selectedArea)
+    const matches = selectedWorkAreas.some((selectedArea) =>
+      resultWorkAreas.includes(selectedArea),
     );
+
+    if (matches) {
+      // Create unique identifier - use URL, title, or JSON stringify as final fallback
+      const uniqueKey =
+        result.liveUrl ||
+        result.url ||
+        result.title ||
+        JSON.stringify(result) + index;
+
+      // Only add if not already seen (prevents duplicates)
+      if (!seenKeys.has(uniqueKey)) {
+        seenKeys.add(uniqueKey);
+        filtered.push(result);
+      }
+    }
   });
+
+  return filtered;
 }
 
 /**
@@ -104,60 +141,86 @@ function sortResults(results, sortBy) {
   return sorted;
 }
 
+// Track if filter/sort is currently being applied to prevent concurrent executions
+let isApplying = false;
+
 /**
  * Apply filters and sorting, then render results
  */
-async function applyFiltersAndSort() {
-  // Get work area dropdown (may be multi-select)
-  const workAreaDropdown = document.getElementById("document_type");
-  // Support both legacy id="owner" and current id="sort"
-  const sortDropdown =
-    document.getElementById("sort") || document.getElementById("owner");
-
-  if (!workAreaDropdown || !sortDropdown) {
-    console.warn("Required dropdowns not found (document_type or sort)");
+export async function applyFiltersAndSort() {
+  // Prevent concurrent executions
+  if (isApplying) {
+    console.log("Filter/sort already in progress, skipping duplicate call");
     return;
   }
 
-  // Get selected work areas
-  let selectedWorkAreas = [];
-  if (workAreaDropdown) {
-    const selectedOptions = Array.from(workAreaDropdown.selectedOptions || []);
-    // Remove empty/default values so an unselected state returns all results
-    selectedWorkAreas = selectedOptions
-      .map((opt) => opt.value)
-      .filter((val) => val && val.trim().length > 0);
+  isApplying = true;
+
+  try {
+    // Get work area dropdown (may be multi-select)
+    const workAreaDropdown = document.getElementById("document_type");
+    // Support both legacy id="owner" and current id="sort"
+    const sortDropdown =
+      document.getElementById("sort") || document.getElementById("owner");
+
+    if (!workAreaDropdown || !sortDropdown) {
+      console.warn("Required dropdowns not found (document_type or sort)");
+      return;
+    }
+
+    // Get selected work areas
+    let selectedWorkAreas = [];
+    if (workAreaDropdown) {
+      const selectedOptions = Array.from(
+        workAreaDropdown.selectedOptions || [],
+      );
+      // Remove empty/default values so an unselected state returns all results
+      selectedWorkAreas = selectedOptions
+        .map((opt) => opt.value)
+        .filter((val) => val && val.trim().length > 0);
+    }
+
+    const selectedSort = sortDropdown.value || "relevance";
+
+    console.log(
+      `Applying filters - Work Areas: [${selectedWorkAreas.join(
+        ", ",
+      )}], Sort: "${selectedSort}"`,
+    );
+
+    // Filter by work areas
+    let filtered = filterByWorkArea(selectedWorkAreas);
+    console.log(`After filtering: ${filtered.length} results`);
+
+    // Sort results
+    let sorted = sortResults(filtered, selectedSort);
+    console.log(`After sorting: ${sorted.length} results`);
+
+    // Render filtered and sorted results
+    const { renderResults } = await import("./search-card-template.js");
+    renderResults(sorted, "search-results-list");
+
+    // Display applied filters
+    const currentFilters = getCurrentFilters();
+    displayAppliedFilters(currentFilters);
+  } finally {
+    isApplying = false;
   }
-
-  const selectedSort = sortDropdown.value || "relevance";
-
-  console.log(
-    `Applying filters - Work Areas: [${selectedWorkAreas.join(
-      ", "
-    )}], Sort: "${selectedSort}"`
-  );
-
-  // Filter by work areas
-  let filtered = filterByWorkArea(selectedWorkAreas);
-  console.log(`After filtering: ${filtered.length} results`);
-
-  // Sort results
-  let sorted = sortResults(filtered, selectedSort);
-  console.log(`After sorting: ${sorted.length} results`);
-
-  // Render filtered and sorted results
-  const { renderResults } = await import("./search-card-template.js");
-  renderResults(sorted, "search-results-list");
-
-  // Display applied filters
-  const currentFilters = getCurrentFilters();
-  displayAppliedFilters(currentFilters);
 }
+
+// Track if listeners have been initialized to prevent duplicate event handlers
+let listenersInitialized = false;
 
 /**
  * Initialize filter and sort listeners
  */
 export function initializeFiltersAndSort() {
+  // Prevent multiple initializations that would create duplicate event listeners
+  if (listenersInitialized) {
+    console.log("Filter and sort listeners already initialized, skipping");
+    return;
+  }
+
   const workAreaDropdown = document.getElementById("document_type");
   // Support both legacy id="owner" and current id="sort"
   const sortDropdown =
@@ -197,5 +260,6 @@ export function initializeFiltersAndSort() {
     });
   }
 
+  listenersInitialized = true;
   console.log("Filter and sort listeners initialized");
 }
