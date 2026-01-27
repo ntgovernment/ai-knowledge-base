@@ -526,6 +526,9 @@ export class MultiSelectDropdown {
       }
     });
 
+    // Sync native select to match selectedValues after removing 0-count options
+    this.syncNativeSelect();
+
     // Update display text to reflect new labels
     this.updateDisplayText();
 
