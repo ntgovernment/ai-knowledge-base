@@ -13,24 +13,35 @@ import { NOISE_WORDS } from "./config.js";
 
 /**
  * Tokenize and normalize a search query
+ * Preserves uppercase acronyms (e.g., "IT") even if their lowercase version is a noise word
  * @param {string} query - Raw search query
  * @returns {Array<string>} Array of normalized tokens (noise words removed)
  */
 function tokenizeQuery(query) {
-  // Normalize: lowercase, remove special chars, split on whitespace
-  const normalized = query
-    .toLowerCase()
-    .replace(/[^\w\s]/g, " ")
-    .trim();
+  // Remove special chars but preserve case initially
+  const cleaned = query.replace(/[^\w\s]/g, " ").trim();
 
-  if (!normalized) return [];
+  if (!cleaned) return [];
 
-  // Split into words and filter out noise words
-  const tokens = normalized
-    .split(/\s+/)
-    .filter((token) => token.length > 0 && !NOISE_WORDS.has(token));
+  // Split into words preserving original case
+  const words = cleaned.split(/\s+/).filter((word) => word.length > 0);
 
-  return tokens;
+  // Filter out noise words, but preserve uppercase acronyms
+  const tokens = words.filter((word) => {
+    const lowerWord = word.toLowerCase();
+
+    // If lowercase version is a noise word
+    if (NOISE_WORDS.has(lowerWord)) {
+      // Keep it if it's all uppercase (likely an acronym like "IT")
+      return word === word.toUpperCase() && word.length >= 2;
+    }
+
+    // Not a noise word, keep it
+    return true;
+  });
+
+  // Normalize to lowercase for searching
+  return tokens.map((token) => token.toLowerCase());
 }
 
 /**
@@ -44,19 +55,32 @@ function normalizeText(text) {
 }
 
 /**
- * Count term frequency in text
+ * Count term frequency in text with support for partial and full word matches
  * @param {string} text - Text to search in
  * @param {string} term - Term to count
- * @returns {number} Number of occurrences
+ * @returns {Object} Object with fullWordMatches and partialMatches counts
  */
 function countTermFrequency(text, term) {
-  if (!text || !term) return 0;
+  if (!text || !term) return { fullWordMatches: 0, partialMatches: 0 };
 
   const normalized = normalizeText(text);
-  const regex = new RegExp(`\\b${term}\\b`, "gi");
-  const matches = normalized.match(regex);
 
-  return matches ? matches.length : 0;
+  // Count full word matches (higher priority)
+  const fullWordRegex = new RegExp(`\\b${term}\\b`, "gi");
+  const fullWordMatches = normalized.match(fullWordRegex);
+  const fullWordCount = fullWordMatches ? fullWordMatches.length : 0;
+
+  // Count partial matches (lower priority)
+  // Only count partials that are NOT already full word matches
+  const partialRegex = new RegExp(term, "gi");
+  const allMatches = normalized.match(partialRegex);
+  const totalMatches = allMatches ? allMatches.length : 0;
+  const partialCount = Math.max(0, totalMatches - fullWordCount);
+
+  return {
+    fullWordMatches: fullWordCount,
+    partialMatches: partialCount,
+  };
 }
 
 /**
@@ -96,22 +120,32 @@ function scoreTermInResult(result, term) {
   const summaryText = result.summary || "";
   const metadataText = extractMetadata(result);
 
-  // Count term frequency in each field
+  // Count term frequency in each field (full word and partial matches)
   const titleTF = countTermFrequency(titleText, term);
   const summaryTF = countTermFrequency(summaryText, term);
   const metadataTF = countTermFrequency(metadataText, term);
 
-  // Apply field weights (Title: 5x, Metadata: 3x, Summary: 2x)
-  const titleScore = titleTF * 5;
-  const summaryScore = summaryTF * 2;
-  const metadataScore = metadataTF * 3;
+  // Apply field weights with different scoring for full vs partial matches
+  // Full word matches: Title (5x), Metadata (3x), Summary (2x)
+  // Partial matches: Title (2x), Metadata (1.5x), Summary (1x) - 40% of full word weight
+  const titleScore = titleTF.fullWordMatches * 5 + titleTF.partialMatches * 2;
+  const summaryScore =
+    summaryTF.fullWordMatches * 2 + summaryTF.partialMatches * 1;
+  const metadataScore =
+    metadataTF.fullWordMatches * 3 + metadataTF.partialMatches * 1.5;
 
   const totalScore = titleScore + summaryScore + metadataScore;
 
   return {
-    titleTF,
-    summaryTF,
-    metadataTF,
+    titleTF: titleTF.fullWordMatches + titleTF.partialMatches,
+    titleFullWord: titleTF.fullWordMatches,
+    titlePartial: titleTF.partialMatches,
+    summaryTF: summaryTF.fullWordMatches + summaryTF.partialMatches,
+    summaryFullWord: summaryTF.fullWordMatches,
+    summaryPartial: summaryTF.partialMatches,
+    metadataTF: metadataTF.fullWordMatches + metadataTF.partialMatches,
+    metadataFullWord: metadataTF.fullWordMatches,
+    metadataPartial: metadataTF.partialMatches,
     titleScore,
     summaryScore,
     metadataScore,

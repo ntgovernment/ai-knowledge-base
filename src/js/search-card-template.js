@@ -42,7 +42,7 @@ function formatDate(dateStr) {
 }
 
 /**
- * Highlight matched search terms in text
+ * Highlight matched search terms in text (including partial matches)
  * @param {string} text - Original text
  * @param {Array<string>} matchedTerms - Terms to highlight
  * @returns {string} HTML string with <mark> tags around matched terms
@@ -58,8 +58,9 @@ function highlightMatches(text, matchedTerms) {
   const sortedTerms = [...matchedTerms].sort((a, b) => b.length - a.length);
 
   sortedTerms.forEach((term) => {
-    // Create case-insensitive regex with word boundaries
-    const regex = new RegExp(`(\\b${term}\\b)`, "gi");
+    // Create case-insensitive regex without word boundaries to match partial words
+    // Use negative lookahead/lookbehind to avoid matching already highlighted text
+    const regex = new RegExp(`(?!<mark[^>]*>)(${term})(?![^<]*<\/mark>)`, "gi");
     highlighted = highlighted.replace(regex, "<mark>$1</mark>");
   });
 
