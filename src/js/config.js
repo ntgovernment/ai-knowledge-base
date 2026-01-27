@@ -21,6 +21,9 @@ export function getConfig() {
     liveApiUrl:
       "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/configuration/listing/articles/_nocache",
     fallbackJsonUrl: "./dist/search.json",
+    workAreasUrl: isProduction()
+      ? "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/configuration/listing/work-areas/_nocache"
+      : "./src/data/work-areas.json",
   };
 
   return config;
@@ -45,4 +48,15 @@ export function getPrimaryDataSource() {
 export function getFallbackDataSource() {
   const config = getConfig();
   return config.isProduction ? config.fallbackJsonUrl : null;
+}
+
+/**
+ * Get the work areas data source URL for the current environment
+ * Production: Live API
+ * Development: Local JSON file
+ * @returns {string} The work areas data source URL
+ */
+export function getWorkAreasDataSource() {
+  const config = getConfig();
+  return config.workAreasUrl;
 }

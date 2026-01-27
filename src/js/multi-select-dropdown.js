@@ -128,7 +128,7 @@ export class MultiSelectDropdown {
     // Insert after original select
     this.selectElement.parentNode.insertBefore(
       this.container,
-      this.selectElement.nextSibling
+      this.selectElement.nextSibling,
     );
   }
 
@@ -205,7 +205,7 @@ export class MultiSelectDropdown {
   handleOk() {
     // Get checked values
     const checkboxes = this.dropdownPanel.querySelectorAll(
-      '.aikb-multiselect-checkbox:not([value="_select_all"])'
+      '.aikb-multiselect-checkbox:not([value="_select_all"])',
     );
     this.selectedValues.clear();
 
@@ -240,7 +240,7 @@ export class MultiSelectDropdown {
   handleSelectAll(e) {
     const isChecked = e.target.checked;
     const checkboxes = this.dropdownPanel.querySelectorAll(
-      '.aikb-multiselect-checkbox:not([value="_select_all"])'
+      '.aikb-multiselect-checkbox:not([value="_select_all"])',
     );
 
     checkboxes.forEach((checkbox) => {
@@ -250,13 +250,13 @@ export class MultiSelectDropdown {
 
   updateSelectAllState() {
     const selectAllCheckbox = this.dropdownPanel.querySelector(
-      '.aikb-multiselect-checkbox[value="_select_all"]'
+      '.aikb-multiselect-checkbox[value="_select_all"]',
     );
     const checkboxes = this.dropdownPanel.querySelectorAll(
-      '.aikb-multiselect-checkbox:not([value="_select_all"])'
+      '.aikb-multiselect-checkbox:not([value="_select_all"])',
     );
     const checkedCount = Array.from(checkboxes).filter(
-      (cb) => cb.checked
+      (cb) => cb.checked,
     ).length;
 
     if (selectAllCheckbox) {
@@ -268,7 +268,7 @@ export class MultiSelectDropdown {
 
   updateCheckboxes() {
     const checkboxes = this.dropdownPanel.querySelectorAll(
-      '.aikb-multiselect-checkbox:not([value="_select_all"])'
+      '.aikb-multiselect-checkbox:not([value="_select_all"])',
     );
 
     checkboxes.forEach((checkbox) => {
@@ -280,7 +280,7 @@ export class MultiSelectDropdown {
 
   updateDisplayText() {
     const textElement = this.displayButton.querySelector(
-      ".aikb-multiselect-text"
+      ".aikb-multiselect-text",
     );
 
     if (this.selectedValues.size === 0) {
@@ -347,6 +347,84 @@ export class MultiSelectDropdown {
     this.tempSelectedValues.clear();
     this.updateDisplayText();
     this.updateCheckboxes();
+  }
+
+  /**
+   * Update option labels with counts
+   * @param {Map<string, number>} countsMap - Map of option values to counts
+   */
+  updateCounts(countsMap) {
+    // Update native select options
+    Array.from(this.selectElement.options).forEach((option) => {
+      if (!option.disabled && option.value && countsMap.has(option.value)) {
+        const count = countsMap.get(option.value);
+        const baseLabel = option.textContent.replace(/\s*\(\d+\)\s*$/, ""); // Remove existing count
+
+        // Only add count suffix if count > 0
+        if (count > 0) {
+          option.textContent = `${baseLabel} (${count})`;
+        } else {
+          option.textContent = baseLabel;
+        }
+      }
+    });
+
+    // Update custom dropdown labels
+    const checkboxes = this.dropdownPanel.querySelectorAll(
+      '.aikb-multiselect-checkbox:not([value="_select_all"])',
+    );
+
+    checkboxes.forEach((checkbox) => {
+      const value = checkbox.value;
+      if (countsMap.has(value)) {
+        const count = countsMap.get(value);
+        const labelSpan = checkbox.parentElement.querySelector(
+          ".aikb-multiselect-label",
+        );
+        if (labelSpan) {
+          // Remove existing badge or count text
+          const existingBadge = labelSpan.querySelector(".aikb-count-badge");
+          if (existingBadge) {
+            existingBadge.remove();
+          }
+          
+          // Get base label text without count
+          let baseLabel = labelSpan.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
+          
+          // Clear and rebuild label content
+          labelSpan.textContent = baseLabel;
+
+          // Only add count badge if count > 0
+          if (count > 0) {
+            const badge = document.createElement("span");
+            badge.className = "aikb-count-badge";
+            badge.textContent = count.toString();
+            labelSpan.appendChild(badge);
+            
+            // Update option in this.options array for display text calculation
+            const optionIndex = this.options.findIndex(
+              (opt) => opt.value === value,
+            );
+            if (optionIndex !== -1) {
+              this.options[optionIndex].label = `${baseLabel} (${count})`;
+            }
+          } else {
+            // Update option in this.options array without count
+            const optionIndex = this.options.findIndex(
+              (opt) => opt.value === value,
+            );
+            if (optionIndex !== -1) {
+              this.options[optionIndex].label = baseLabel;
+            }
+          }
+        }
+      }
+    });
+
+    // Update display text to reflect new labels
+    this.updateDisplayText();
+
+    console.log("Multi-select counts updated");
   }
 
   destroy() {

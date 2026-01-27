@@ -1,12 +1,40 @@
 // Load initial search results from local search or live API on page load
 import { renderResults } from "./search-card-template.js";
-import { initializeDropdowns } from "./populate-dropdowns.js";
+import {
+  initializeDropdowns,
+  setStaticWorkAreas,
+} from "./populate-dropdowns.js";
 import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
 import {
   getPrimaryDataSource,
   getFallbackDataSource,
+  getWorkAreasDataSource,
   getConfig,
 } from "./config.js";
+
+let fetchedWorkAreas = null;
+
+/**
+ * Fetch work areas list from static source
+ * @returns {Promise<Array<string>>} Promise that resolves to array of work areas
+ */
+async function fetchWorkAreasList() {
+  const workAreasSource = getWorkAreasDataSource();
+  console.log(`Fetching work areas from ${workAreasSource}...`);
+
+  try {
+    const response = await fetch(workAreasSource);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(`Work areas loaded successfully:`, data);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error(`Error fetching work areas from ${workAreasSource}:`, error);
+    return null; // Will fall back to extracting from results
+  }
+}
 
 // Export for use in search-form-handler
 export function loadInitialResults() {
@@ -24,8 +52,16 @@ export function loadInitialResults() {
   console.log(
     `Loading initial results from ${
       config.isProduction ? "live API" : "local JSON"
-    }...`
+    }...`,
   );
+
+  // Fetch work areas list first (parallel with results loading)
+  fetchWorkAreasList().then((workAreas) => {
+    if (workAreas) {
+      fetchedWorkAreas = workAreas;
+      setStaticWorkAreas(workAreas);
+    }
+  });
 
   // Fetch from primary data source
   fetch(primarySource)
@@ -33,7 +69,7 @@ export function loadInitialResults() {
       console.log(
         `Primary source (${primarySource}) response status:`,
         response.status,
-        response.ok
+        response.ok,
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -45,14 +81,14 @@ export function loadInitialResults() {
         `Primary source data loaded successfully (${
           config.isProduction ? "live API" : "local JSON"
         }):`,
-        data
+        data,
       );
       processAndRenderResults(data, config.isProduction ? "live-api" : "local");
     })
     .catch((primaryError) => {
       console.error(
         `Error loading from primary source (${primarySource}):`,
-        primaryError
+        primaryError,
       );
 
       // Only try fallback if in production
@@ -63,7 +99,7 @@ export function loadInitialResults() {
             console.log(
               "Fallback JSON response status:",
               response.status,
-              response.ok
+              response.ok,
             );
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -126,7 +162,8 @@ function processAndRenderResults(data, source = "unknown") {
   console.log(`Cached ${mappedResults.length} results for offline search`);
 
   // Initialize dropdowns with work area data
-  initializeDropdowns(mappedResults);
+  // Pass fetched work areas if available
+  initializeDropdowns(mappedResults, fetchedWorkAreas);
 
   // Initialize filter and sort listeners after each results update
   initializeFiltersAndSort();
