@@ -1,14 +1,36 @@
 // Client-side filtering and sorting for search results
+import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
 
 let allResults = []; // Store all results for filtering/sorting
 
 /**
  * Store search results for filtering and sorting
+ * Deduplicates results based on URL to prevent duplicate entries
  * @param {Array} results - Array of search result objects
  */
 export function storeResults(results) {
-  allResults = results;
-  console.log(`Stored ${allResults.length} results for filtering/sorting`);
+  // Deduplicate results based on URL before storing
+  const seenKeys = new Set();
+  const deduplicatedResults = [];
+
+  results.forEach((result, index) => {
+    // Create unique identifier - use URL, title, or JSON stringify as final fallback
+    const uniqueKey =
+      result.liveUrl ||
+      result.url ||
+      result.title ||
+      JSON.stringify(result) + index;
+
+    if (!seenKeys.has(uniqueKey)) {
+      seenKeys.add(uniqueKey);
+      deduplicatedResults.push(result);
+    }
+  });
+
+  allResults = deduplicatedResults;
+  console.log(
+    `Stored ${allResults.length} results for filtering/sorting (${results.length - allResults.length} duplicates removed)`,
+  );
 }
 
 /**
@@ -21,24 +43,39 @@ function filterByWorkArea(selectedWorkAreas) {
     return allResults; // Return all if no filter selected
   }
 
-  return allResults.filter((result) => {
-    if (
-      !result.listMetadata ||
-      !result.listMetadata.keyword ||
-      !result.listMetadata.keyword[0]
-    ) {
-      return false;
+  // Filter results and track unique items to prevent duplicates
+  const seenKeys = new Set();
+  const filtered = [];
+
+  allResults.forEach((result, index) => {
+    if (!result.listMetadata || !result.listMetadata["Work area"]) {
+      return;
     }
 
-    const resultWorkAreas = result.listMetadata.keyword[0];
+    const resultWorkAreas = result.listMetadata["Work area"];
 
-    // Check if any selected work area matches (handle comma-separated values)
-    const workAreaArray = resultWorkAreas.split(",").map((area) => area.trim());
-
-    return selectedWorkAreas.some((selectedArea) =>
-      workAreaArray.includes(selectedArea)
+    // Check if any selected work area matches
+    const matches = selectedWorkAreas.some((selectedArea) =>
+      resultWorkAreas.includes(selectedArea),
     );
+
+    if (matches) {
+      // Create unique identifier - use URL, title, or JSON stringify as final fallback
+      const uniqueKey =
+        result.liveUrl ||
+        result.url ||
+        result.title ||
+        JSON.stringify(result) + index;
+
+      // Only add if not already seen (prevents duplicates)
+      if (!seenKeys.has(uniqueKey)) {
+        seenKeys.add(uniqueKey);
+        filtered.push(result);
+      }
+    }
   });
+
+  return filtered;
 }
 
 /**
@@ -66,16 +103,16 @@ function sortResults(results, sortBy) {
 
     case "date-newest":
       sorted.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        const dateA = a.dateTimestamp || 0;
+        const dateB = b.dateTimestamp || 0;
         return dateB - dateA; // Newest first
       });
       break;
 
     case "date-oldest":
       sorted.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        const dateA = a.dateTimestamp || 0;
+        const dateB = b.dateTimestamp || 0;
         return dateA - dateB; // Oldest first
       });
       break;
@@ -105,55 +142,145 @@ function sortResults(results, sortBy) {
 }
 
 /**
+ * Sort cards in the DOM by data attributes
+ * @param {string} sortBy - Sort criteria (relevance, date-newest, date-oldest, title-az, title-za)
+ */
+function sortCardsInDOM(sortBy) {
+  const container = document.getElementById("search-results-list");
+  if (!container) return;
+
+  const cards = Array.from(container.querySelectorAll(".aikb-search-card"));
+
+  console.log(`Sorting ${cards.length} cards by ${sortBy}`);
+
+  cards.sort((a, b) => {
+    switch (sortBy) {
+      case "relevance":
+        // Higher relevance first
+        const relA = parseFloat(a.getAttribute("data-sort-relevance")) || 0;
+        const relB = parseFloat(b.getAttribute("data-sort-relevance")) || 0;
+        return relB - relA;
+
+      case "date-newest":
+        // Newer dates first (higher timestamp)
+        const dateA = parseFloat(a.getAttribute("data-sort-date")) || 0;
+        const dateB = parseFloat(b.getAttribute("data-sort-date")) || 0;
+        console.log(`Comparing dates: ${dateA} vs ${dateB}`);
+        return dateB - dateA;
+
+      case "date-oldest":
+        // Older dates first (lower timestamp)
+        const dateC = parseFloat(a.getAttribute("data-sort-date")) || 0;
+        const dateD = parseFloat(b.getAttribute("data-sort-date")) || 0;
+        console.log(`Comparing dates: ${dateC} vs ${dateD}`);
+        return dateC - dateD;
+
+      case "title-az":
+        // A to Z
+        const titleA = a.getAttribute("data-sort-title") || "";
+        const titleB = b.getAttribute("data-sort-title") || "";
+        return titleA.localeCompare(titleB);
+
+      case "title-za":
+        // Z to A
+        const titleC = a.getAttribute("data-sort-title") || "";
+        const titleD = b.getAttribute("data-sort-title") || "";
+        return titleD.localeCompare(titleC);
+
+      default:
+        return 0;
+    }
+  });
+
+  // Re-append cards in sorted order
+  cards.forEach((card) => container.appendChild(card));
+
+  console.log(`Cards sorted by ${sortBy} in DOM using data attributes`);
+}
+
+// Track if filter/sort is currently being applied to prevent concurrent executions
+let isApplying = false;
+
+/**
  * Apply filters and sorting, then render results
  */
-async function applyFiltersAndSort() {
-  // Get work area dropdown (may be multi-select)
-  const workAreaDropdown = document.getElementById("document_type");
-  // Support both legacy id="owner" and current id="sort"
-  const sortDropdown =
-    document.getElementById("sort") || document.getElementById("owner");
-
-  if (!workAreaDropdown || !sortDropdown) {
-    console.warn("Required dropdowns not found (document_type or sort)");
+export async function applyFiltersAndSort() {
+  // Prevent concurrent executions
+  if (isApplying) {
+    console.log("Filter/sort already in progress, skipping duplicate call");
     return;
   }
 
-  // Get selected work areas
-  let selectedWorkAreas = [];
-  if (workAreaDropdown) {
-    const selectedOptions = Array.from(workAreaDropdown.selectedOptions || []);
-    // Remove empty/default values so an unselected state returns all results
-    selectedWorkAreas = selectedOptions
-      .map((opt) => opt.value)
-      .filter((val) => val && val.trim().length > 0);
+  isApplying = true;
+
+  try {
+    // Get work area dropdown (may be multi-select)
+    const workAreaDropdown = document.getElementById("document_type");
+    // Support both legacy id="owner" and current id="sort"
+    const sortDropdown =
+      document.getElementById("sort") || document.getElementById("owner");
+
+    if (!workAreaDropdown || !sortDropdown) {
+      console.warn("Required dropdowns not found (document_type or sort)");
+      return;
+    }
+
+    // Get selected work areas
+    let selectedWorkAreas = [];
+    if (workAreaDropdown) {
+      const selectedOptions = Array.from(
+        workAreaDropdown.selectedOptions || [],
+      );
+      // Remove empty/default values so an unselected state returns all results
+      selectedWorkAreas = selectedOptions
+        .map((opt) => opt.value)
+        .filter((val) => val && val.trim().length > 0);
+    }
+
+    const selectedSort = sortDropdown.value || "relevance";
+
+    console.log(
+      `Applying filters - Work Areas: [${selectedWorkAreas.join(
+        ", ",
+      )}], Sort: "${selectedSort}"`,
+    );
+
+    // Filter by work areas
+    let filtered = filterByWorkArea(selectedWorkAreas);
+    console.log(`After filtering: ${filtered.length} results`);
+
+    // Sort results (for pagination compatibility)
+    let sorted = sortResults(filtered, selectedSort);
+    console.log(`After sorting: ${sorted.length} results`);
+
+    // Render filtered and sorted results
+    const { renderResults } = await import("./search-card-template.js");
+    renderResults(sorted, "search-results-list");
+
+    // Apply DOM-based sorting using data attributes
+    sortCardsInDOM(selectedSort);
+
+    // Display applied filters
+    const currentFilters = getCurrentFilters();
+    displayAppliedFilters(currentFilters);
+  } finally {
+    isApplying = false;
   }
-
-  const selectedSort = sortDropdown.value || "relevance";
-
-  console.log(
-    `Applying filters - Work Areas: [${selectedWorkAreas.join(
-      ", "
-    )}], Sort: "${selectedSort}"`
-  );
-
-  // Filter by work areas
-  let filtered = filterByWorkArea(selectedWorkAreas);
-  console.log(`After filtering: ${filtered.length} results`);
-
-  // Sort results
-  let sorted = sortResults(filtered, selectedSort);
-  console.log(`After sorting: ${sorted.length} results`);
-
-  // Render filtered and sorted results
-  const { renderResults } = await import("./search-card-template.js");
-  renderResults(sorted, "search-results-list");
 }
+
+// Track if listeners have been initialized to prevent duplicate event handlers
+let listenersInitialized = false;
 
 /**
  * Initialize filter and sort listeners
  */
 export function initializeFiltersAndSort() {
+  // Prevent multiple initializations that would create duplicate event listeners
+  if (listenersInitialized) {
+    console.log("Filter and sort listeners already initialized, skipping");
+    return;
+  }
+
   const workAreaDropdown = document.getElementById("document_type");
   // Support both legacy id="owner" and current id="sort"
   const sortDropdown =
@@ -193,5 +320,6 @@ export function initializeFiltersAndSort() {
     });
   }
 
+  listenersInitialized = true;
   console.log("Filter and sort listeners initialized");
 }

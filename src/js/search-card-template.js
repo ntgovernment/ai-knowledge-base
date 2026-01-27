@@ -42,14 +42,62 @@ function formatDate(dateStr) {
 }
 
 /**
+ * Highlight matched search terms in text (including partial matches)
+ * @param {string} text - Original text
+ * @param {Array<string>} matchedTerms - Terms to highlight
+ * @returns {string} HTML string with <mark> tags around matched terms
+ */
+function highlightMatches(text, matchedTerms) {
+  if (!text || !matchedTerms || matchedTerms.length === 0) {
+    return text;
+  }
+
+  let highlighted = text;
+
+  // Sort terms by length (longest first) to avoid partial replacements
+  const sortedTerms = [...matchedTerms].sort((a, b) => b.length - a.length);
+
+  sortedTerms.forEach((term) => {
+    // Create case-insensitive regex without word boundaries to match partial words
+    // Use negative lookahead/lookbehind to avoid matching already highlighted text
+    const regex = new RegExp(`(?!<mark[^>]*>)(${term})(?![^<]*<\/mark>)`, "gi");
+    highlighted = highlighted.replace(regex, "<mark>$1</mark>");
+  });
+
+  return highlighted;
+}
+
+/**
+ * Set HTML content safely (creates text nodes and mark elements)
+ * @param {HTMLElement} element - Target element
+ * @param {string} htmlString - HTML string with <mark> tags
+ */
+function setHighlightedHTML(element, htmlString) {
+  element.innerHTML = ""; // Clear existing content
+
+  // Parse the HTML string and create DOM nodes
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
+
+  // Append all child nodes from parsed content
+  Array.from(doc.body.childNodes).forEach((node) => {
+    element.appendChild(node.cloneNode(true));
+  });
+}
+
+/**
  * Create a search result card DOM element
  * @param {Object} result - Result data object
  * @param {string} result.title - Card title
  * @param {string} result.summary - Card summary/description
  * @param {Object} result.listMetadata - Metadata object
- * @param {Array<string>} result.listMetadata.keyword - Array of keywords [category, usefulFor]
+ * @param {Array<string>} result.listMetadata["Work area"] - Array of work area tags
+ * @param {Array<string>} result.listMetadata["Roles"] - Array of roles for "Good for"
  * @param {string} result.date - Submission date
  * @param {string} result.liveUrl - URL for "See more" button
+ * @param {string} result.submittedBy - Person who submitted
+ * @param {Array<string>} result._matchedTerms - Matched search terms for highlighting
+ * @param {number} result._offlineScore - Offline search relevance score
  * @returns {HTMLElement|null} Card element or null if required fields missing
  */
 function createSearchCard(result) {
@@ -63,6 +111,19 @@ function createSearchCard(result) {
   const card = document.createElement("div");
   card.className = "aikb-search-card";
 
+  // Add data attributes for sorting
+  // Use offline score if available, otherwise rank or score
+  const relevance =
+    result._offlineScore || (result.rank ? -result.rank : result.score || 0);
+  card.setAttribute("data-sort-relevance", relevance);
+
+  // Title: store for alphabetical sorting
+  card.setAttribute("data-sort-title", result.title);
+
+  // Date: store timestamp for date sorting
+  const dateTimestamp = result.dateTimestamp || 0;
+  card.setAttribute("data-sort-date", dateTimestamp);
+
   // Create inner wrapper
   const inner = document.createElement("div");
   inner.className = "aikb-search-card__inner";
@@ -75,42 +136,62 @@ function createSearchCard(result) {
   const textSection = document.createElement("div");
   textSection.className = "aikb-search-card__text";
 
-  // Title
+  // Title (with highlighting if matched terms exist)
   const title = document.createElement("h3");
   title.className = "aikb-search-card__title";
-  title.textContent = result.title;
+
+  if (result._matchedTerms && result._matchedTerms.length > 0) {
+    const highlightedTitle = highlightMatches(
+      result.title,
+      result._matchedTerms,
+    );
+    setHighlightedHTML(title, highlightedTitle);
+  } else {
+    title.textContent = result.title;
+  }
+
   textSection.appendChild(title);
 
-  // Summary
+  // Summary (with highlighting if matched terms exist)
   const summary = document.createElement("p");
   summary.className = "aikb-search-card__summary";
-  summary.textContent = result.summary;
+
+  if (result._matchedTerms && result._matchedTerms.length > 0) {
+    const highlightedSummary = highlightMatches(
+      result.summary,
+      result._matchedTerms,
+    );
+    setHighlightedHTML(summary, highlightedSummary);
+  } else {
+    summary.textContent = result.summary;
+  }
+
   textSection.appendChild(summary);
 
   content.appendChild(textSection);
 
-  // Tags section (split comma-separated categories into individual tags)
-  const category =
-    result.listMetadata && result.listMetadata.keyword
-      ? result.listMetadata.keyword[0]
-      : null;
-  if (category) {
+  // Tags section (work areas from JSON payload)
+  const workAreas =
+    result.listMetadata && result.listMetadata["Work area"]
+      ? result.listMetadata["Work area"]
+      : [];
+  if (workAreas && workAreas.length > 0) {
     const tagsContainer = document.createElement("div");
     tagsContainer.className = "aikb-search-card__tags";
 
-    // Split by comma to create multiple tags if needed
-    const categories = category.split(",");
-    categories.forEach((cat) => {
-      const trimmedCat = cat.trim();
-      if (trimmedCat) {
+    // Create a tag for each work area
+    workAreas.forEach((workArea) => {
+      if (workArea && workArea.trim()) {
         const tag = document.createElement("div");
         tag.className = "aikb-search-card__tag";
-        tag.textContent = trimmedCat;
+        tag.textContent = workArea.trim();
         tagsContainer.appendChild(tag);
       }
     });
 
-    content.appendChild(tagsContainer);
+    if (tagsContainer.children.length > 0) {
+      content.appendChild(tagsContainer);
+    }
   }
 
   inner.appendChild(content);
@@ -139,33 +220,51 @@ function createSearchCard(result) {
   const metadata = document.createElement("div");
   metadata.className = "aikb-search-card__metadata";
 
-  // "Useful for" row (only if keyword[1] exists)
-  const usefulFor =
-    result.listMetadata && result.listMetadata.keyword
-      ? result.listMetadata.keyword[1]
-      : null;
-  if (usefulFor) {
+  // "Good for" row (roles from JSON payload)
+  const roles =
+    result.listMetadata && result.listMetadata["Roles"]
+      ? result.listMetadata["Roles"]
+      : [];
+  if (roles && roles.length > 0) {
     const usefulRow = document.createElement("div");
     usefulRow.className = "aikb-search-card__useful-for";
 
-    const label = document.createElement("span");
-    label.className = "aikb-search-card__useful-label";
-    label.textContent = "Useful for: ";
-    usefulRow.appendChild(label);
-
     const value = document.createElement("span");
     value.className = "aikb-search-card__useful-value";
-    value.textContent = usefulFor;
+
+    const label = document.createElement("strong");
+    label.textContent = "Good for: ";
+    value.appendChild(label);
+
+    const rolesText = roles.join(", ");
+
+    // Apply highlighting if matched terms exist
+    if (result._matchedTerms && result._matchedTerms.length > 0) {
+      const highlightedRoles = highlightMatches(
+        rolesText,
+        result._matchedTerms,
+      );
+      const tempSpan = document.createElement("span");
+      setHighlightedHTML(tempSpan, highlightedRoles);
+      // Append all child nodes from the temp span
+      Array.from(tempSpan.childNodes).forEach((node) => {
+        value.appendChild(node);
+      });
+    } else {
+      const text = document.createTextNode(rolesText);
+      value.appendChild(text);
+    }
+
     usefulRow.appendChild(value);
 
     metadata.appendChild(usefulRow);
   }
 
-  // Submitted date
+  // Last updated date
   if (result.date) {
     const dateEl = document.createElement("div");
     dateEl.className = "aikb-search-card__date";
-    dateEl.textContent = `Submitted: ${formatDate(result.date)}`;
+    dateEl.textContent = `Last updated: ${formatDate(result.date)}`;
     metadata.appendChild(dateEl);
   }
 
@@ -181,10 +280,15 @@ function createSearchCard(result) {
  * Render search results to the container
  * @param {Array<Object>} results - Array of result objects
  * @param {string} containerId - ID of the container element (default: "search-results-list")
+ * @param {boolean} usePagination - Whether to use pagination (default: true)
  */
-export function renderResults(results, containerId = "search-results-list") {
+export function renderResults(
+  results,
+  containerId = "search-results-list",
+  usePagination = true,
+) {
   console.log(
-    `renderResults called with ${results.length} results for container #${containerId}`
+    `renderResults called with ${results.length} results for container #${containerId}`,
   );
 
   // Try multiple selection methods
@@ -202,7 +306,7 @@ export function renderResults(results, containerId = "search-results-list") {
     console.error(`Container #${containerId} not found`);
     console.log(
       "Available elements with id:",
-      Array.from(document.querySelectorAll("[id]")).map((el) => el.id)
+      Array.from(document.querySelectorAll("[id]")).map((el) => el.id),
     );
     return;
   }
@@ -210,12 +314,7 @@ export function renderResults(results, containerId = "search-results-list") {
   // Clear existing content
   container.innerHTML = "";
 
-  // Filter and render valid cards
-  const cards = results
-    .map((result) => createSearchCard(result))
-    .filter((card) => card !== null);
-
-  if (cards.length === 0) {
+  if (results.length === 0) {
     const noResults = document.createElement("p");
     noResults.textContent = "No results found.";
     noResults.style.padding = "24px 48px";
@@ -223,10 +322,60 @@ export function renderResults(results, containerId = "search-results-list") {
     return;
   }
 
-  cards.forEach((card) => container.appendChild(card));
+  // Initialize or update pagination
+  if (usePagination) {
+    // Dynamic import to avoid circular dependencies
+    import("./pagination.js").then(
+      ({ initializePagination, getCurrentPageResults }) => {
+        initializePagination(results, 10);
+        const pageResults = getCurrentPageResults();
 
-  console.log(`Rendered ${cards.length} search result cards`);
+        // Render cards for current page
+        const cards = pageResults
+          .map((result) => createSearchCard(result))
+          .filter((card) => card !== null);
+
+        cards.forEach((card) => container.appendChild(card));
+        console.log(
+          `Rendered ${cards.length} of ${results.length} search result cards (page 1)`,
+        );
+      },
+    );
+  } else {
+    // Render all cards without pagination
+    const cards = results
+      .map((result) => createSearchCard(result))
+      .filter((card) => card !== null);
+
+    cards.forEach((card) => container.appendChild(card));
+    console.log(`Rendered ${cards.length} search result cards`);
+  }
 }
 
 // Expose globally for legacy usage
 window.aikbRenderResults = renderResults;
+
+// Track if pagination listener has been added to prevent duplicates
+let paginationListenerAdded = false;
+
+// Listen for pagination page changes
+if (!paginationListenerAdded) {
+  document.addEventListener("aikb-pagination-change", (event) => {
+    const { results } = event.detail;
+    const container = document.getElementById("search-results-list");
+
+    if (container && results) {
+      container.innerHTML = "";
+
+      const cards = results
+        .map((result) => createSearchCard(result))
+        .filter((card) => card !== null);
+
+      cards.forEach((card) => container.appendChild(card));
+      console.log(
+        `Rendered ${cards.length} cards for page ${event.detail.page}`,
+      );
+    }
+  });
+  paginationListenerAdded = true;
+}

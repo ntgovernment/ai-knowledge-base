@@ -1,0 +1,32 @@
+/* Inset text / callout box styling */
+div[data-hydration-component="squiz-inset-text"] section {
+  padding: 32px;
+  border-left: 6px solid var(--clr-stroke-default, #6c7074);
+  background: var(--clr-surface-secondary, #ecf0f0);
+  margin: 24px 0;
+}
+
+div[data-hydration-component="squiz-inset-text"] div {
+  color: var(--clr-text-body, #304060);
+  font-size: 16px;
+  font-family:
+    Roboto,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  word-wrap: break-word;
+}
+
+div[data-hydration-component="squiz-inset-text"] p {
+  margin: 0;
+}
+
+div[data-hydration-component="squiz-inset-text"] a {
+  color: var(--clr-primary, #208820);
+  text-decoration: underline;
+}

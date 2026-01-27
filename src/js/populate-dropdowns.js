@@ -64,9 +64,10 @@ export function populateSearchInput() {
 import { initMultiSelect } from "./multi-select-dropdown.js";
 
 let multiSelectInstance = null;
+let staticWorkAreas = [];
 
 /**
- * Extract unique work areas from search results
+ * Extract unique work areas from search results (used as fallback if static fetch fails)
  * @param {Array} results - Array of search result objects
  * @returns {Array<string>} - Sorted array of unique work area values
  */
@@ -74,19 +75,17 @@ function extractWorkAreas(results) {
   const workAreaSet = new Set();
 
   results.forEach((result) => {
-    if (
-      result.listMetadata &&
-      result.listMetadata.keyword &&
-      result.listMetadata.keyword[0]
-    ) {
-      const workArea = result.listMetadata.keyword[0];
-      // Split comma-separated values and add each individually
-      workArea.split(",").forEach((area) => {
-        const trimmed = area.trim();
-        if (trimmed) {
-          workAreaSet.add(trimmed);
-        }
-      });
+    if (result.listMetadata && result.listMetadata["Work area"]) {
+      const workAreas = result.listMetadata["Work area"];
+      // Work areas is already an array
+      if (Array.isArray(workAreas)) {
+        workAreas.forEach((area) => {
+          const trimmed = area.trim();
+          if (trimmed) {
+            workAreaSet.add(trimmed);
+          }
+        });
+      }
     }
   });
 
@@ -97,6 +96,52 @@ function extractWorkAreas(results) {
     if (b === "All work areas") return 1;
     return a.localeCompare(b);
   });
+}
+
+/**
+ * Calculate counts for each work area from search results
+ * @param {Array<string>} workAreas - Array of work area names
+ * @param {Array} results - Array of search result objects
+ * @returns {Map<string, number>} Map of work area names to counts
+ */
+export function calculateWorkAreaCounts(workAreas, results) {
+  const counts = new Map();
+
+  // Initialize all work areas with 0 count
+  workAreas.forEach((workArea) => {
+    counts.set(workArea, 0);
+  });
+
+  // Count occurrences in results
+  results.forEach((result) => {
+    if (result.listMetadata && result.listMetadata["Work area"]) {
+      const resultWorkAreas = result.listMetadata["Work area"];
+      if (Array.isArray(resultWorkAreas)) {
+        resultWorkAreas.forEach((area) => {
+          const trimmed = area.trim();
+          if (trimmed && counts.has(trimmed)) {
+            counts.set(trimmed, counts.get(trimmed) + 1);
+          }
+        });
+      }
+    }
+  });
+
+  // Set count for "All work areas" to total results
+  if (counts.has("All work areas")) {
+    counts.set("All work areas", results.length);
+  }
+
+  return counts;
+}
+
+/**
+ * Store static work areas list for later use
+ * @param {Array<string>} workAreas - Array of work area names from static source
+ */
+export function setStaticWorkAreas(workAreas) {
+  staticWorkAreas = workAreas;
+  console.log(`Stored ${workAreas.length} static work areas`);
 }
 
 /**
@@ -142,7 +187,7 @@ function populateWorkAreaDropdown(workAreas) {
   if (
     !dropdown.nextElementSibling ||
     !dropdown.nextElementSibling.classList.contains(
-      "aikb-multiselect-container"
+      "aikb-multiselect-container",
     )
   ) {
     multiSelectInstance = initMultiSelect(dropdown);
@@ -270,13 +315,31 @@ function addDropdownIcons() {
 /**
  * Initialize dropdowns with data from search results
  * @param {Array} results - Array of search result objects
+ * @param {Array<string>} workAreasFromFetch - Optional pre-fetched work areas list
  */
-export function initializeDropdowns(results) {
+export function initializeDropdowns(results, workAreasFromFetch = null) {
   console.log("Initializing dropdowns with search data...");
 
-  // Extract and populate work areas
-  const workAreas = extractWorkAreas(results);
+  // Use static work areas if available, otherwise extract from results
+  let workAreas;
+  if (workAreasFromFetch && workAreasFromFetch.length > 0) {
+    workAreas = workAreasFromFetch;
+    console.log("Using pre-fetched static work areas list");
+  } else if (staticWorkAreas.length > 0) {
+    workAreas = staticWorkAreas;
+    console.log("Using stored static work areas list");
+  } else {
+    workAreas = extractWorkAreas(results);
+    console.log("Extracted work areas from results (fallback)");
+  }
+
   populateWorkAreaDropdown(workAreas);
+
+  // Calculate and apply counts
+  const counts = calculateWorkAreaCounts(workAreas, results);
+  if (multiSelectInstance) {
+    multiSelectInstance.updateCounts(counts);
+  }
 
   // Populate sort options
   populateSortDropdown();
@@ -285,6 +348,14 @@ export function initializeDropdowns(results) {
   addDropdownIcons();
 
   console.log("Dropdowns initialized successfully");
+}
+
+/**
+ * Get the current multi-select instance
+ * @returns {object|null} The multi-select instance or null
+ */
+export function getMultiSelectInstance() {
+  return multiSelectInstance;
 }
 
 /**

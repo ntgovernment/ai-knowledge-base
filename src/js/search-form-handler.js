@@ -7,8 +7,13 @@
 import { loadInitialResults } from "./load-initial-results.js";
 import { renderResults } from "./search-card-template.js";
 import { searchLocalData, getCachedData } from "./offline-search.js";
-import { storeResults, initializeFiltersAndSort } from "./search-filters.js";
+import {
+  storeResults,
+  initializeFiltersAndSort,
+  applyFiltersAndSort,
+} from "./search-filters.js";
 import { initializeDropdowns } from "./populate-dropdowns.js";
+import { displayAppliedFilters, getCurrentFilters } from "./applied-filters.js";
 
 // Initialize search form handler
 (function initSearchForm() {
@@ -47,12 +52,16 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
 
   /**
    * Handle clear input button click
-   * Clear the search field and reload initial results
+   * Clear the search field and restore filtered view of all results
    */
   function handleClearInput() {
     $searchInput.val("");
-    console.log("Search cleared - reloading initial results");
-    loadInitialResults();
+    console.log("Search cleared - restoring filtered view of all results");
+    const cachedData = getCachedData();
+    if (cachedData && cachedData.length > 0) {
+      storeResults(cachedData);
+      applyFiltersAndSort();
+    }
   }
 
   // Attach form submission handler
@@ -79,8 +88,14 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
       if (searchText.trim()) {
         triggerSearch(searchText);
       } else {
-        console.log("Empty search via Enter - reloading initial results");
-        loadInitialResults();
+        console.log(
+          "Empty search via Enter - restoring filtered view of all results",
+        );
+        const cachedData = getCachedData();
+        if (cachedData && cachedData.length > 0) {
+          storeResults(cachedData);
+          applyFiltersAndSort();
+        }
       }
     }
   });
@@ -96,57 +111,28 @@ import { initializeDropdowns } from "./populate-dropdowns.js";
 
     console.log(`Triggered search for: "${queryText}"`);
 
-    // Perform offline search immediately for fast results
+    // Perform local/offline search
     const cachedData = getCachedData();
     if (cachedData && cachedData.length > 0) {
-      console.log("Performing immediate offline search for fast results");
-      const offlineResults = searchLocalData(queryText, cachedData);
+      console.log("Performing local search");
+      const localResults = searchLocalData(queryText, cachedData);
 
-      // Store and render offline results immediately
-      storeResults(offlineResults);
-      initializeDropdowns(offlineResults);
-      initializeFiltersAndSort();
-      renderResults(offlineResults, "search-results-list");
+      // Store search results and apply current filters
+      storeResults(localResults);
+      applyFiltersAndSort();
 
       console.log(
-        `Offline search: Displayed ${offlineResults.length} results (will update with API results)`
+        `Local search: Found ${localResults.length} results, applying filters`,
       );
     } else {
-      // No cached data - show loading state
+      // No cached data - show error
+      console.error("No cached data available for search");
       const $container = window.$("#search-results-list");
       if ($container.length > 0) {
-        $container.html('<div class="aikb-loading">Searching...</div>');
+        $container.html(
+          '<p class="aikb-error">Unable to load search results. Please check your connection and try again.</p>',
+        );
       }
-    }
-
-    // Trigger Funnelback API call in background to update results
-    if (
-      window.ntgFunnelback &&
-      typeof window.ntgFunnelback.callSearchAPI === "function"
-    ) {
-      // Set originalterm and call API
-      window.ntgFunnelback.originalterm = queryText;
-      window.ntgFunnelback.currentPage = 1;
-
-      // Pass onError callback (will only trigger if both API and fallback JSON fail)
-      window.ntgFunnelback.callSearchAPI(queryText, function (error) {
-        // Only show error if we didn't already show offline results
-        if (!cachedData || cachedData.length === 0) {
-          console.error("Search failed and no cached data available");
-          const $container = window.$("#search-results-list");
-          if ($container.length > 0) {
-            $container.html(
-              '<p class="aikb-error">Unable to load search results. Please check your connection and try again.</p>'
-            );
-          }
-        } else {
-          console.log("API failed but offline results already displayed");
-        }
-      });
-    } else {
-      console.warn(
-        "Funnelback API not initialized - using offline search only"
-      );
     }
   }
 

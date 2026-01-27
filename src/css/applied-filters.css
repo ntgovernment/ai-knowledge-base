@@ -1,0 +1,146 @@
+/* Applied Filters Section */
+#appliedFiltersSection {
+  padding: 16px 24px;
+  border-radius: 4px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#appliedFiltersSection strong {
+  font-weight: 600;
+  color: #102040;
+  margin: 0 0 12px 0;
+}
+
+#appliedFiltersSection p {
+  margin: 0;
+}
+
+#appliedFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.filter-pill {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 32px;
+  gap: 8px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d8dee6;
+  background-color: #fff;
+  color: #102040;
+}
+
+/* Ensure badge color utility classes don't override the outline/pill look */
+.filter-pill.badge,
+.filter-pill.badge.bg-success,
+.filter-pill.badge.bg-primary,
+.filter-pill.badge.bg-info,
+.filter-pill.badge.bg-secondary {
+  background-color: #fff !important;
+  color: #102040 !important;
+}
+
+.pill-label {
+  font-weight: 600;
+  margin-right: 4px;
+  color: #102040;
+}
+
+.pill-value {
+  font-weight: 400;
+}
+
+.pill-remove {
+  background: none;
+  border: none;
+  color: #102040;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.pill-remove:hover {
+  opacity: 1;
+}
+
+.pill-remove:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+#clearAllBtn {
+  color: #102040;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+#clearAllBtn:hover {
+  text-decoration: underline;
+}
+
+#clearAllBtn[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Keep default badge utilities available but subdued when used outside filter pills */
+.badge.bg-success {
+  background-color: #28a745 !important;
+  color: #fff;
+}
+.badge.bg-primary {
+  background-color: #007bff !important;
+  color: #fff;
+}
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+  color: #fff;
+}
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: #fff;
+}
+
+/* Results info text under pills */
+#appliedFiltersSection .results-info,
+#appliedFiltersSection .result-count {
+  color: #606c7b;
+}
+
+/* Utility classes for spacing */
+.my-3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

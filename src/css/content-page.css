@@ -1,9 +1,9 @@
 /* Content page specific styles */
 @import "./copy-to-clipboard.css";
-
 @import "./sidebar.css";
-
 @import "./aikb-pre-block.css";
+@import "./tags.css";
+@import "./inset-text.css";
 
 /* Remove top margin from first child heading in main content */
 #aikb-main-content > h1:first-child,
@@ -23,4 +23,19 @@
 
 .ntgc-btn.ntgc-btn--tertiary:hover .fa-arrow-left {
   transform: translateX(-4px);
+}
+
+/* Remove vertical spacing to align bullets with paragraph text */
+#aikb-main-content ul:not([class]) > li {
+  margin-top: 0 !important;
+}
+
+#aikb-main-content ul:not([class]) > li > p {
+  margin-top: -24px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Add controlled spacing between list items */
+#aikb-main-content ul:not([class]) > li:not(:last-child) {
+  margin-bottom: 0.5rem !important;
 }
