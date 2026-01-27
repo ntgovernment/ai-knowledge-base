@@ -46,9 +46,15 @@ export class MultiSelectDropdown {
   }
 
   selectAllByDefault() {
-    // Add all option values to selectedValues
+    // Add all enabled option values to selectedValues
     this.options.forEach((option) => {
-      this.selectedValues.add(option.value);
+      // Check if the corresponding native select option is enabled
+      const nativeOption = Array.from(this.selectElement.options).find(
+        (opt) => opt.value === option.value,
+      );
+      if (nativeOption && !nativeOption.disabled) {
+        this.selectedValues.add(option.value);
+      }
     });
 
     // Sync with native select
@@ -446,15 +452,17 @@ export class MultiSelectDropdown {
     }
     // Update native select options
     Array.from(this.selectElement.options).forEach((option) => {
-      if (!option.disabled && option.value && countsMap.has(option.value)) {
+      if (option.value && countsMap.has(option.value)) {
         const count = countsMap.get(option.value);
         const baseLabel = option.textContent.replace(/\s*\(\d+\)\s*$/, ""); // Remove existing count
 
-        // Only add count suffix if count > 0
         if (count > 0) {
           option.textContent = `${baseLabel} (${count})`;
+          option.disabled = false;
         } else {
           option.textContent = baseLabel;
+          option.disabled = true;
+          option.selected = false;
         }
       }
     });
