@@ -42,6 +42,49 @@ function formatDate(dateStr) {
 }
 
 /**
+ * Highlight matched search terms in text
+ * @param {string} text - Original text
+ * @param {Array<string>} matchedTerms - Terms to highlight
+ * @returns {string} HTML string with <mark> tags around matched terms
+ */
+function highlightMatches(text, matchedTerms) {
+  if (!text || !matchedTerms || matchedTerms.length === 0) {
+    return text;
+  }
+
+  let highlighted = text;
+
+  // Sort terms by length (longest first) to avoid partial replacements
+  const sortedTerms = [...matchedTerms].sort((a, b) => b.length - a.length);
+
+  sortedTerms.forEach((term) => {
+    // Create case-insensitive regex with word boundaries
+    const regex = new RegExp(`(\\b${term}\\b)`, "gi");
+    highlighted = highlighted.replace(regex, "<mark>$1</mark>");
+  });
+
+  return highlighted;
+}
+
+/**
+ * Set HTML content safely (creates text nodes and mark elements)
+ * @param {HTMLElement} element - Target element
+ * @param {string} htmlString - HTML string with <mark> tags
+ */
+function setHighlightedHTML(element, htmlString) {
+  element.innerHTML = ""; // Clear existing content
+
+  // Parse the HTML string and create DOM nodes
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
+
+  // Append all child nodes from parsed content
+  Array.from(doc.body.childNodes).forEach((node) => {
+    element.appendChild(node.cloneNode(true));
+  });
+}
+
+/**
  * Create a search result card DOM element
  * @param {Object} result - Result data object
  * @param {string} result.title - Card title
@@ -52,6 +95,8 @@ function formatDate(dateStr) {
  * @param {string} result.date - Submission date
  * @param {string} result.liveUrl - URL for "See more" button
  * @param {string} result.submittedBy - Person who submitted
+ * @param {Array<string>} result._matchedTerms - Matched search terms for highlighting
+ * @param {number} result._offlineScore - Offline search relevance score
  * @returns {HTMLElement|null} Card element or null if required fields missing
  */
 function createSearchCard(result) {
@@ -66,8 +111,9 @@ function createSearchCard(result) {
   card.className = "aikb-search-card";
 
   // Add data attributes for sorting
-  // Relevance: use rank (lower is better) or score (higher is better), default to 0
-  const relevance = result.rank ? -result.rank : result.score || 0;
+  // Use offline score if available, otherwise rank or score
+  const relevance =
+    result._offlineScore || (result.rank ? -result.rank : result.score || 0);
   card.setAttribute("data-sort-relevance", relevance);
 
   // Title: store for alphabetical sorting
@@ -89,16 +135,36 @@ function createSearchCard(result) {
   const textSection = document.createElement("div");
   textSection.className = "aikb-search-card__text";
 
-  // Title
+  // Title (with highlighting if matched terms exist)
   const title = document.createElement("h3");
   title.className = "aikb-search-card__title";
-  title.textContent = result.title;
+
+  if (result._matchedTerms && result._matchedTerms.length > 0) {
+    const highlightedTitle = highlightMatches(
+      result.title,
+      result._matchedTerms,
+    );
+    setHighlightedHTML(title, highlightedTitle);
+  } else {
+    title.textContent = result.title;
+  }
+
   textSection.appendChild(title);
 
-  // Summary
+  // Summary (with highlighting if matched terms exist)
   const summary = document.createElement("p");
   summary.className = "aikb-search-card__summary";
-  summary.textContent = result.summary;
+
+  if (result._matchedTerms && result._matchedTerms.length > 0) {
+    const highlightedSummary = highlightMatches(
+      result.summary,
+      result._matchedTerms,
+    );
+    setHighlightedHTML(summary, highlightedSummary);
+  } else {
+    summary.textContent = result.summary;
+  }
+
   textSection.appendChild(summary);
 
   content.appendChild(textSection);
@@ -169,8 +235,24 @@ function createSearchCard(result) {
     label.textContent = "Good for: ";
     value.appendChild(label);
 
-    const text = document.createTextNode(roles.join(", "));
-    value.appendChild(text);
+    const rolesText = roles.join(", ");
+
+    // Apply highlighting if matched terms exist
+    if (result._matchedTerms && result._matchedTerms.length > 0) {
+      const highlightedRoles = highlightMatches(
+        rolesText,
+        result._matchedTerms,
+      );
+      const tempSpan = document.createElement("span");
+      setHighlightedHTML(tempSpan, highlightedRoles);
+      // Append all child nodes from the temp span
+      Array.from(tempSpan.childNodes).forEach((node) => {
+        value.appendChild(node);
+      });
+    } else {
+      const text = document.createTextNode(rolesText);
+      value.appendChild(text);
+    }
 
     usefulRow.appendChild(value);
 

@@ -169,6 +169,19 @@
   word-wrap: break-word;
 }
 
+/* Search result highlighting */
+.aikb-search-card mark {
+  background-color: #fff4cc;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.aikb-search-card__title mark {
+  font-weight: 700;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .aikb-search-card {
