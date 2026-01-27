@@ -103,16 +103,16 @@ function sortResults(results, sortBy) {
 
     case "date-newest":
       sorted.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        const dateA = a.dateTimestamp || 0;
+        const dateB = b.dateTimestamp || 0;
         return dateB - dateA; // Newest first
       });
       break;
 
     case "date-oldest":
       sorted.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        const dateA = a.dateTimestamp || 0;
+        const dateB = b.dateTimestamp || 0;
         return dateA - dateB; // Oldest first
       });
       break;
@@ -139,6 +139,63 @@ function sortResults(results, sortBy) {
   }
 
   return sorted;
+}
+
+/**
+ * Sort cards in the DOM by data attributes
+ * @param {string} sortBy - Sort criteria (relevance, date-newest, date-oldest, title-az, title-za)
+ */
+function sortCardsInDOM(sortBy) {
+  const container = document.getElementById("search-results-list");
+  if (!container) return;
+
+  const cards = Array.from(container.querySelectorAll(".aikb-search-card"));
+
+  console.log(`Sorting ${cards.length} cards by ${sortBy}`);
+
+  cards.sort((a, b) => {
+    switch (sortBy) {
+      case "relevance":
+        // Higher relevance first
+        const relA = parseFloat(a.getAttribute("data-sort-relevance")) || 0;
+        const relB = parseFloat(b.getAttribute("data-sort-relevance")) || 0;
+        return relB - relA;
+
+      case "date-newest":
+        // Newer dates first (higher timestamp)
+        const dateA = parseFloat(a.getAttribute("data-sort-date")) || 0;
+        const dateB = parseFloat(b.getAttribute("data-sort-date")) || 0;
+        console.log(`Comparing dates: ${dateA} vs ${dateB}`);
+        return dateB - dateA;
+
+      case "date-oldest":
+        // Older dates first (lower timestamp)
+        const dateC = parseFloat(a.getAttribute("data-sort-date")) || 0;
+        const dateD = parseFloat(b.getAttribute("data-sort-date")) || 0;
+        console.log(`Comparing dates: ${dateC} vs ${dateD}`);
+        return dateC - dateD;
+
+      case "title-az":
+        // A to Z
+        const titleA = a.getAttribute("data-sort-title") || "";
+        const titleB = b.getAttribute("data-sort-title") || "";
+        return titleA.localeCompare(titleB);
+
+      case "title-za":
+        // Z to A
+        const titleC = a.getAttribute("data-sort-title") || "";
+        const titleD = b.getAttribute("data-sort-title") || "";
+        return titleD.localeCompare(titleC);
+
+      default:
+        return 0;
+    }
+  });
+
+  // Re-append cards in sorted order
+  cards.forEach((card) => container.appendChild(card));
+
+  console.log(`Cards sorted by ${sortBy} in DOM using data attributes`);
 }
 
 // Track if filter/sort is currently being applied to prevent concurrent executions
@@ -192,13 +249,16 @@ export async function applyFiltersAndSort() {
     let filtered = filterByWorkArea(selectedWorkAreas);
     console.log(`After filtering: ${filtered.length} results`);
 
-    // Sort results
+    // Sort results (for pagination compatibility)
     let sorted = sortResults(filtered, selectedSort);
     console.log(`After sorting: ${sorted.length} results`);
 
     // Render filtered and sorted results
     const { renderResults } = await import("./search-card-template.js");
     renderResults(sorted, "search-results-list");
+
+    // Apply DOM-based sorting using data attributes
+    sortCardsInDOM(selectedSort);
 
     // Display applied filters
     const currentFilters = getCurrentFilters();

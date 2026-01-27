@@ -65,6 +65,18 @@ function createSearchCard(result) {
   const card = document.createElement("div");
   card.className = "aikb-search-card";
 
+  // Add data attributes for sorting
+  // Relevance: use rank (lower is better) or score (higher is better), default to 0
+  const relevance = result.rank ? -result.rank : result.score || 0;
+  card.setAttribute("data-sort-relevance", relevance);
+
+  // Title: store for alphabetical sorting
+  card.setAttribute("data-sort-title", result.title);
+
+  // Date: store timestamp for date sorting
+  const dateTimestamp = result.dateTimestamp || 0;
+  card.setAttribute("data-sort-date", dateTimestamp);
+
   // Create inner wrapper
   const inner = document.createElement("div");
   inner.className = "aikb-search-card__inner";

@@ -134,23 +134,33 @@ function processAndRenderResults(data, source = "unknown") {
   const results = Array.isArray(data) ? data : [];
 
   // Map to card template format
-  const mappedResults = results.map((result) => ({
-    title: result.title || "",
-    summary: result.description || result.summary || "",
-    listMetadata: {
-      "Work area": result["work-area"] || [],
-      Roles: result.roles || [],
-      Benefits: result.benefits || [],
-    },
-    date: result["last-updated"]
-      ? new Date(result["last-updated"]).toLocaleDateString("en-AU", {
-          year: "numeric",
-          month: "long",
-        })
-      : "",
-    liveUrl: result.url || result.liveUrl || "",
-    submittedBy: result["submitted-by"] || "",
-  }));
+  const mappedResults = results.map((result) => {
+    // Parse timestamp for sorting
+    const dateTimestamp = result["last-updated"]
+      ? new Date(result["last-updated"]).getTime()
+      : 0;
+
+    return {
+      title: result.title || "",
+      summary: result.description || result.summary || "",
+      listMetadata: {
+        "Work area": result["work-area"] || [],
+        Roles: result.roles || [],
+        Benefits: result.benefits || [],
+      },
+      date: result["last-updated"]
+        ? new Date(result["last-updated"]).toLocaleDateString("en-AU", {
+            year: "numeric",
+            month: "long",
+          })
+        : "",
+      dateTimestamp: dateTimestamp,
+      liveUrl: result.url || result.liveUrl || "",
+      submittedBy: result["submitted-by"] || "",
+      rank: result.rank || 0,
+      score: result.score || 0,
+    };
+  });
 
   console.log(`Rendering ${mappedResults.length} cards from ${source}`);
 

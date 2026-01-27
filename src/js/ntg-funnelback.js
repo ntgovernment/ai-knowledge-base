@@ -190,15 +190,36 @@ const ntgFunnelback = {
     );
 
     // Map results to card template format
-    const mappedResults = filteredResults.map((result) => ({
-      title: result.title || "",
-      summary: result.summary || "",
-      listMetadata: result.listMetadata || {},
-      date: result.date || "",
-      liveUrl: result.liveUrl || "",
-      rank: result.rank || 0,
-      score: result.score || 0,
-    }));
+    const mappedResults = filteredResults.map((result) => {
+      // Get date from either "last-updated" (fallback JSON) or "date" (Funnelback API)
+      const rawDate = result["last-updated"] || result.date;
+
+      // Parse timestamp for sorting
+      const dateTimestamp = rawDate ? new Date(rawDate).getTime() : 0;
+
+      // Format date for display
+      const formattedDate = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-AU", {
+            year: "numeric",
+            month: "long",
+          })
+        : "";
+
+      return {
+        title: result.title || result.description || "",
+        summary: result.description || result.summary || "",
+        listMetadata: result.listMetadata || {
+          "Work area": result["work-area"] || [],
+          Roles: result.roles || [],
+          Benefits: result.benefits || [],
+        },
+        date: formattedDate,
+        dateTimestamp: dateTimestamp,
+        liveUrl: result.url || result.liveUrl || "",
+        rank: result.rank || 0,
+        score: result.score || 0,
+      };
+    });
 
     // Store results for filtering/sorting
     storeResults(mappedResults);
