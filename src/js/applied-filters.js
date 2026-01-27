@@ -13,7 +13,6 @@ export function displayAppliedFilters(filters) {
   const clearAllBtn = document.getElementById("clearAllBtn");
 
   if (!section || !container) {
-    console.warn("Applied filters section not found");
     return;
   }
 
@@ -155,7 +154,6 @@ function createFilterPill(label, value, badgeClass, filterType, filterValue) {
  * @param {string} filterValue - Specific value to remove (optional)
  */
 async function removeFilter(filterType, filterValue) {
-  console.log(`Removing filter: ${filterType}`, filterValue);
 
   switch (filterType) {
     case "search":
@@ -211,7 +209,6 @@ async function removeFilter(filterType, filterValue) {
  * Clear all filters
  */
 export async function clearAllFilters() {
-  console.log("Clearing all filters");
 
   // Clear search input
   const searchInput = document.getElementById("search");

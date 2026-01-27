@@ -12,12 +12,8 @@ import "./pagination.js";
 import { initClearAllButton } from "./applied-filters.js";
 
 // Confirm bundle loaded successfully
-console.log("[aikb] Landing page bundle loaded successfully");
-console.log("[aikb] jQuery available:", typeof window.jQuery !== "undefined");
-console.log("[aikb] DOM ready state:", document.readyState);
 
 // Initialize clear all button after page loads
 window.addEventListener("load", function () {
   initClearAllButton();
-  console.log("[aikb] Applied filters initialized");
 });

@@ -141,7 +141,6 @@ export function calculateWorkAreaCounts(workAreas, results) {
  */
 export function setStaticWorkAreas(workAreas) {
   staticWorkAreas = workAreas;
-  console.log(`Stored ${workAreas.length} static work areas`);
 }
 
 /**
@@ -151,7 +150,6 @@ export function setStaticWorkAreas(workAreas) {
 function populateWorkAreaDropdown(workAreas) {
   const dropdown = document.getElementById("document_type");
   if (!dropdown) {
-    console.warn("Work area dropdown #document_type not found");
     return;
   }
 
@@ -174,7 +172,6 @@ function populateWorkAreaDropdown(workAreas) {
     dropdown.appendChild(option);
   });
 
-  console.log(`Populated work area dropdown with ${workAreas.length} options`);
 
   // Initialize multi-select after populating options
   if (multiSelectInstance) {
@@ -200,7 +197,6 @@ function populateWorkAreaDropdown(workAreas) {
 function populateSortDropdown() {
   const container = document.getElementById("select-question-3");
   if (!container) {
-    console.warn("Sort dropdown container #select-question-3 not found");
     return;
   }
 
@@ -265,7 +261,6 @@ function populateSortDropdown() {
     dropdown.appendChild(option);
   });
 
-  console.log(`Populated sort dropdown with ${sortOptions.length} options`);
 }
 
 /**
@@ -318,19 +313,15 @@ function addDropdownIcons() {
  * @param {Array<string>} workAreasFromFetch - Optional pre-fetched work areas list
  */
 export function initializeDropdowns(results, workAreasFromFetch = null) {
-  console.log("Initializing dropdowns with search data...");
 
   // Use static work areas if available, otherwise extract from results
   let workAreas;
   if (workAreasFromFetch && workAreasFromFetch.length > 0) {
     workAreas = workAreasFromFetch;
-    console.log("Using pre-fetched static work areas list");
   } else if (staticWorkAreas.length > 0) {
     workAreas = staticWorkAreas;
-    console.log("Using stored static work areas list");
   } else {
     workAreas = extractWorkAreas(results);
-    console.log("Extracted work areas from results (fallback)");
   }
 
   populateWorkAreaDropdown(workAreas);
@@ -347,7 +338,6 @@ export function initializeDropdowns(results, workAreasFromFetch = null) {
   // Add chevron icons
   addDropdownIcons();
 
-  console.log("Dropdowns initialized successfully");
 }
 
 /**
@@ -362,7 +352,6 @@ export function getMultiSelectInstance() {
  * Initialize on page load with empty state
  */
 export function initializeEmptyDropdowns() {
-  console.log("Initializing dropdowns with default state...");
 
   // Dynamically create the search input and icon
   populateSearchInput();
@@ -376,5 +365,4 @@ export function initializeEmptyDropdowns() {
   // Add chevron icons
   addDropdownIcons();
 
-  console.log("Empty dropdowns initialized");
 }

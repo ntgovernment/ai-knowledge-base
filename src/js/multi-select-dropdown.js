@@ -215,7 +215,6 @@ export class MultiSelectDropdown {
 
   toggle() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): toggle");
       return;
     }
     if (this.isOpen) {
@@ -227,7 +226,6 @@ export class MultiSelectDropdown {
 
   open() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): open");
       return;
     }
     this.isOpen = true;
@@ -243,7 +241,6 @@ export class MultiSelectDropdown {
 
   close() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): close");
       return;
     }
     this.isOpen = false;
@@ -253,7 +250,6 @@ export class MultiSelectDropdown {
 
   handleOk() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): handleOk");
       return;
     }
     // Get checked values
@@ -283,7 +279,6 @@ export class MultiSelectDropdown {
 
   handleCancel() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): handleCancel");
       return;
     }
     // Revert to previous selections
@@ -296,9 +291,6 @@ export class MultiSelectDropdown {
 
   handleSelectAll(e) {
     if (!this.container || !this.dropdownPanel) {
-      console.warn(
-        "MultiSelect method called after destroy(): handleSelectAll",
-      );
       return;
     }
     const isChecked = e.target.checked;
@@ -316,9 +308,6 @@ export class MultiSelectDropdown {
 
   updateSelectAllState() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn(
-        "MultiSelect method called after destroy(): updateSelectAllState",
-      );
       return;
     }
     const selectAllCheckbox = this.dropdownPanel.querySelector(
@@ -344,9 +333,6 @@ export class MultiSelectDropdown {
 
   updateCheckboxes() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn(
-        "MultiSelect method called after destroy(): updateCheckboxes",
-      );
       return;
     }
     const checkboxes = this.dropdownPanel.querySelectorAll(
@@ -362,9 +348,6 @@ export class MultiSelectDropdown {
 
   updateDisplayText() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn(
-        "MultiSelect method called after destroy(): updateDisplayText",
-      );
       return;
     }
     const textElement = this.displayButton.querySelector(
@@ -394,7 +377,6 @@ export class MultiSelectDropdown {
 
   triggerChange() {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): triggerChange");
       return;
     }
     // Dispatch custom event
@@ -410,8 +392,6 @@ export class MultiSelectDropdown {
       const changeEvent = new Event("change", { bubbles: true });
       this.selectElement.dispatchEvent(changeEvent);
     }
-
-    console.log("Multi-select changed:", Array.from(this.selectedValues));
   }
 
   syncNativeSelect() {
@@ -447,7 +427,6 @@ export class MultiSelectDropdown {
    */
   updateCounts(countsMap) {
     if (!this.container || !this.dropdownPanel) {
-      console.warn("MultiSelect method called after destroy(): updateCounts");
       return;
     }
     // Update native select options
@@ -539,8 +518,6 @@ export class MultiSelectDropdown {
 
     // Update display text to reflect new labels
     this.updateDisplayText();
-
-    console.log("Multi-select counts updated");
   }
 
   destroy() {
@@ -592,8 +569,6 @@ export class MultiSelectDropdown {
     this.displayButton = null;
     this.dropdownPanel = null;
     this._boundHandlers = null;
-
-    console.log("Multi-select instance destroyed");
   }
 }
 
@@ -607,7 +582,6 @@ export function initMultiSelect(selector) {
     typeof selector === "string" ? document.querySelector(selector) : selector;
 
   if (!element) {
-    console.warn("Multi-select element not found:", selector);
     return null;
   }
 

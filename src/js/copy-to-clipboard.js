@@ -50,7 +50,6 @@ function addCopyButton(wrapper, pre) {
         await navigator.clipboard.writeText(text);
         showCopiedState(btn);
       } catch (err) {
-        console.error("Clipboard API failed:", err);
         showError();
       }
       return;
@@ -59,7 +58,6 @@ function addCopyButton(wrapper, pre) {
       fallbackCopy(text);
       showCopiedState(btn);
     } catch (err) {
-      console.error("Fallback copy failed:", err);
       showError();
     }
   });

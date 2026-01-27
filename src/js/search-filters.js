@@ -28,9 +28,6 @@ export function storeResults(results) {
   });
 
   allResults = deduplicatedResults;
-  console.log(
-    `Stored ${allResults.length} results for filtering/sorting (${results.length - allResults.length} duplicates removed)`,
-  );
 }
 
 /**
@@ -151,8 +148,6 @@ function sortCardsInDOM(sortBy) {
 
   const cards = Array.from(container.querySelectorAll(".aikb-search-card"));
 
-  console.log(`Sorting ${cards.length} cards by ${sortBy}`);
-
   cards.sort((a, b) => {
     switch (sortBy) {
       case "relevance":
@@ -165,14 +160,12 @@ function sortCardsInDOM(sortBy) {
         // Newer dates first (higher timestamp)
         const dateA = parseFloat(a.getAttribute("data-sort-date")) || 0;
         const dateB = parseFloat(b.getAttribute("data-sort-date")) || 0;
-        console.log(`Comparing dates: ${dateA} vs ${dateB}`);
         return dateB - dateA;
 
       case "date-oldest":
         // Older dates first (lower timestamp)
         const dateC = parseFloat(a.getAttribute("data-sort-date")) || 0;
         const dateD = parseFloat(b.getAttribute("data-sort-date")) || 0;
-        console.log(`Comparing dates: ${dateC} vs ${dateD}`);
         return dateC - dateD;
 
       case "title-az":
@@ -194,8 +187,6 @@ function sortCardsInDOM(sortBy) {
 
   // Re-append cards in sorted order
   cards.forEach((card) => container.appendChild(card));
-
-  console.log(`Cards sorted by ${sortBy} in DOM using data attributes`);
 }
 
 // Track if filter/sort is currently being applied to prevent concurrent executions
@@ -207,7 +198,6 @@ let isApplying = false;
 export async function applyFiltersAndSort() {
   // Prevent concurrent executions
   if (isApplying) {
-    console.log("Filter/sort already in progress, skipping duplicate call");
     return;
   }
 
@@ -221,7 +211,6 @@ export async function applyFiltersAndSort() {
       document.getElementById("sort") || document.getElementById("owner");
 
     if (!workAreaDropdown || !sortDropdown) {
-      console.warn("Required dropdowns not found (document_type or sort)");
       return;
     }
 
@@ -239,19 +228,11 @@ export async function applyFiltersAndSort() {
 
     const selectedSort = sortDropdown.value || "relevance";
 
-    console.log(
-      `Applying filters - Work Areas: [${selectedWorkAreas.join(
-        ", ",
-      )}], Sort: "${selectedSort}"`,
-    );
-
     // Filter by work areas
     let filtered = filterByWorkArea(selectedWorkAreas);
-    console.log(`After filtering: ${filtered.length} results`);
 
     // Sort results (for pagination compatibility)
     let sorted = sortResults(filtered, selectedSort);
-    console.log(`After sorting: ${sorted.length} results`);
 
     // Render filtered and sorted results
     const { renderResults } = await import("./search-card-template.js");
@@ -277,7 +258,6 @@ let listenersInitialized = false;
 export function initializeFiltersAndSort() {
   // Prevent multiple initializations that would create duplicate event listeners
   if (listenersInitialized) {
-    console.log("Filter and sort listeners already initialized, skipping");
     return;
   }
 
@@ -288,7 +268,6 @@ export function initializeFiltersAndSort() {
 
   if (workAreaDropdown) {
     workAreaDropdown.addEventListener("change", function () {
-      console.log("Work area filter changed");
       applyFiltersAndSort();
     });
 
@@ -299,7 +278,6 @@ export function initializeFiltersAndSort() {
       multiSelectContainer.classList.contains("aikb-multiselect-container")
     ) {
       multiSelectContainer.addEventListener("multiselect-change", () => {
-        console.log("Work area filter applied via custom multi-select");
         applyFiltersAndSort();
       });
     }
@@ -307,7 +285,6 @@ export function initializeFiltersAndSort() {
     // Legacy SumoSelect support: trigger filtering when the OK button is clicked/closed
     if (typeof window.$ !== "undefined") {
       window.$(workAreaDropdown).on("sumo:closed", function () {
-        console.log("Work area filter applied via SumoSelect OK");
         applyFiltersAndSort();
       });
     }
@@ -315,11 +292,9 @@ export function initializeFiltersAndSort() {
 
   if (sortDropdown) {
     sortDropdown.addEventListener("change", function () {
-      console.log(`Sort changed to: ${this.value}`);
       applyFiltersAndSort();
     });
   }
 
   listenersInitialized = true;
-  console.log("Filter and sort listeners initialized");
 }
