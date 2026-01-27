@@ -87,7 +87,7 @@
     "title": "Creating training materials for new staff",
     "url": "https://ntgcentral.nt.gov.au/ai-knowledge-base/articles/creating-training-materials-for-new-staff",
     "description": "Develop engaging onboarding guides or e-learning modules tailored to specific departments.",
-    "work-area": ["Training", "Workforce"],
+    "work-area": ["Training"],
     "roles": ["Managers", "Workforce professionals"],
     "benefits": ["Managers", "Workforce professionals"],
     "submitted-by": "Sarah Strzelecki",
@@ -148,5 +148,169 @@
     "submitted-by": "Sarah Strzelecki",
     "agency": "Department of Corporate and Digital Development",
     "last-updated": "2026-01-16 15:42:23"
+  },
+  {
+    "title": "Improve your emails before you send them",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/improve-your-emails-before-you-send-them",
+    "description": "AI tools can help you write more clearly and ensure your email is understood.",
+    "work-area": ["All work areas"],
+    "roles": [
+      "Administration",
+      "Customer Service",
+      "Policy",
+      "Legal",
+      "Executive",
+      "Marketing and Communications",
+      "Everyone"
+    ],
+    "benefits": [
+      "Administration",
+      "Customer Service",
+      "Policy",
+      "Legal",
+      "Executive",
+      "Marketing and Communications",
+      "Everyone"
+    ],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:16:30"
+  },
+  {
+    "title": "Summarise your completed research with Copilot free",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/summarise-your-completed-research-with-copilot-free",
+    "description": "Copilot free can summarise complex documents into clear points that save time and support faster decisions.",
+    "work-area": ["All work areas"],
+    "roles": ["Policy", "Legal", "Records Management", "IT", "Secretariat"],
+    "benefits": ["Policy", "Legal", "Records Management", "IT", "Secretariat"],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:19:21"
+  },
+  {
+    "title": "Keep records when you are using Copilot or other AI tools",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/keep-records-when-you-are-using-copilot-or-other-ai-tools",
+    "description": "AI can help NT Government staff quickly prepare compliant records for TRM by streamlining how prompts and outputs are captured.",
+    "work-area": ["All work areas"],
+    "roles": [
+      "Records Management",
+      "Administration",
+      "Legal",
+      "Policy",
+      "IT",
+      "Everyone"
+    ],
+    "benefits": [
+      "Records Management",
+      "Administration",
+      "Legal",
+      "Policy",
+      "IT",
+      "Everyone"
+    ],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:22:14"
+  },
+  {
+    "title": "Use good AI prompts for text or image creation",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-good-ai-prompts-for-text-or-image-creation",
+    "description": "Better AI outputs boost productivity by cutting the time people spend fixing or re‑asking for results.",
+    "work-area": ["All work areas"],
+    "roles": ["Everyone"],
+    "benefits": ["Everyone"],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:27:57"
+  },
+  {
+    "title": "Use Copilot with an Excel workbook to get insights from your data",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-copilot-with-an-excel-workbook-to-get-insights-from-your-data",
+    "description": "Save time when analysing your Excel workbook by using AI to create clear, visual representations of your data.",
+    "work-area": ["All work areas"],
+    "roles": ["Policy", "IT", "Finance", "Executive", "Everyone"],
+    "benefits": ["Policy", "IT", "Finance", "Executive", "Everyone"],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:31:53"
+  },
+  {
+    "title": "Be transparent when you use AI",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/be-transparent-when-you-use-ai",
+    "description": "Increasing visibility of the NT Government’s ethical, professional use of AI to strengthen trust across departments and with clients.",
+    "work-area": ["All work areas"],
+    "roles": ["Everyone"],
+    "benefits": ["Everyone"],
+    "submitted-by": "Sarah Strzelecki",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:33:53"
+  },
+  {
+    "title": "Simplify your writing and convert documents to plain language",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/simplify-your-writing-and-convert-documents-to-plain-language",
+    "description": "Copilot free can quickly rewrite complex text into clear, plain language, saving time and improving accessibility for diverse audiences.",
+    "work-area": ["All work areas"],
+    "roles": [
+      "Policy",
+      "Marketing and Communications",
+      "Executive",
+      "Legal",
+      "Customer Service"
+    ],
+    "benefits": [
+      "Policy",
+      "Marketing and Communications",
+      "Executive",
+      "Legal",
+      "Customer Service"
+    ],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 07:10:47"
+  },
+  {
+    "title": "Use Copilot free to quickly write meeting records",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-copilot-free-to-quickly-write-meeting-records",
+    "description": "Using AI helps you write documents faster and keep track of actions more clearly.",
+    "work-area": ["All work areas"],
+    "roles": ["Administration", "Executive", "Project Teams"],
+    "benefits": ["Administration", "Executive", "Project Teams"],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 07:23:35"
+  },
+  {
+    "title": "Prevent Copilot and other AI from capturing information from confidential virutal meetings",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/prevent-copilot-and-other-ai-from-capturing-information-from-confidential-virutal-meetings",
+    "description": "Turning off AI protects confidential information and ensures compliance with NT Government obligations.",
+    "work-area": ["All work areas"],
+    "roles": ["Executive", "Legal", "Policy", "IT"],
+    "benefits": ["Executive", "Legal", "Policy", "IT"],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:47:54"
+  },
+  {
+    "title": "Draft an executive briefing note with support from AI",
+    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/draft-an-executive-briefing-note-with-support-from-ai",
+    "description": "How AI can help you deliver faster turnaround times for briefing materials, more structured and consistent content for executive briefings, increased clarity for decision‑makers.",
+    "work-area": ["All work areas"],
+    "roles": [
+      "Administration",
+      "Policy",
+      "Ministerial",
+      "Secretariat",
+      "Executive"
+    ],
+    "benefits": [
+      "Administration",
+      "Policy",
+      "Ministerial",
+      "Secretariat",
+      "Executive"
+    ],
+    "submitted-by": "Digital Policy",
+    "agency": "Department of Corporate and Digital Development",
+    "last-updated": "2026-01-20 08:50:10"
   }
 ]

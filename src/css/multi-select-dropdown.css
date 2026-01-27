@@ -29,8 +29,14 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family:
+    Roboto,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-size: 16px;
   line-height: 24px;
   transition: outline-color 0.2s ease;
@@ -124,6 +130,24 @@
   background-color: var(--clr-surface-secondary, #f5f6f7);
 }
 
+/* Disabled option state */
+.aikb-multiselect-option.aikb-multiselect-option-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.aikb-multiselect-option.aikb-multiselect-option-disabled
+  .aikb-multiselect-checkbox {
+  cursor: not-allowed;
+}
+
+.aikb-multiselect-option.aikb-multiselect-option-disabled
+  .aikb-multiselect-label {
+  color: var(--clr-text-helper, #606a80);
+  cursor: not-allowed;
+}
+
 .aikb-multiselect-option-all {
   border-bottom: 1px solid var(--clr-stroke-default, #afb5bf);
   margin-bottom: 4px;
@@ -142,8 +166,14 @@
 .aikb-multiselect-label {
   flex: 1;
   color: var(--clr-text-default, #102040);
-  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family:
+    Roboto,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-size: 16px;
   line-height: 24px;
   cursor: pointer;
@@ -205,8 +235,14 @@
   border: none;
   background: var(--clr-surface-primary, white);
   color: var(--clr-text-default, #102040);
-  font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family:
+    Roboto,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
