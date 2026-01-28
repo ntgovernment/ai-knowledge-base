@@ -458,7 +458,7 @@ function renderSearchResults(results) {
         </div>
       </div>
     </div>
-  `
+  `,
     )
     .join("");
 
@@ -544,7 +544,7 @@ $(".pagination a").on("click", function (e) {
     {
       scrollTop: $("#search-results-list").offset().top - 100,
     },
-    300
+    300,
   );
 
   // Fetch and display results
@@ -665,7 +665,7 @@ AU.accordion.Toggle(
     afterClose: function () {
       // Content fully hidden
     },
-  }
+  },
 );
 
 // Open accordion
@@ -928,7 +928,7 @@ $("table.ntgc-table").tablesort();
 
 /* Focus (Keyboard) */
 .au-btn:focus {
-  outline: 3px solid #90d898;
+  outline: 3px solid #8fc38f;
   outline-offset: 2px;
 }
 
