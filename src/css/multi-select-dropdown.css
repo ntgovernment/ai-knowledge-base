@@ -158,7 +158,7 @@
   margin: 0;
   margin-right: 12px;
   cursor: pointer;
-  accent-color: var(--clr-primary, #208820);
+  accent-color: #102040;
 }
 
 .aikb-multiselect-label {
