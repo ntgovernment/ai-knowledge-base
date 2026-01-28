@@ -91,9 +91,6 @@ function extractWorkAreas(results) {
 
   // Convert to array and sort alphabetically
   return Array.from(workAreaSet).sort((a, b) => {
-    // Put "All work areas" first if it exists
-    if (a === "All work areas") return -1;
-    if (b === "All work areas") return 1;
     return a.localeCompare(b);
   });
 }
@@ -126,11 +123,6 @@ export function calculateWorkAreaCounts(workAreas, results) {
       }
     }
   });
-
-  // Set count for "All work areas" to total results
-  if (counts.has("All work areas")) {
-    counts.set("All work areas", results.length);
-  }
 
   return counts;
 }
@@ -171,7 +163,6 @@ function populateWorkAreaDropdown(workAreas) {
     option.textContent = workArea;
     dropdown.appendChild(option);
   });
-
 
   // Initialize multi-select after populating options
   if (multiSelectInstance) {
@@ -260,7 +251,6 @@ function populateSortDropdown() {
     if (opt.selected) option.selected = true;
     dropdown.appendChild(option);
   });
-
 }
 
 /**
@@ -313,7 +303,6 @@ function addDropdownIcons() {
  * @param {Array<string>} workAreasFromFetch - Optional pre-fetched work areas list
  */
 export function initializeDropdowns(results, workAreasFromFetch = null) {
-
   // Use static work areas if available, otherwise extract from results
   let workAreas;
   if (workAreasFromFetch && workAreasFromFetch.length > 0) {
@@ -337,7 +326,6 @@ export function initializeDropdowns(results, workAreasFromFetch = null) {
 
   // Add chevron icons
   addDropdownIcons();
-
 }
 
 /**
@@ -352,7 +340,6 @@ export function getMultiSelectInstance() {
  * Initialize on page load with empty state
  */
 export function initializeEmptyDropdowns() {
-
   // Dynamically create the search input and icon
   populateSearchInput();
 
@@ -364,5 +351,4 @@ export function initializeEmptyDropdowns() {
 
   // Add chevron icons
   addDropdownIcons();
-
 }
