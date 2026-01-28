@@ -38,13 +38,13 @@ The AI Knowledge Base implements a user profile system that persists user inform
 ```javascript
 // localStorage keys and values
 {
-  "user_name": "Roy Galet",              // Full name
-  "user_email": "roy.galet@nt.gov.au",   // Email address
-  "user_phone": "+61889996162",          // Contact number
-  "user_title": "Manager Frontend Design", // Job title
-  "user_location": "Charles Darwin Centre 10th Floor", // Office location
-  "user_department": "68",               // Department code
-  "user_asset_id": "770097"              // Unique identifier
+  "user_name": "Sarah Thompson",              // Full name
+  "user_email": "sarah.thompson@nt.gov.au",   // Email address
+  "user_phone": "+61889991234",               // Contact number
+  "user_title": "Senior Policy Advisor",      // Job title
+  "user_location": "Darwin Plaza 3rd Floor",  // Office location
+  "user_department": "72",                    // Department code
+  "user_asset_id": "845621"                   // Unique identifier
 }
 ```
 
@@ -128,15 +128,15 @@ function retrieveUserProfile() {
 
 ```javascript
 // Store a single value
-localStorage.setItem("user_name", "Roy Galet");
+localStorage.setItem("user_name", "Sarah Thompson");
 
 // Store complex data (must stringify)
 localStorage.setItem(
   "user_data",
   JSON.stringify({
-    name: "Roy Galet",
-    email: "roy.galet@nt.gov.au",
-  })
+    name: "Sarah Thompson",
+    email: "sarah.thompson@nt.gov.au",
+  }),
 );
 ```
 
@@ -145,11 +145,11 @@ localStorage.setItem(
 ```javascript
 // Retrieve a value
 const userName = localStorage.getItem("user_name");
-// Result: "Roy Galet"
+// Result: "Sarah Thompson"
 
 // Retrieve complex data
 const userData = JSON.parse(localStorage.getItem("user_data"));
-// Result: {name: "Roy Galet", email: "..."}
+// Result: {name: "Sarah Thompson", email: "..."}
 ```
 
 #### Removing Data
@@ -182,19 +182,19 @@ localStorage.clear();
 <div class="ntgc-profile">
   <button class="ntgc-profile__toggle">
     <span class="ntgc-avatar">
-      <span class="ntgc-avatar__initial">RG</span>
+      <span class="ntgc-avatar__initial">ST</span>
       <!-- Or loaded image: -->
-      <img src="[avatar-url]" alt="Roy Galet" />
+      <img src="[avatar-url]" alt="Sarah Thompson" />
     </span>
-    <span class="ntgc-profile__name">Roy Galet</span>
+    <span class="ntgc-profile__name">Sarah Thompson</span>
   </button>
 
   <div class="ntgc-profile__menu" style="display:none;">
     <div class="ntgc-profile__info">
-      <p class="ntgc-profile__email">roy.galet@nt.gov.au</p>
-      <p class="ntgc-profile__phone">+61889996162</p>
-      <p class="ntgc-profile__title">Manager Frontend Design</p>
-      <p class="ntgc-profile__location">Charles Darwin Centre 10th Floor</p>
+      <p class="ntgc-profile__email">sarah.thompson@nt.gov.au</p>
+      <p class="ntgc-profile__phone">+61889991234</p>
+      <p class="ntgc-profile__title">Senior Policy Advisor</p>
+      <p class="ntgc-profile__location">Darwin Plaza 3rd Floor</p>
     </div>
 
     <div class="ntgc-profile__links">
@@ -231,7 +231,7 @@ localStorage.clear();
 
 ```html
 <div class="ntgc-avatar">
-  <span class="ntgc-avatar__initial">RG</span>
+  <span class="ntgc-avatar__initial">ST</span>
 </div>
 ```
 
@@ -321,10 +321,10 @@ var deptLink = departmentMap[userDept].intranet;
     ],
     contacts: [
       {
-        id: '770097',
-        name: 'Roy Galet',
-        email: 'roy.galet@nt.gov.au',
-        title: 'Manager Frontend Design'
+        id: '845621',
+        name: 'Sarah Thompson',
+        email: 'sarah.thompson@nt.gov.au',
+        title: 'Senior Policy Advisor'
       }
     ],
     pages: [
@@ -422,7 +422,7 @@ var api = new Squiz_Matrix_API({
 
 ```javascript
 api.getMetadata({
-  asset_id: 770097, // User asset ID
+  asset_id: 845621, // User asset ID
   dataCallback: function (data) {
     console.log("User metadata:", data);
     // Update profile display
@@ -438,7 +438,7 @@ api.getMetadata({
 
 ```javascript
 api.setMetadata({
-  asset_id: 770097, // What to update
+  asset_id: 845621, // What to update
   field_id: "user_preferences", // Which field
   field_val: "dark_mode", // New value
   dataCallback: function (data) {
@@ -451,7 +451,7 @@ api.setMetadata({
 
 ```javascript
 api.setMetadataAllFields({
-  asset_id: 770097,
+  asset_id: 845621,
   field_info: {
     user_preferences: "dark_mode",
     last_login: "2025-12-12",
@@ -558,7 +558,7 @@ function logout() {
 
 ```javascript
 // ✓ Good - store non-sensitive profile info
-localStorage.setItem("user_name", "Roy Galet");
+localStorage.setItem("user_name", "Sarah Thompson");
 
 // ✗ Bad - never store sensitive data
 localStorage.setItem("user_password", "secret123"); // DON'T DO THIS
@@ -647,7 +647,7 @@ function displayUserProfile(profile) {
     profile.name
       .split(" ")
       .map((n) => n[0])
-      .join("")
+      .join(""),
   );
 
   // Update profile menu
