@@ -484,6 +484,10 @@
   .aikb-search-card__metadata {
     align-items: flex-start;
   }
+
+  .aikb-search-card__useful-value {
+    text-align: left;
+  }
 }
 /* Multi-Select Dropdown Styles */
 .aikb-multiselect-container {
