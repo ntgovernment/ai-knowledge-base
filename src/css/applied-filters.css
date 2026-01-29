@@ -46,6 +46,11 @@
   color: #102040;
 }
 
+.filter-pill:focus-within {
+  outline: 4px solid #88bc88;
+  outline-offset: 0;
+}
+
 /* Ensure badge color utility classes don't override the outline/pill look */
 .filter-pill.badge,
 .filter-pill.badge.bg-success,
@@ -69,7 +74,7 @@
 .pill-remove {
   background: none;
   border: none;
-  color: #102040;
+  color: #208820;
   cursor: pointer;
   padding: 0;
   margin-left: 6px;
@@ -84,9 +89,7 @@
 }
 
 .pill-remove:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline: none;
 }
 
 #clearAllBtn {

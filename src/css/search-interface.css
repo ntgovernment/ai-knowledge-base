@@ -291,6 +291,13 @@ div.SumoSelect.sumo_area {
   background-color: #102040 !important;
 }
 
+/* SumoSelect focus outline */
+.SumoSelect:focus-within,
+.SumoSelect.open {
+  outline: 4px solid #88bc88 !important;
+  outline-offset: 0 !important;
+}
+
 .aikb-dropdown-icon {
   position: absolute;
   pointer-events: none;
