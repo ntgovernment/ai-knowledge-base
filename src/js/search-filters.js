@@ -31,17 +31,27 @@ export function storeResults(results) {
 }
 
 /**
- * Filter results by work area
- * @param {string} selectedWorkArea - Selected work area value (or "All work areas")
+ * Filter results by work area(s)
+ * @param {Array<string>|string} selectedWorkAreas - Selected work area values (array or single string)
  * @returns {Array} - Filtered results
  */
-function filterByWorkArea(selectedWorkArea) {
-  // If "All work areas" or no selection, return all results
-  if (!selectedWorkArea || selectedWorkArea === "All work areas") {
+function filterByWorkArea(selectedWorkAreas) {
+  // Normalize to array
+  let workAreasArray = [];
+  if (Array.isArray(selectedWorkAreas)) {
+    workAreasArray = selectedWorkAreas.filter(
+      (area) => area && area !== "All work areas",
+    );
+  } else if (selectedWorkAreas && selectedWorkAreas !== "All work areas") {
+    workAreasArray = [selectedWorkAreas];
+  }
+
+  // If no valid work areas selected, return all results
+  if (workAreasArray.length === 0) {
     return allResults;
   }
 
-  // Filter results to those containing the selected work area
+  // Filter results using AND logic: result must contain ALL selected work areas
   const filtered = allResults.filter((result) => {
     if (!result.listMetadata || !result.listMetadata["Work area"]) {
       return false;
@@ -54,8 +64,10 @@ function filterByWorkArea(selectedWorkArea) {
       return false;
     }
 
-    // Check if the selected work area is in this result's work areas
-    return resultWorkAreas.includes(selectedWorkArea);
+    // Check if ALL selected work areas are in this result's work areas (AND logic)
+    return workAreasArray.every((selectedArea) =>
+      resultWorkAreas.includes(selectedArea),
+    );
   });
 
   return filtered;
@@ -200,12 +212,23 @@ export async function applyFiltersAndSort() {
       return;
     }
 
-    // Get selected work area (single value)
-    const selectedWorkArea = workAreaDropdown.value || "All work areas";
+    // Get selected work areas (array from SumoSelect or native multi-select)
+    let selectedWorkAreas;
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to get selected values as array
+      selectedWorkAreas = window.jQuery("#document_type").val() || [];
+    } else {
+      // Fallback to native multi-select behavior
+      const selectedOptions = Array.from(
+        workAreaDropdown.selectedOptions || [],
+      );
+      selectedWorkAreas = selectedOptions.map((option) => option.value);
+    }
+
     const selectedSort = sortDropdown.value || "relevance";
 
-    // Filter by work area
-    let filtered = filterByWorkArea(selectedWorkArea);
+    // Filter by work area(s)
+    let filtered = filterByWorkArea(selectedWorkAreas);
 
     // Sort results (for pagination compatibility)
     let sorted = sortResults(filtered, selectedSort);

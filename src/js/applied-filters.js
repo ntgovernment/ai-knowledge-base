@@ -33,20 +33,21 @@ export function displayAppliedFilters(filters) {
     container.appendChild(pill);
   }
 
-  // Add work area pill (primary blue) - only show if not "All work areas"
-  if (
-    filters.workArea &&
-    filters.workArea !== "All work areas" &&
-    filters.workArea.trim()
-  ) {
-    hasFilters = true;
-    const pill = createFilterPill(
-      "Work area",
-      filters.workArea,
-      "bg-primary",
-      "work-area",
-    );
-    container.appendChild(pill);
+  // Add work area pills (primary blue) - create separate pill for each selected work area
+  if (filters.workAreas && Array.isArray(filters.workAreas)) {
+    filters.workAreas.forEach((workArea) => {
+      if (workArea && workArea !== "All work areas" && workArea.trim()) {
+        hasFilters = true;
+        const pill = createFilterPill(
+          "Work area",
+          workArea,
+          "bg-primary",
+          "work-area",
+          workArea, // Pass work area value for individual removal
+        );
+        container.appendChild(pill);
+      }
+    });
   }
 
   // Do not add sort pill
@@ -153,10 +154,24 @@ async function removeFilter(filterType, filterValue) {
       break;
 
     case "work-area":
-      // Reset work area dropdown to "All work areas"
+      // Remove specific work area from multi-select
       const workAreaDropdown = document.getElementById("document_type");
-      if (workAreaDropdown) {
-        workAreaDropdown.value = "All work areas";
+      if (workAreaDropdown && filterValue) {
+        if (window.jQuery && window.jQuery.fn.SumoSelect) {
+          // Use SumoSelect API to get current values
+          let currentValues = window.jQuery("#document_type").val() || [];
+          // Remove the specific work area
+          currentValues = currentValues.filter((val) => val !== filterValue);
+          // Update SumoSelect with new values
+          window.jQuery("#document_type").val(currentValues)[0].sumo.reload();
+        } else {
+          // Fallback to native multi-select
+          Array.from(workAreaDropdown.options).forEach((option) => {
+            if (option.value === filterValue) {
+              option.selected = false;
+            }
+          });
+        }
 
         // Trigger change event to reapply filters
         const changeEvent = new Event("change", { bubbles: true });
@@ -178,10 +193,20 @@ export async function clearAllFilters() {
     searchInput.value = "";
   }
 
-  // Reset work area dropdown to "All work areas"
+  // Clear work area dropdown (reset multi-select to empty)
   const workAreaDropdown = document.getElementById("document_type");
   if (workAreaDropdown) {
-    workAreaDropdown.value = "All work areas";
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to clear selections
+      window.jQuery("#document_type").val([]).change();
+      // Reload SumoSelect to update UI
+      window.jQuery("#document_type")[0].sumo.reload();
+    } else {
+      // Fallback to native multi-select
+      Array.from(workAreaDropdown.options).forEach((option) => {
+        option.selected = false;
+      });
+    }
   }
 
   // Hide applied filters section
@@ -218,9 +243,26 @@ export function getCurrentFilters() {
   const sortDropdown =
     document.getElementById("sort") || document.getElementById("owner");
 
+  // Get work areas as array
+  let workAreas = [];
+  if (workAreaDropdown) {
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to get selected values as array
+      workAreas = window.jQuery("#document_type").val() || [];
+    } else {
+      // Fallback to native multi-select behavior
+      const selectedOptions = Array.from(
+        workAreaDropdown.selectedOptions || [],
+      );
+      workAreas = selectedOptions.map((option) => option.value);
+    }
+    // Filter out "All work areas" from the array
+    workAreas = workAreas.filter((area) => area !== "All work areas");
+  }
+
   const filters = {
     searchQuery: searchInput ? searchInput.value : "",
-    workArea: workAreaDropdown ? workAreaDropdown.value : "All work areas",
+    workAreas: workAreas,
     sort: sortDropdown ? sortDropdown.value : "relevance",
   };
 

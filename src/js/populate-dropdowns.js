@@ -111,6 +111,9 @@ function populateWorkAreaDropdown(workAreas) {
     return;
   }
 
+  // Enable multiple selection
+  dropdown.setAttribute("multiple", "multiple");
+
   // Clear existing options
   dropdown.innerHTML = "";
 
@@ -132,6 +135,17 @@ function populateWorkAreaDropdown(workAreas) {
     option.textContent = workArea;
     dropdown.appendChild(option);
   });
+
+  // Initialize SumoSelect plugin for enhanced multi-select UI
+  if (window.jQuery && window.jQuery.fn.SumoSelect) {
+    window.jQuery(dropdown).SumoSelect({
+      placeholder: "Select work areas",
+      selectAll: true,
+      search: true,
+      searchText: "Search work areas...",
+      noMatch: "No matches found",
+    });
+  }
 }
 
 /**
