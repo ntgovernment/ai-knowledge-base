@@ -33,24 +33,20 @@ export function displayAppliedFilters(filters) {
     container.appendChild(pill);
   }
 
-  // Add work area pills (primary blue)
-  if (filters.workAreas && filters.workAreas.length > 0) {
-    // Don't show pills if all work areas are selected
-    const allWorkAreasSelected = isAllWorkAreasSelected(filters.workAreas);
-
-    if (!allWorkAreasSelected) {
-      hasFilters = true;
-      filters.workAreas.forEach((workArea) => {
-        const pill = createFilterPill(
-          "Work area",
-          workArea,
-          "bg-primary",
-          "work-area",
-          workArea,
-        );
-        container.appendChild(pill);
-      });
-    }
+  // Add work area pill (primary blue) - only show if not "All work areas"
+  if (
+    filters.workArea &&
+    filters.workArea !== "All work areas" &&
+    filters.workArea.trim()
+  ) {
+    hasFilters = true;
+    const pill = createFilterPill(
+      "Work area",
+      filters.workArea,
+      "bg-primary",
+      "work-area",
+    );
+    container.appendChild(pill);
   }
 
   // Do not add sort pill
@@ -66,22 +62,6 @@ export function displayAppliedFilters(filters) {
 
   // Show/hide section based on whether filters are active
   section.style.display = hasFilters ? "block" : "none";
-}
-
-/**
- * Check if all work areas are selected
- * @param {Array} selectedWorkAreas - Currently selected work areas
- * @returns {boolean}
- */
-function isAllWorkAreasSelected(selectedWorkAreas) {
-  const dropdown = document.getElementById("document_type");
-  if (!dropdown) return false;
-
-  const totalOptions = Array.from(dropdown.options).filter(
-    (opt) => !opt.disabled && opt.value,
-  ).length;
-
-  return selectedWorkAreas.length === totalOptions;
 }
 
 /**
@@ -173,34 +153,14 @@ async function removeFilter(filterType, filterValue) {
       break;
 
     case "work-area":
-      // Unselect specific work area from multi-select
+      // Reset work area dropdown to "All work areas"
       const workAreaDropdown = document.getElementById("document_type");
-      if (workAreaDropdown && filterValue) {
-        const option = Array.from(workAreaDropdown.options).find(
-          (opt) => opt.value === filterValue,
-        );
-        if (option) {
-          option.selected = false;
-        }
+      if (workAreaDropdown) {
+        workAreaDropdown.value = "All work areas";
 
         // Trigger change event to reapply filters
         const changeEvent = new Event("change", { bubbles: true });
         workAreaDropdown.dispatchEvent(changeEvent);
-
-        // Also trigger for multi-select component if it exists
-        const multiSelectContainer = workAreaDropdown.nextElementSibling;
-        if (
-          multiSelectContainer &&
-          multiSelectContainer.classList.contains("aikb-multiselect-container")
-        ) {
-          const instance = multiSelectContainer.__multiSelectInstance;
-          if (instance) {
-            instance.selectedValues.delete(filterValue);
-            instance.syncNativeSelect();
-            instance.updateDisplayText();
-            instance.triggerChange();
-          }
-        }
       }
       break;
 
@@ -218,27 +178,10 @@ export async function clearAllFilters() {
     searchInput.value = "";
   }
 
-  // Reset work area dropdown to all selected
+  // Reset work area dropdown to "All work areas"
   const workAreaDropdown = document.getElementById("document_type");
   if (workAreaDropdown) {
-    Array.from(workAreaDropdown.options).forEach((opt) => {
-      if (!opt.disabled && opt.value) {
-        opt.selected = true;
-      }
-    });
-
-    // Update multi-select component if it exists
-    const multiSelectContainer = workAreaDropdown.nextElementSibling;
-    if (
-      multiSelectContainer &&
-      multiSelectContainer.classList.contains("aikb-multiselect-container")
-    ) {
-      const instance = multiSelectContainer.__multiSelectInstance;
-      if (instance && typeof instance.selectAllByDefault === "function") {
-        instance.selectAllByDefault();
-        instance.triggerChange();
-      }
-    }
+    workAreaDropdown.value = "All work areas";
   }
 
   // Hide applied filters section
@@ -277,16 +220,9 @@ export function getCurrentFilters() {
 
   const filters = {
     searchQuery: searchInput ? searchInput.value : "",
-    workAreas: [],
+    workArea: workAreaDropdown ? workAreaDropdown.value : "All work areas",
     sort: sortDropdown ? sortDropdown.value : "relevance",
   };
-
-  if (workAreaDropdown) {
-    const selectedOptions = Array.from(workAreaDropdown.selectedOptions || []);
-    filters.workAreas = selectedOptions
-      .map((opt) => opt.value)
-      .filter((val) => val && val.trim().length > 0);
-  }
 
   return filters;
 }

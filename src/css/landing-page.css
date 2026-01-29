@@ -1,7 +1,6 @@
 /* Import all CSS modules for landing page bundle (except content-page.css) */
 @import "./search-interface.css";
 @import "./search-card.css";
-@import "./multi-select-dropdown.css";
 @import "./search-results.css";
 @import "./applied-filters.css";
 @import "./pagination.css";
@@ -12,7 +11,7 @@
   display: none;
 }
 
-/* Highly scoped search icon placement to avoid affecting multi-select and cards */
+/* Highly scoped search icon placement to avoid affecting cards */
 #policy-search-form .search-input-container {
   position: relative;
 }

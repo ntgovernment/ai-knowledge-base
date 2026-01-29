@@ -61,9 +61,7 @@ export function populateSearchInput() {
   container.appendChild(wrapper);
 }
 // Dynamically populate work area and sort dropdowns from search data
-import { initMultiSelect } from "./multi-select-dropdown.js";
 
-let multiSelectInstance = null;
 let staticWorkAreas = [];
 
 /**
@@ -96,38 +94,6 @@ function extractWorkAreas(results) {
 }
 
 /**
- * Calculate counts for each work area from search results
- * @param {Array<string>} workAreas - Array of work area names
- * @param {Array} results - Array of search result objects
- * @returns {Map<string, number>} Map of work area names to counts
- */
-export function calculateWorkAreaCounts(workAreas, results) {
-  const counts = new Map();
-
-  // Initialize all work areas with 0 count
-  workAreas.forEach((workArea) => {
-    counts.set(workArea, 0);
-  });
-
-  // Count occurrences in results
-  results.forEach((result) => {
-    if (result.listMetadata && result.listMetadata["Work area"]) {
-      const resultWorkAreas = result.listMetadata["Work area"];
-      if (Array.isArray(resultWorkAreas)) {
-        resultWorkAreas.forEach((area) => {
-          const trimmed = area.trim();
-          if (trimmed && counts.has(trimmed)) {
-            counts.set(trimmed, counts.get(trimmed) + 1);
-          }
-        });
-      }
-    }
-  });
-
-  return counts;
-}
-
-/**
  * Store static work areas list for later use
  * @param {Array<string>} workAreas - Array of work area names from static source
  */
@@ -148,38 +114,24 @@ function populateWorkAreaDropdown(workAreas) {
   // Clear existing options
   dropdown.innerHTML = "";
 
-  // Add default "Select a work area" option
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Select a work area";
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  dropdown.appendChild(defaultOption);
+  // Add "All work areas" as the default option
+  const allOption = document.createElement("option");
+  allOption.value = "All work areas";
+  allOption.textContent = "All work areas";
+  allOption.selected = true;
+  dropdown.appendChild(allOption);
 
   // Add work area options
   workAreas.forEach((workArea) => {
+    // Skip "All work areas" if it's in the data to avoid duplicates
+    if (workArea === "All work areas") {
+      return;
+    }
     const option = document.createElement("option");
     option.value = workArea;
     option.textContent = workArea;
     dropdown.appendChild(option);
   });
-
-  // Initialize multi-select after populating options
-  if (multiSelectInstance) {
-    // Destroy previous instance if exists
-    multiSelectInstance.destroy();
-    multiSelectInstance = null;
-  }
-
-  // Only initialize if not already initialized
-  if (
-    !dropdown.nextElementSibling ||
-    !dropdown.nextElementSibling.classList.contains(
-      "aikb-multiselect-container",
-    )
-  ) {
-    multiSelectInstance = initMultiSelect(dropdown);
-  }
 }
 
 /**
@@ -315,25 +267,11 @@ export function initializeDropdowns(results, workAreasFromFetch = null) {
 
   populateWorkAreaDropdown(workAreas);
 
-  // Calculate and apply counts
-  const counts = calculateWorkAreaCounts(workAreas, results);
-  if (multiSelectInstance) {
-    multiSelectInstance.updateCounts(counts);
-  }
-
   // Populate sort options
   populateSortDropdown();
 
   // Add chevron icons
   addDropdownIcons();
-}
-
-/**
- * Get the current multi-select instance
- * @returns {object|null} The multi-select instance or null
- */
-export function getMultiSelectInstance() {
-  return multiSelectInstance;
 }
 
 /**

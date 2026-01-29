@@ -3,37 +3,51 @@
     "title": "Improve your emails before you send them",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/improve-your-emails-before-you-send-them",
     "description": "AI tools can help you write more clearly and ensure your email is understood.",
-    "work-area": ["Communications", "Administration"],
-    "roles": [
+    "work-area": [
       "Administration",
-      "Customer Service",
+      "Customer service",
       "Policy",
       "Legal",
       "Executive",
       "Marketing and Communications",
       "Everyone"
     ],
+    "roles": [
+      "Administration",
+      "Customer Service",
+      "Policy",
+      "Legal",
+      "Marketing and Communications",
+      "Everyone"
+    ],
     "benefits": "Improved evidence-based decision-making through structured, accurate summaries and clear identification of risks and gaps.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:16:30"
+    "last-updated": "2026-01-28 13:55:01"
   },
   {
     "title": "Summarise your completed research with Copilot free",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/summarise-your-completed-research-with-copilot-free",
     "description": "Copilot free can summarise complex documents into clear points that save time and support faster decisions.",
-    "work-area": ["Legal", "Management"],
+    "work-area": ["Policy", "Legal", "Records Management", "IT", "Secretariat"],
     "roles": ["Policy", "Legal", "Records Management", "IT", "Secretariat"],
     "benefits": "Improved evidence-based decision-making through structured, accurate summaries and clear identification of risks and gaps.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:19:21"
+    "last-updated": "2026-01-28 14:01:07"
   },
   {
     "title": "Keep records when you are using Copilot or other AI tools",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/keep-records-when-you-are-using-copilot-or-other-ai-tools",
     "description": "AI can help NT Government staff quickly prepare compliant records for TRM by streamlining how prompts and outputs are captured.",
-    "work-area": ["Administration", "Legal", "Management"],
+    "work-area": [
+      "Records Management",
+      "Administration",
+      "Legal",
+      "Policy",
+      "IT",
+      "Everyone"
+    ],
     "roles": [
       "Records Management",
       "Administration",
@@ -45,220 +59,100 @@
     "benefits": "Strengthened compliance with NT Government records and information management standards, ensuring transparency and accountability.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:22:14"
+    "last-updated": "2026-01-28 14:02:52"
   },
   {
     "title": "Use good AI prompts for text or image creation",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-good-ai-prompts-for-text-or-image-creation",
     "description": "Better AI outputs boost productivity by cutting the time people spend fixing or re‑asking for results.",
-    "work-area": ["All work areas"],
+    "work-area": ["Everyone"],
     "roles": ["Everyone"],
     "benefits": "Better outputs from AI will maximise the productivity benefits of using these tools and reduce people’s time and effort spent editing and re-querying AI.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:27:57"
+    "last-updated": "2026-01-28 14:03:30"
   },
   {
     "title": "Use Copilot with an Excel workbook to get insights from your data",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-copilot-with-an-excel-workbook-to-get-insights-from-your-data",
     "description": "Save time when analysing your Excel workbook by using AI to create clear, visual representations of your data.",
-    "work-area": ["Management"],
-    "roles": ["Policy", "IT", "Finance", "Executive", "Everyone"],
+    "work-area": ["Policy", "IT", "Finance", "Executive", "Everyone"],
+    "roles": ["Policy", "IT", "Finance", "Everyone"],
     "benefits": "This approach will save time when analysing data and can help produce clear visual representation of data.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:31:53"
+    "last-updated": "2026-01-28 14:04:52"
   },
   {
     "title": "Be transparent when you use AI",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/be-transparent-when-you-use-ai",
     "description": "Increasing visibility of the NT Government’s ethical, professional use of AI to strengthen trust across departments and with clients.",
-    "work-area": ["All work areas"],
+    "work-area": ["Everyone"],
     "roles": ["Everyone"],
     "benefits": "Increases the visibility of NT Government’s ethical and professional use of AI, ensuring we maintain trust within our departments and with our clients.",
     "submitted-by": "Sarah Strzelecki",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:33:53"
+    "last-updated": "2026-01-28 14:05:26"
   },
   {
     "title": "Simplify your writing and convert documents to plain language",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/simplify-your-writing-and-convert-documents-to-plain-language",
     "description": "Copilot free can quickly rewrite complex text into clear, plain language, saving time and improving accessibility for diverse audiences.",
-    "work-area": ["Communications", "Customer service"],
-    "roles": [
+    "work-area": [
       "Policy",
       "Marketing and Communications",
       "Executive",
+      "Legal",
+      "Customer service"
+    ],
+    "roles": [
+      "Policy",
+      "Marketing and Communications",
       "Legal",
       "Customer Service"
     ],
     "benefits": "Copilot free quickly rewrites complex text into clear, plain language, saving time and improving accessibility for diverse audiences.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 07:10:47"
+    "last-updated": "2026-01-28 14:07:11"
   },
   {
     "title": "Use Copilot free to quickly write meeting records",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/use-copilot-free-to-quickly-write-meeting-records",
     "description": "Using AI helps you write documents faster and keep track of actions more clearly.",
-    "work-area": ["Administration", "Management"],
-    "roles": ["Administration", "Executive", "Project Teams"],
+    "work-area": ["Administration", "Executive", "Project Teams"],
+    "roles": ["Administration", "Project Teams"],
     "benefits": "Faster documentation and clearer action tracking.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 07:23:35"
+    "last-updated": "2026-01-28 14:07:53"
   },
   {
     "title": "Prevent Copilot and other AI from capturing information from confidential virtual meetings",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/prevent-copilot-and-other-ai-from-capturing-information-from-confidential-virtual-meetings",
     "description": "Turning off AI protects confidential information and ensures compliance with NT Government obligations.",
-    "work-area": ["Legal", "Management"],
-    "roles": ["Executive", "Legal", "Policy", "IT"],
+    "work-area": ["Executive", "Legal", "Policy", "IT"],
+    "roles": ["Legal", "Policy", "IT"],
     "benefits": "Protects confidential information and ensures compliance with NT Government obligations.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-27 21:39:57"
+    "last-updated": "2026-01-28 14:08:34"
   },
   {
     "title": "Draft an executive briefing note with support from AI",
     "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/draft-an-executive-briefing-note-with-support-from-ai",
     "description": "How AI can help you deliver faster turnaround times for briefing materials, more structured and consistent content for executive briefings, increased clarity for decision‑makers.",
-    "work-area": ["Administration", "Management"],
-    "roles": [
+    "work-area": [
       "Administration",
       "Policy",
       "Ministerial",
       "Secretariat",
       "Executive"
     ],
+    "roles": ["Administration", "Policy", "Ministerial", "Secretariat"],
     "benefits": "Faster turnaround times for briefing materials, more structured and consistent content for executive briefings, increased clarity for decision‑makers, and reduced workload for staff under time pressure.",
     "submitted-by": "Digital Policy",
     "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-20 08:50:10"
-  },
-  {
-    "title": "Translate community engagement materials with AI assistance",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/translate-community-engagement-materials-with-ai-assistance",
-    "description": "AI translation tools can help draft multilingual content quickly, ensuring community messages reach diverse audiences while maintaining cultural sensitivity.",
-    "work-area": ["Community engagement", "Communications"],
-    "roles": [
-      "Marketing and Communications",
-      "Community Engagement",
-      "Customer Service",
-      "Policy"
-    ],
-    "benefits": "Faster multilingual content delivery, improved accessibility for multicultural communities, and reduced translation costs while maintaining quality through human review.",
-    "submitted-by": "Community Relations",
-    "agency": "Department of the Chief Minister and Cabinet",
-    "last-updated": "2026-01-22 10:15:42"
-  },
-  {
-    "title": "Generate accessible document formats using AI tools",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/generate-accessible-document-formats-using-ai-tools",
-    "description": "Use AI to create alt text for images, improve document structure, and ensure compliance with accessibility standards for all NT Government publications.",
-    "work-area": ["Administration", "Communications"],
-    "roles": [
-      "Marketing and Communications",
-      "IT",
-      "Records Management",
-      "Everyone"
-    ],
-    "benefits": "Enhanced compliance with accessibility standards, reduced manual effort in creating alternative formats, and improved inclusivity for people with disabilities accessing government information.",
-    "submitted-by": "Accessibility Team",
-    "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-23 14:30:18"
-  },
-  {
-    "title": "Conduct preliminary risk assessments with AI support",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/conduct-preliminary-risk-assessments-with-ai-support",
-    "description": "AI can help identify potential risks, suggest mitigation strategies, and structure risk registers based on project information you provide.",
-    "work-area": ["Management", "Legal"],
-    "roles": ["Project Management", "Policy", "Executive", "Finance", "Legal"],
-    "benefits": "Faster identification of potential risks, more comprehensive risk coverage through AI-assisted analysis, and standardized risk documentation across projects.",
-    "submitted-by": "Project Governance",
-    "agency": "Department of Infrastructure, Planning and Logistics",
-    "last-updated": "2026-01-21 09:45:33"
-  },
-  {
-    "title": "Create training materials and employee guides with AI",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/create-training-materials-and-employee-guides-with-ai",
-    "description": "Transform complex procedures into clear training content, develop quiz questions, and structure learning materials efficiently using AI assistance.",
-    "work-area": ["Training", "Workforce"],
-    "roles": ["HR", "Training and Development", "IT", "Administration"],
-    "benefits": "Reduced time to develop training materials, consistent formatting and structure across resources, and improved learner engagement through AI-optimized content.",
-    "submitted-by": "Learning and Development",
-    "agency": "Office of the Commissioner for Public Employment",
-    "last-updated": "2026-01-24 11:20:55"
-  },
-  {
-    "title": "Research legislative precedents and policy frameworks with AI",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/research-legislative-precedents-and-policy-frameworks-with-ai",
-    "description": "AI tools can help identify relevant legislation, summarize case law, and compare policy approaches across jurisdictions to support evidence-based policy development.",
-    "work-area": ["Legal"],
-    "roles": ["Legal", "Policy", "Executive", "Ministerial"],
-    "benefits": "Faster research cycles, more comprehensive analysis of legislative frameworks, and improved quality of policy advice through broader evidence base.",
-    "submitted-by": "Legal Services",
-    "agency": "Department of the Attorney-General and Justice",
-    "last-updated": "2026-01-25 08:55:12"
-  },
-  {
-    "title": "Analyze stakeholder feedback and consultation responses with AI",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/analyze-stakeholder-feedback-and-consultation-responses-with-ai",
-    "description": "Use AI to identify themes, categorize submissions, and extract key insights from large volumes of public consultation feedback quickly.",
-    "work-area": ["Community engagement", "Management"],
-    "roles": [
-      "Policy",
-      "Community Engagement",
-      "Executive",
-      "Marketing and Communications"
-    ],
-    "benefits": "Faster analysis of community input, identification of emerging themes and concerns, and more responsive policy development based on stakeholder feedback.",
-    "submitted-by": "Consultation Team",
-    "agency": "Department of the Chief Minister and Cabinet",
-    "last-updated": "2026-01-26 13:40:27"
-  },
-  {
-    "title": "Prepare performance reports and KPI summaries with AI assistance",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/prepare-performance-reports-and-kpi-summaries-with-ai-assistance",
-    "description": "AI can analyze performance data, generate narrative summaries, identify trends, and create visualization suggestions for quarterly and annual reports.",
-    "work-area": ["Management", "Administration"],
-    "roles": ["Executive", "Finance", "Project Management", "Policy"],
-    "benefits": "Streamlined reporting processes, consistent narrative quality across reports, and faster identification of performance trends requiring management attention.",
-    "submitted-by": "Performance Team",
-    "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-23 16:25:09"
-  },
-  {
-    "title": "Draft grant application responses and tender submissions using AI",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/draft-grant-application-responses-and-tender-submissions-using-ai",
-    "description": "AI helps structure responses to selection criteria, ensure consistent messaging, and optimize language to meet specific grant or tender requirements.",
-    "work-area": ["Management"],
-    "roles": ["Finance", "Project Management", "Policy", "Executive"],
-    "benefits": "Higher quality submissions through structured responses, reduced preparation time for competitive applications, and improved consistency across multiple tender responses.",
-    "submitted-by": "Grants Management",
-    "agency": "Department of Treasury and Finance",
-    "last-updated": "2026-01-27 10:05:44"
-  },
-  {
-    "title": "Support budget forecasting and scenario planning with AI",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/support-budget-forecasting-and-scenario-planning-with-ai",
-    "description": "Use AI to model different budget scenarios, identify cost drivers, and generate narrative explanations for budget variations and projections.",
-    "work-area": ["Management", "Administration"],
-    "roles": ["Finance", "Executive", "Policy"],
-    "benefits": "More robust scenario analysis, faster budget preparation cycles, and clearer communication of financial assumptions and risks to decision-makers.",
-    "submitted-by": "Budget Team",
-    "agency": "Department of Treasury and Finance",
-    "last-updated": "2026-01-28 09:30:15"
-  },
-  {
-    "title": "Streamline procurement documentation with AI writing assistance",
-    "url": "https://ntgcentral.nt.gov.au/services-and-support/ict-services-websites/artificial-intelligence/ai-knowledge-base/articles/streamline-procurement-documentation-with-ai-writing-assistance",
-    "description": "AI can help draft statements of work, evaluation criteria, and tender specifications while ensuring compliance with procurement frameworks and policies.",
-    "work-area": ["Administration", "Legal"],
-    "roles": ["Procurement", "Finance", "Legal", "IT", "Project Management"],
-    "benefits": "Reduced time to market for procurement activities, improved consistency in tender documentation, and better alignment with procurement policy requirements.",
-    "submitted-by": "Procurement Services",
-    "agency": "Department of Corporate and Digital Development",
-    "last-updated": "2026-01-27 15:50:38"
+    "last-updated": "2026-01-28 14:09:45"
   }
 ]
