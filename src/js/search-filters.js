@@ -28,6 +28,11 @@ export function storeResults(results) {
   });
 
   allResults = deduplicatedResults;
+  console.log(
+    "[DEBUG] storeResults called, stored",
+    allResults.length,
+    "results",
+  );
 }
 
 /**
@@ -36,8 +41,32 @@ export function storeResults(results) {
  * @returns {Array} - Filtered results
  */
 function filterByWorkArea(selectedWorkAreas) {
+  console.log(
+    "[DEBUG] filterByWorkArea called with:",
+    selectedWorkAreas,
+    "allResults count:",
+    allResults.length,
+  );
   if (!selectedWorkAreas || selectedWorkAreas.length === 0) {
+    console.log("[DEBUG] No filters selected, returning all results");
     return allResults; // Return all if no filter selected
+  }
+
+  // Get all unique work areas from results
+  const allWorkAreas = new Set();
+  allResults.forEach((result) => {
+    if (result.listMetadata && result.listMetadata["Work area"]) {
+      const workAreas = result.listMetadata["Work area"];
+      if (Array.isArray(workAreas)) {
+        workAreas.forEach((area) => allWorkAreas.add(area));
+      }
+    }
+  });
+
+  // If all work areas are selected, treat as "no filter"
+  if (selectedWorkAreas.length >= allWorkAreas.size) {
+    console.log("[DEBUG] All work areas selected, returning all results");
+    return allResults;
   }
 
   // Filter results and track unique items to prevent duplicates
@@ -51,8 +80,13 @@ function filterByWorkArea(selectedWorkAreas) {
 
     const resultWorkAreas = result.listMetadata["Work area"];
 
-    // Check if any selected work area matches
-    const matches = selectedWorkAreas.some((selectedArea) =>
+    // Ensure resultWorkAreas is an array before processing
+    if (!Array.isArray(resultWorkAreas)) {
+      return;
+    }
+
+    // Check if all selected work areas match
+    const matches = selectedWorkAreas.every((selectedArea) =>
       resultWorkAreas.includes(selectedArea),
     );
 
@@ -196,8 +230,10 @@ let isApplying = false;
  * Apply filters and sorting, then render results
  */
 export async function applyFiltersAndSort() {
+  console.log('[DEBUG] applyFiltersAndSort called');
   // Prevent concurrent executions
   if (isApplying) {
+    console.log('[DEBUG] Already applying, skipping');
     return;
   }
 
@@ -210,7 +246,10 @@ export async function applyFiltersAndSort() {
     const sortDropdown =
       document.getElementById("sort") || document.getElementById("owner");
 
+    console.log('[DEBUG] Dropdowns found:', {workAreaDropdown: !!workAreaDropdown, sortDropdown: !!sortDropdown});
+
     if (!workAreaDropdown || !sortDropdown) {
+      console.log('[DEBUG] Missing dropdown, exiting');
       return;
     }
 
@@ -227,16 +266,20 @@ export async function applyFiltersAndSort() {
     }
 
     const selectedSort = sortDropdown.value || "relevance";
+    console.log('[DEBUG] Selections:', {selectedWorkAreas, selectedSort});
 
     // Filter by work areas
     let filtered = filterByWorkArea(selectedWorkAreas);
+    console.log('[DEBUG] After filtering:', filtered.length, 'results');
 
     // Sort results (for pagination compatibility)
     let sorted = sortResults(filtered, selectedSort);
+    console.log('[DEBUG] After sorting:', sorted.length, 'results');
 
     // Render filtered and sorted results
     const { renderResults } = await import("./search-card-template.js");
     renderResults(sorted, "search-results-list");
+    console.log('[DEBUG] Rendered results');
 
     // Apply DOM-based sorting using data attributes
     sortCardsInDOM(selectedSort);
