@@ -33,3 +33,40 @@
   pointer-events: none;
   line-height: 1;
 }
+
+/* CTA Component - Submit use case responsive layout */
+.aikb-cta-submit {
+  width: 100%;
+}
+
+/* Welcome text wrapper - left aligned on desktop */
+.aikb-welcome-wrapper {
+  width: 100%;
+}
+
+/* Clearfix utility for container with floated CTA */
+.container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (min-width: 992px) {
+  /* Direct selectors for welcome heading and paragraph */
+  #content > div:nth-child(3) > div > h2,
+  #content > div:nth-child(3) > div > p {
+    width: 51%;
+    float: left;
+  }
+
+  .aikb-cta-submit {
+    width: 45%;
+    float: right;
+    margin-top: -3rem;
+    padding-left: 2rem;
+  }
+
+  .aikb-cta-submit * {
+    float: right;
+  }
+}
