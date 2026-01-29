@@ -255,6 +255,29 @@
   color: var(--clr-text-default, #102040);
 }
 
+/* SumoSelect component width */
+div.SumoSelect.sumo_area {
+  width: 100%;
+}
+
+/* Hide SumoSelect dropdown icon background image */
+.SumoSelect > .CaptionCont > label > i {
+  background-image: none !important;
+  color: var(--clr-icon-subtle, #878f9f) !important;
+}
+
+/* SumoSelect placeholder styling */
+.SumoSelect .placeholder {
+  font-style: normal !important;
+  vertical-align: middle !important;
+}
+
+/* SumoSelect caption container alignment */
+.SumoSelect > .CaptionCont {
+  display: flex !important;
+  align-items: center !important;
+}
+
 .aikb-dropdown-icon {
   position: absolute;
   pointer-events: none;
