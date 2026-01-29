@@ -115,20 +115,20 @@ Users should navigate elements in logical order using Tab and Shift+Tab:
 ```css
 /* Standard focus indicator (green outline) */
 *:focus {
-  outline: 3px solid #90d898; /* Green focus ring */
+  outline: 3px solid #8fc38f; /* Green focus ring */
   outline-offset: 2px;
 }
 
 /* Example: Button focus */
 .au-btn:focus {
-  outline: 3px solid #90d898;
+  outline: 3px solid #8fc38f;
   outline-offset: 2px;
   box-shadow: 0 0 0 5px rgba(144, 216, 152, 0.25);
 }
 
 /* Example: Link focus */
 a:focus {
-  outline: 3px solid #90d898;
+  outline: 3px solid #8fc38f;
   text-decoration: underline;
 }
 ```

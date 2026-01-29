@@ -103,7 +103,6 @@ function setHighlightedHTML(element, htmlString) {
 function createSearchCard(result) {
   // Validate required fields
   if (!result.title || !result.summary || !result.liveUrl) {
-    console.warn("Skipping card with missing required fields:", result);
     return null;
   }
 
@@ -287,27 +286,16 @@ export function renderResults(
   containerId = "search-results-list",
   usePagination = true,
 ) {
-  console.log(
-    `renderResults called with ${results.length} results for container #${containerId}`,
-  );
-
   // Try multiple selection methods
   let container = document.getElementById(containerId);
-  console.log(`document.getElementById("${containerId}"):`, container);
 
   if (!container) {
     // Try jQuery selector as fallback
     const $container = window.$ ? window.$(`#${containerId}`) : null;
-    console.log(`jQuery selector $("#${containerId}"):`, $container);
     container = $container && $container.length > 0 ? $container[0] : null;
   }
 
   if (!container) {
-    console.error(`Container #${containerId} not found`);
-    console.log(
-      "Available elements with id:",
-      Array.from(document.querySelectorAll("[id]")).map((el) => el.id),
-    );
     return;
   }
 
@@ -336,9 +324,6 @@ export function renderResults(
           .filter((card) => card !== null);
 
         cards.forEach((card) => container.appendChild(card));
-        console.log(
-          `Rendered ${cards.length} of ${results.length} search result cards (page 1)`,
-        );
       },
     );
   } else {
@@ -348,7 +333,6 @@ export function renderResults(
       .filter((card) => card !== null);
 
     cards.forEach((card) => container.appendChild(card));
-    console.log(`Rendered ${cards.length} search result cards`);
   }
 }
 
@@ -372,9 +356,6 @@ if (!paginationListenerAdded) {
         .filter((card) => card !== null);
 
       cards.forEach((card) => container.appendChild(card));
-      console.log(
-        `Rendered ${cards.length} cards for page ${event.detail.page}`,
-      );
     }
   });
   paginationListenerAdded = true;

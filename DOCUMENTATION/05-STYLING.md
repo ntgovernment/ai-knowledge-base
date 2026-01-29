@@ -463,7 +463,7 @@ Large (lg):        1280px+
 
 /* Focus State (Accessibility) */
 .au-btn:focus {
-  outline: 3px solid #90d898; /* Green focus ring */
+  outline: 3px solid #8fc38f; /* Green focus ring */
   outline-offset: 2px;
 }
 
@@ -572,7 +572,7 @@ Large (lg):        1280px+
 }
 
 .au-text-input:focus {
-  outline: 3px solid #90d898;
+  outline: 3px solid #8fc38f;
   outline-offset: 2px;
   border-radius: 0;
 }
@@ -663,7 +663,7 @@ Large (lg):        1280px+
 ```css
 /* Standard focus ring */
 :focus {
-  outline: 3px solid #90d898; /* Green outline */
+  outline: 3px solid #8fc38f; /* Green outline */
   outline-offset: 2px;
 }
 
@@ -673,7 +673,7 @@ Large (lg):        1280px+
 }
 
 .is-keyboard *:focus {
-  outline: 3px solid #90d898;
+  outline: 3px solid #8fc38f;
 }
 ```
 
@@ -860,7 +860,7 @@ Large (lg):        1280px+
    ```css
    /* ✓ Good - keyboard accessible */
    button:focus {
-     outline: 3px solid #90d898;
+     outline: 3px solid #8fc38f;
      outline-offset: 2px;
    }
 

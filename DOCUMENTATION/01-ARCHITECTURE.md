@@ -218,13 +218,13 @@ Analytics Logging (GA4)
 ```javascript
 // User Profile Data
 {
-  "user_name": "Roy Galet",
-  "user_email": "roy.galet@nt.gov.au",
-  "user_phone": "+61889996162",
-  "user_title": "Manager Frontend Design",
-  "user_location": "Charles Darwin Centre 10th Floor",
-  "user_department": "68",
-  "user_asset_id": "770097"
+  "user_name": "Sarah Thompson",
+  "user_email": "sarah.thompson@nt.gov.au",
+  "user_phone": "+61889991234",
+  "user_title": "Senior Policy Advisor",
+  "user_location": "Darwin Plaza 3rd Floor",
+  "user_department": "72",
+  "user_asset_id": "845621"
 }
 ```
 
@@ -232,7 +232,7 @@ Analytics Logging (GA4)
 
 ```javascript
 // Saving user data
-localStorage.setItem("user_name", "Roy Galet");
+localStorage.setItem("user_name", "Sarah Thompson");
 
 // Retrieving user data
 const userName = localStorage.getItem("user_name");
@@ -375,8 +375,8 @@ ntgFunnelback.filterQuery(); // Removes noise words and sanitizes input
 
 ```javascript
 new Squiz_Matrix_API({key: 'api_key'})
-  .getMetadata({asset_id: 770097, dataCallback: function(data) {...}})
-  .setMetadata({asset_id: 770097, field_id: '...', field_val: '...'})
+  .getMetadata({asset_id: 845621, dataCallback: function(data) {...}})
+  .setMetadata({asset_id: 845621, field_id: '...', field_val: '...'})
 ```
 
 ---
@@ -398,7 +398,7 @@ ntgCOVEO.init(
   doctype, // From URL parameter
   owner, // From URL parameter
   corrections, // Enable spell check
-  scopeID // Optional scope
+  scopeID, // Optional scope
 );
 
 // 4. Load User Profile
@@ -468,17 +468,14 @@ query = query.replace(regex, "");
 ### Key Optimizations
 
 1. **Lazy Loading**
-
    - Images loaded on demand
    - Results paginated (12 per page)
 
 2. **Caching**
-
    - localStorage for user data
    - Browser cache for assets
 
 3. **Minified Resources**
-
    - JavaScript minified (e.g., `jquery-3.4.1.min.js`)
    - CSS combined in `main.css`
 

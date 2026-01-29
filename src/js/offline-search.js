@@ -183,7 +183,6 @@ function getDocumentLength(result) {
  */
 export function searchLocalData(keywords, results) {
   if (!keywords || !results || results.length === 0) {
-    console.log("Offline search: No keywords or no cached results available");
     return [];
   }
 
@@ -191,15 +190,8 @@ export function searchLocalData(keywords, results) {
   const terms = tokenizeQuery(keywords);
 
   if (terms.length === 0) {
-    console.log(
-      "Offline search: No valid search terms after filtering noise words",
-    );
     return [];
   }
-
-  console.log(
-    `Offline search: Searching for terms [${terms.join(", ")}] in ${results.length} cached results`,
-  );
 
   // Score each result
   const scoredResults = results.map((result) => {
@@ -240,22 +232,6 @@ export function searchLocalData(keywords, results) {
   // Sort by normalized score descending (highest score first)
   matchedResults.sort((a, b) => b._offlineScore - a._offlineScore);
 
-  console.log(
-    `Offline search: Found ${matchedResults.length} results matching [${terms.join(", ")}]`,
-  );
-
-  // Log top 3 results for debugging
-  if (matchedResults.length > 0) {
-    console.log("Offline search: Top results:");
-    matchedResults.slice(0, 3).forEach((result, index) => {
-      console.log(
-        `  ${index + 1}. "${result.title}" (score: ${result._offlineScore.toFixed(2)}, ` +
-          `matched: [${result._matchedTerms.join(", ")}], ` +
-          `raw: ${result._rawScore}, len: ${result._docLength})`,
-      );
-    });
-  }
-
   return matchedResults;
 }
 
@@ -266,12 +242,8 @@ export function searchLocalData(keywords, results) {
  */
 export function getCachedData() {
   if (window.aikbSearchCache && Array.isArray(window.aikbSearchCache)) {
-    console.log(
-      `Offline search: Retrieved ${window.aikbSearchCache.length} cached results`,
-    );
     return window.aikbSearchCache;
   }
 
-  console.log("Offline search: No cached data available");
   return null;
 }

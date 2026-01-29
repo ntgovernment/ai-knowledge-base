@@ -20,7 +20,6 @@ let fetchedWorkAreas = null;
  */
 async function fetchWorkAreasList() {
   const workAreasSource = getWorkAreasDataSource();
-  console.log(`Fetching work areas from ${workAreasSource}...`);
 
   try {
     const response = await fetch(workAreasSource);
@@ -28,10 +27,8 @@ async function fetchWorkAreasList() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(`Work areas loaded successfully:`, data);
     return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.error(`Error fetching work areas from ${workAreasSource}:`, error);
     return null; // Will fall back to extracting from results
   }
 }
@@ -41,19 +38,12 @@ export function loadInitialResults() {
   // Check if we're on a page with search results container
   const searchResultsContainer = document.getElementById("search-results-list");
   if (!searchResultsContainer) {
-    console.warn("search-results-list container not found on page");
     return; // Not on search results page
   }
 
   const config = getConfig();
   const primarySource = getPrimaryDataSource();
   const fallbackSource = getFallbackDataSource();
-
-  console.log(
-    `Loading initial results from ${
-      config.isProduction ? "live API" : "local JSON"
-    }...`,
-  );
 
   // Fetch work areas list first (parallel with results loading)
   fetchWorkAreasList().then((workAreas) => {
@@ -66,52 +56,28 @@ export function loadInitialResults() {
   // Fetch from primary data source
   fetch(primarySource)
     .then((response) => {
-      console.log(
-        `Primary source (${primarySource}) response status:`,
-        response.status,
-        response.ok,
-      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
-      console.log(
-        `Primary source data loaded successfully (${
-          config.isProduction ? "live API" : "local JSON"
-        }):`,
-        data,
-      );
       processAndRenderResults(data, config.isProduction ? "live-api" : "local");
     })
     .catch((primaryError) => {
-      console.error(
-        `Error loading from primary source (${primarySource}):`,
-        primaryError,
-      );
-
       // Only try fallback if in production
       if (fallbackSource) {
-        console.log("Attempting fallback to local JSON...");
         fetch(fallbackSource)
           .then((response) => {
-            console.log(
-              "Fallback JSON response status:",
-              response.status,
-              response.ok,
-            );
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
           })
           .then((data) => {
-            console.log("Fallback JSON data loaded successfully:", data);
             processAndRenderResults(data, "fallback");
           })
           .catch((fallbackError) => {
-            console.error("Error loading fallback search.json:", fallbackError);
             displayErrorMessage();
           });
       } else {
@@ -162,8 +128,6 @@ function processAndRenderResults(data, source = "unknown") {
     };
   });
 
-  console.log(`Rendering ${mappedResults.length} cards from ${source}`);
-
   // Deduplicate results before storing/caching
   const seenKeys = new Set();
   const deduplicatedResults = [];
@@ -182,20 +146,11 @@ function processAndRenderResults(data, source = "unknown") {
     }
   });
 
-  if (mappedResults.length !== deduplicatedResults.length) {
-    console.log(
-      `Removed ${mappedResults.length - deduplicatedResults.length} duplicate items from source data`,
-    );
-  }
-
   // Store results for filtering/sorting
   storeResults(deduplicatedResults);
 
   // Cache results for offline search
   window.aikbSearchCache = deduplicatedResults;
-  console.log(
-    `Cached ${deduplicatedResults.length} results for offline search`,
-  );
 
   // Initialize dropdowns with work area data
   // Pass fetched work areas if available
@@ -210,7 +165,6 @@ function processAndRenderResults(data, source = "unknown") {
 
 // Wait for complete page load (not just DOM ready)
 window.addEventListener("load", function () {
-  console.log("Page load event fired, loading initial results...");
   // Extra delay after full page load to ensure all scripts initialized
   setTimeout(loadInitialResults, 200);
 });

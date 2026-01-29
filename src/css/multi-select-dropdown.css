@@ -48,8 +48,7 @@
 }
 
 .aikb-multiselect-button:focus {
-  outline-width: 2px;
-  outline-color: var(--clr-primary, #208820);
+  outline: 4px solid #8fc38f !important;
 }
 
 /* Keep border when open */
@@ -57,8 +56,7 @@
 .aikb-multiselect-button.aikb-multiselect-open,
 .aikb-multiselect-button:focus,
 .aikb-multiselect-button:active {
-  outline-width: 2px;
-  outline-color: var(--clr-primary, #208820);
+  outline: 4px solid #8fc38f !important;
 }
 
 .aikb-multiselect-text {
@@ -160,7 +158,11 @@
   margin: 0;
   margin-right: 12px;
   cursor: pointer;
-  accent-color: var(--clr-primary, #208820);
+  accent-color: #102040;
+}
+
+.aikb-multiselect-checkbox:focus {
+  outline: 4px solid #8fc38f !important;
 }
 
 .aikb-multiselect-label {

@@ -95,8 +95,7 @@
 }
 
 .aikb-search-input-wrapper:focus-within {
-  outline-color: #208820;
-  outline-width: 1px;
+  outline: 4px solid #8fc38f !important;
 }
 
 .aikb-search-input-inner {
@@ -205,8 +204,7 @@
 }
 
 .aikb-dropdown-wrapper:focus-within {
-  outline-color: #208820;
-  outline-width: 1px;
+  outline: 4px solid #8fc38f !important;
 }
 
 /* Sort dropdown - no vertical padding */

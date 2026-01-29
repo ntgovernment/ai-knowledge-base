@@ -13,7 +13,6 @@ export function displayAppliedFilters(filters) {
   const clearAllBtn = document.getElementById("clearAllBtn");
 
   if (!section || !container) {
-    console.warn("Applied filters section not found");
     return;
   }
 
@@ -29,7 +28,7 @@ export function displayAppliedFilters(filters) {
       "Search",
       filters.searchQuery,
       "bg-success",
-      "search"
+      "search",
     );
     container.appendChild(pill);
   }
@@ -47,7 +46,7 @@ export function displayAppliedFilters(filters) {
           workArea,
           "bg-primary",
           "work-area",
-          workArea
+          workArea,
         );
         container.appendChild(pill);
       });
@@ -79,7 +78,7 @@ function isAllWorkAreasSelected(selectedWorkAreas) {
   if (!dropdown) return false;
 
   const totalOptions = Array.from(dropdown.options).filter(
-    (opt) => !opt.disabled && opt.value
+    (opt) => !opt.disabled && opt.value,
   ).length;
 
   return selectedWorkAreas.length === totalOptions;
@@ -155,18 +154,20 @@ function createFilterPill(label, value, badgeClass, filterType, filterValue) {
  * @param {string} filterValue - Specific value to remove (optional)
  */
 async function removeFilter(filterType, filterValue) {
-  console.log(`Removing filter: ${filterType}`, filterValue);
-
   switch (filterType) {
     case "search":
       // Clear search input
       const searchInput = document.getElementById("search");
       if (searchInput) {
         searchInput.value = "";
+
+        // Update applied filters display immediately
+        const updatedFilters = getCurrentFilters();
+        displayAppliedFilters(updatedFilters);
+
         // Trigger reload of initial results
-        const { loadInitialResults } = await import(
-          "./load-initial-results.js"
-        );
+        const { loadInitialResults } =
+          await import("./load-initial-results.js");
         loadInitialResults();
       }
       break;
@@ -176,7 +177,7 @@ async function removeFilter(filterType, filterValue) {
       const workAreaDropdown = document.getElementById("document_type");
       if (workAreaDropdown && filterValue) {
         const option = Array.from(workAreaDropdown.options).find(
-          (opt) => opt.value === filterValue
+          (opt) => opt.value === filterValue,
         );
         if (option) {
           option.selected = false;
@@ -211,8 +212,6 @@ async function removeFilter(filterType, filterValue) {
  * Clear all filters
  */
 export async function clearAllFilters() {
-  console.log("Clearing all filters");
-
   // Clear search input
   const searchInput = document.getElementById("search");
   if (searchInput) {

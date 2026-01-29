@@ -164,7 +164,7 @@ var api = new Squiz_Matrix_API({
 ```javascript
 api
   .getMetadata({
-    asset_id: 770097, // Required: User or asset ID
+    asset_id: 845621, // Required: User or asset ID
     dataCallback: function (data) {
       console.log("Metadata:", data);
     },
@@ -185,12 +185,12 @@ api
 
 ```json
 {
-  "asset_id": 770097,
-  "asset_name": "Roy Galet",
+  "asset_id": 845621,
+  "asset_name": "Sarah Thompson",
   "fields": {
-    "user_email": "roy.galet@nt.gov.au",
-    "user_phone": "+61889996162",
-    "user_title": "Manager Frontend Design",
+    "user_email": "sarah.thompson@nt.gov.au",
+    "user_phone": "+61889991234",
+    "user_title": "Senior Policy Advisor",
     "user_preferences": "dark_mode"
   }
 }
@@ -202,7 +202,7 @@ api
 
 ```javascript
 api.setMetadata({
-  asset_id: 770097, // Required: Asset to update
+  asset_id: 845621, // Required: Asset to update
   field_id: "user_preferences", // Required: Field name
   field_val: "dark_mode", // Required: New value
   dataCallback: function (data) {
@@ -226,7 +226,7 @@ api.setMetadata({
 
 ```javascript
 api.setMetadataAllFields({
-  asset_id: 770097,
+  asset_id: 845621,
   field_info: {
     user_preferences: "dark_mode",
     last_login: "2025-12-12",
@@ -263,7 +263,7 @@ http.setRequestHeader("X-SquizMatrix-JSAPI-Key", apiKey);
 
 ```javascript
 api.getMetadata({
-  asset_id: 770097,
+  asset_id: 845621,
   errorCallback: function (error) {
     if (error.status === 404) {
       console.log("Asset not found");
@@ -454,15 +454,15 @@ https://dcdd-intranet.nt.gov.au
 
 ```xml
 <saml:Attribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
-  <saml:AttributeValue>roy.galet@nt.gov.au</saml:AttributeValue>
+  <saml:AttributeValue>sarah.thompson@nt.gov.au</saml:AttributeValue>
 </saml:Attribute>
 
 <saml:Attribute Name="cn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
-  <saml:AttributeValue>Roy Galet</saml:AttributeValue>
+  <saml:AttributeValue>Sarah Thompson</saml:AttributeValue>
 </saml:Attribute>
 
 <saml:Attribute Name="department">
-  <saml:AttributeValue>68</saml:AttributeValue>
+  <saml:AttributeValue>72</saml:AttributeValue>
 </saml:Attribute>
 ```
 
