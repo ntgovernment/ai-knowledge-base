@@ -39,14 +39,12 @@ function filterByWorkArea(selectedWorkAreas) {
   // Normalize to array
   let workAreasArray = [];
   if (Array.isArray(selectedWorkAreas)) {
-    workAreasArray = selectedWorkAreas.filter(
-      (area) => area && area !== "All work areas",
-    );
-  } else if (selectedWorkAreas && selectedWorkAreas !== "All work areas") {
+    workAreasArray = selectedWorkAreas.filter((area) => area && area.trim());
+  } else if (selectedWorkAreas && selectedWorkAreas.trim()) {
     workAreasArray = [selectedWorkAreas];
   }
 
-  // If no valid work areas selected, return all results
+  // If no work areas selected, return all results
   if (workAreasArray.length === 0) {
     return allResults;
   }

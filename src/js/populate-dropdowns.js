@@ -111,17 +111,21 @@ function populateWorkAreaDropdown(workAreas) {
     return;
   }
 
+  // Unload existing SumoSelect instance if it exists
+  if (window.jQuery && window.jQuery.fn.SumoSelect && dropdown.sumo) {
+    window.jQuery(dropdown)[0].sumo.unload();
+  }
+
   // Enable multiple selection
   dropdown.setAttribute("multiple", "multiple");
 
   // Clear existing options
   dropdown.innerHTML = "";
 
-  // Add "All work areas" as the default option
+  // Add "All work areas" as an option (not selected by default)
   const allOption = document.createElement("option");
   allOption.value = "All work areas";
   allOption.textContent = "All work areas";
-  allOption.selected = true;
   dropdown.appendChild(allOption);
 
   // Add work area options
@@ -136,14 +140,22 @@ function populateWorkAreaDropdown(workAreas) {
     dropdown.appendChild(option);
   });
 
-  // Initialize SumoSelect plugin for enhanced multi-select UI
+  // Initialize SumoSelect plugin for dropdown with tickable items
   if (window.jQuery && window.jQuery.fn.SumoSelect) {
     window.jQuery(dropdown).SumoSelect({
       placeholder: "Select work areas",
-      selectAll: true,
       search: true,
       searchText: "Search work areas...",
       noMatch: "No matches found",
+      captionFormat: "{0} work areas selected",
+      csvDispCount: 2, // Show up to 2 items before switching to count format
+      okCancelInMulti: true, // Add OK/Cancel buttons for better UX
+      isClickAwayOk: true, // Accept selections when clicking away
+      onChange: function () {
+        // Trigger native change event for search-filters.js listener
+        const event = new Event("change", { bubbles: true });
+        dropdown.dispatchEvent(event);
+      },
     });
   }
 }

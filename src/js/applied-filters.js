@@ -36,7 +36,7 @@ export function displayAppliedFilters(filters) {
   // Add work area pills (primary blue) - create separate pill for each selected work area
   if (filters.workAreas && Array.isArray(filters.workAreas)) {
     filters.workAreas.forEach((workArea) => {
-      if (workArea && workArea !== "All work areas" && workArea.trim()) {
+      if (workArea && workArea.trim()) {
         hasFilters = true;
         const pill = createFilterPill(
           "Work area",
@@ -198,9 +198,7 @@ export async function clearAllFilters() {
   if (workAreaDropdown) {
     if (window.jQuery && window.jQuery.fn.SumoSelect) {
       // Use SumoSelect API to clear selections
-      window.jQuery("#document_type").val([]).change();
-      // Reload SumoSelect to update UI
-      window.jQuery("#document_type")[0].sumo.reload();
+      window.jQuery("#document_type").val([]);
     } else {
       // Fallback to native multi-select
       Array.from(workAreaDropdown.options).forEach((option) => {
@@ -215,7 +213,7 @@ export async function clearAllFilters() {
     section.style.display = "none";
   }
 
-  // Reload initial results
+  // Reload initial results (this will reinitialize SumoSelect properly)
   const { loadInitialResults } = await import("./load-initial-results.js");
   loadInitialResults();
 }
@@ -256,8 +254,6 @@ export function getCurrentFilters() {
       );
       workAreas = selectedOptions.map((option) => option.value);
     }
-    // Filter out "All work areas" from the array
-    workAreas = workAreas.filter((area) => area !== "All work areas");
   }
 
   const filters = {
