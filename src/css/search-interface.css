@@ -271,6 +271,16 @@ div.SumoSelect.sumo_area {
   color: var(--clr-icon-subtle, #878f9f) !important;
 }
 
+/* Hide custom dropdown icon when SumoSelect is active to prevent double arrows */
+.SumoSelect ~ .aikb-dropdown-icon {
+  display: none !important;
+}
+
+/* Ensure SumoSelect dropdown appears above other elements */
+.SumoSelect > .optWrapper {
+  z-index: 9999 !important;
+}
+
 /* SumoSelect placeholder styling */
 .SumoSelect .placeholder {
   font-style: normal !important;

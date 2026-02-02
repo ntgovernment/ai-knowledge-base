@@ -4,7 +4,7 @@
 
 The AI Knowledge Base uses a **dual-search approach**: offline keyword search for immediate results plus background Funnelback API updates. This document covers how searches are initiated, processed, filtered, and how results are rendered.
 
-> **Current Implementation (Dec 2025):** Search uses cached local data (`dist/search.json`) for instant offline filtering with real-time keyword matching. User presses Enter to trigger search; results display immediately from cached data while Funnelback API updates in background. Filters (work area, sort) apply via custom multi-select dropdown with OK/Cancel controls. Legacy header/global search remains Coveo-powered and unchanged.
+> **Current Implementation (Dec 2025):** Search uses cached local data (`dist/search.json`) for instant offline filtering with real-time keyword matching. User presses Enter to trigger search; results display immediately from cached data while Funnelback API updates in background. Filters (work area, sort) apply via custom multi-select dropdown with "Select All" checkbox, search functionality, and OK/Cancel controls. Work area filtering uses OR logic (results match AT LEAST ONE selected work area). Legacy header/global search remains Coveo-powered and unchanged.
 
 ---
 
@@ -89,7 +89,7 @@ ntgFunnelback.init(
   doctype, // Document type filter (reserved for future use)
   owner, // Role/owner filter (reserved for future use)
   corrections, // Corrections flag (reserved for future use)
-  scopeID // Optional scope identifier
+  scopeID, // Optional scope identifier
 );
 ```
 
@@ -399,7 +399,7 @@ defaults: {
 ```javascript
 if (ntgCOVEO.searchmethod === "original") {
   ntgCOVEO.setUserMessage(
-    "Searching for <strong>" + ntgCOVEO.originalterm + "</strong>"
+    "Searching for <strong>" + ntgCOVEO.originalterm + "</strong>",
   );
 }
 ```
@@ -571,7 +571,7 @@ $("#policy-search-form").on("submit", function (e) {
   window.history.replaceState(
     {},
     "",
-    window.location.pathname + "?" + params.toString()
+    window.location.pathname + "?" + params.toString(),
   );
 
   // Step 7: API call
@@ -599,9 +599,9 @@ $("#policy-search-form").on("submit", function (e) {
             <span class="badge">${r.doctype}</span>
             <a href="${r.downloadurl}">Download</a>
           </div>
-        `
+        `,
           )
-          .join("")
+          .join(""),
       );
 
       // Step 9: Setup pagination

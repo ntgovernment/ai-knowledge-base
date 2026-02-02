@@ -145,6 +145,7 @@ function populateWorkAreaDropdown(workAreas) {
     window.jQuery(dropdown).SumoSelect({
       placeholder: "Select work areas",
       search: true,
+      selectAll: true, // Enable "Select All" checkbox
       searchText: "Search work areas...",
       noMatch: "No matches found",
       captionFormat: "{0} work areas selected",

@@ -185,16 +185,24 @@ localStorage.setItem("user_name", "Test User");
 
 ### Task 3: Modify Filter Logic
 
-**Location:** `ntgov-coveo-search.js`
+**Location:** `src/js/search-filters.js`
 
-**Current filter logic:**
+**Current filter logic (Work Areas - OR Logic):**
 
 ```javascript
-// In ntgCOVEO.callSearchAPI()
-if (Array.isArray(ntgCOVEO.doctype) && ntgCOVEO.doctype.length > 0) {
-  params.set("doctype", ntgCOVEO.doctype.join(";"));
-}
+// In src/js/search-filters.js - filterByWorkArea()
+// Uses OR logic: results match AT LEAST ONE selected work area
+const filtered = allResults.filter((result) => {
+  const resultWorkAreas = result.listMetadata["Work area"];
+
+  // Check if AT LEAST ONE selected work area is present
+  return workAreasArray.some((selectedArea) =>
+    resultWorkAreas.includes(selectedArea),
+  );
+});
 ```
+
+**Note:** Filtering happens client-side in `search-filters.js`, not in API calls. The old `ntgCOVEO` code is legacy/unused.
 
 **To add a new filter:**
 

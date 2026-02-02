@@ -49,7 +49,7 @@ function filterByWorkArea(selectedWorkAreas) {
     return allResults;
   }
 
-  // Filter results using AND logic: result must contain ALL selected work areas
+  // Filter results using OR logic: result must contain AT LEAST ONE of the selected work areas
   const filtered = allResults.filter((result) => {
     if (!result.listMetadata || !result.listMetadata["Work area"]) {
       return false;
@@ -62,8 +62,8 @@ function filterByWorkArea(selectedWorkAreas) {
       return false;
     }
 
-    // Check if ALL selected work areas are in this result's work areas (AND logic)
-    return workAreasArray.every((selectedArea) =>
+    // Check if AT LEAST ONE selected work area is in this result's work areas (OR logic)
+    return workAreasArray.some((selectedArea) =>
       resultWorkAreas.includes(selectedArea),
     );
   });
