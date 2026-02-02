@@ -13,8 +13,8 @@ function applyCtaButtonAlias(root = document) {
 function applyCtaLayoutClasses(root = document) {
   const ctaContainers = root.querySelectorAll(CTA_CONTAINER_SELECTOR);
   ctaContainers.forEach((container) => {
-    // Find anchor with "Submit your own use case" text
-    const submitAnchor = container.querySelector('a[href="#"]');
+    // Find anchor with "Submit your own use case" text (regardless of href)
+    const submitAnchor = container.querySelector("a");
     if (
       submitAnchor &&
       submitAnchor.textContent.trim() === "Submit your own use case"

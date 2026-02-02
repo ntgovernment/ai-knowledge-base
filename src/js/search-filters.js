@@ -49,6 +49,11 @@ function filterByWorkArea(selectedWorkAreas) {
     return allResults;
   }
 
+  // Special handling: "All work areas" bypasses filtering and returns all results
+  if (workAreasArray.includes("All work areas")) {
+    return allResults;
+  }
+
   // Filter results using OR logic: result must contain AT LEAST ONE of the selected work areas
   const filtered = allResults.filter((result) => {
     if (!result.listMetadata || !result.listMetadata["Work area"]) {

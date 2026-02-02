@@ -296,15 +296,29 @@ $(".sumoselect").SumoSelect({
 - **User Experience:** Selecting multiple areas broadens the search (more results)
 - **Example:** Selecting "Finance" + "HR" shows all documents tagged with Finance OR HR
 
+**Special Case: "All work areas"**
+
+The "All work areas" option has special behavior:
+
+- **When selected:** Bypasses filtering entirely and shows ALL results regardless of their work-area tags
+- **With other selections:** "All work areas" takes precedence - selecting "All work areas" + "Finance" + "IT" shows ALL results (not just Finance/IT)
+- **User Experience:** Acts as a "show everything" option that overrides other filter selections
+- **Implementation:** Checked before OR logic is applied; returns all results immediately if present
+
 **Technical Implementation:**
 
 - Module: `src/js/search-filters.js`
 - Function: `filterByWorkArea(selectedWorkAreas)`
-- Method: Uses `Array.some()` to check if any selected area matches
+- Method: First checks for "All work areas", then uses `Array.some()` for OR logic
 
 **Code Example:**
 
 ```javascript
+// Special handling: "All work areas" bypasses filtering
+if (workAreasArray.includes("All work areas")) {
+  return allResults;
+}
+
 // OR logic: result must contain AT LEAST ONE selected work area
 const isMatch = workAreasArray.some((selectedArea) =>
   resultWorkAreas.includes(selectedArea),
