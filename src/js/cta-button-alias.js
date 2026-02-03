@@ -20,6 +20,8 @@ function applyCtaLayoutClasses(root = document) {
       submitAnchor.textContent.trim() === "Submit your own use case"
     ) {
       container.classList.add("aikb-cta-submit");
+      // Set the correct mailto link
+      submitAnchor.href = "mailto:ai.advice@nt.gov.au";
     }
   });
 }
