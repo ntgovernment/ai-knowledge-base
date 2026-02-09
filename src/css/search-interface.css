@@ -242,9 +242,14 @@
     sans-serif;
   font-weight: 400;
   line-height: 24px;
-  padding: 12px 24px 12px 24px;
+  padding: 14px 16px;
   appearance: none;
   cursor: pointer;
+}
+
+/* Update select text color when option is selected (not showing first/placeholder option) */
+.aikb-dropdown-wrapper select:not([value=""]):valid {
+  color: var(--clr-text-default, #102040);
 }
 
 .aikb-dropdown-wrapper select option:first-child {
@@ -255,12 +260,60 @@
   color: var(--clr-text-default, #102040);
 }
 
+/* SumoSelect component width */
+div.SumoSelect.sumo_area {
+  width: 100%;
+}
+
+/* Hide SumoSelect dropdown icon background image */
+.SumoSelect > .CaptionCont > label > i {
+  background-image: none !important;
+  color: var(--clr-icon-subtle, #878f9f) !important;
+}
+
+/* Hide custom dropdown icon when SumoSelect is active to prevent double arrows */
+.SumoSelect ~ .aikb-dropdown-icon {
+  display: none !important;
+}
+
+/* Ensure SumoSelect dropdown appears above other elements */
+.SumoSelect > .optWrapper {
+  z-index: 9999 !important;
+}
+
+/* SumoSelect placeholder styling */
+.SumoSelect .placeholder {
+  font-style: normal !important;
+  vertical-align: middle !important;
+  color: #606a80 !important;
+}
+
+/* SumoSelect caption container alignment */
+.SumoSelect > .CaptionCont {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* SumoSelect checkbox checkmark color override */
+.SumoSelect .select-all.selected > span i,
+.SumoSelect .select-all.partial > span i,
+.SumoSelect > .optWrapper.multiple > .options li.opt.selected span i {
+  background-color: #102040 !important;
+}
+
+/* SumoSelect focus outline */
+.SumoSelect:focus-within,
+.SumoSelect.open {
+  outline: 4px solid #88bc88 !important;
+  outline-offset: 0 !important;
+}
+
 .aikb-dropdown-icon {
   position: absolute;
   pointer-events: none;
-  width: 24px;
-  height: 24px;
-  right: 24px;
+  width: 20px;
+  height: 20px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
@@ -273,9 +326,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--clr-icon-subtle, #878f9f);
+  color: var(--clr-icon-neutral, #102040);
 }
 
 @media (max-width: 576px) {

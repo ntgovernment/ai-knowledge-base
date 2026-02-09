@@ -31,45 +31,46 @@ export function storeResults(results) {
 }
 
 /**
- * Filter results by work area
- * @param {Array} selectedWorkAreas - Selected work area values
+ * Filter results by work area(s)
+ * @param {Array<string>|string} selectedWorkAreas - Selected work area values (array or single string)
  * @returns {Array} - Filtered results
  */
 function filterByWorkArea(selectedWorkAreas) {
-  if (!selectedWorkAreas || selectedWorkAreas.length === 0) {
-    return allResults; // Return all if no filter selected
+  // Normalize to array
+  let workAreasArray = [];
+  if (Array.isArray(selectedWorkAreas)) {
+    workAreasArray = selectedWorkAreas.filter((area) => area && area.trim());
+  } else if (selectedWorkAreas && selectedWorkAreas.trim()) {
+    workAreasArray = [selectedWorkAreas];
   }
 
-  // Filter results and track unique items to prevent duplicates
-  const seenKeys = new Set();
-  const filtered = [];
+  // If no work areas selected, return all results
+  if (workAreasArray.length === 0) {
+    return allResults;
+  }
 
-  allResults.forEach((result, index) => {
+  // Special handling: "All work areas" bypasses filtering and returns all results
+  if (workAreasArray.includes("All work areas")) {
+    return allResults;
+  }
+
+  // Filter results using OR logic: result must contain AT LEAST ONE of the selected work areas
+  const filtered = allResults.filter((result) => {
     if (!result.listMetadata || !result.listMetadata["Work area"]) {
-      return;
+      return false;
     }
 
     const resultWorkAreas = result.listMetadata["Work area"];
 
-    // Check if any selected work area matches
-    const matches = selectedWorkAreas.some((selectedArea) =>
+    // Ensure resultWorkAreas is an array before processing
+    if (!Array.isArray(resultWorkAreas)) {
+      return false;
+    }
+
+    // Check if AT LEAST ONE selected work area is in this result's work areas (OR logic)
+    return workAreasArray.some((selectedArea) =>
       resultWorkAreas.includes(selectedArea),
     );
-
-    if (matches) {
-      // Create unique identifier - use URL, title, or JSON stringify as final fallback
-      const uniqueKey =
-        result.liveUrl ||
-        result.url ||
-        result.title ||
-        JSON.stringify(result) + index;
-
-      // Only add if not already seen (prevents duplicates)
-      if (!seenKeys.has(uniqueKey)) {
-        seenKeys.add(uniqueKey);
-        filtered.push(result);
-      }
-    }
   });
 
   return filtered;
@@ -204,7 +205,7 @@ export async function applyFiltersAndSort() {
   isApplying = true;
 
   try {
-    // Get work area dropdown (may be multi-select)
+    // Get work area dropdown
     const workAreaDropdown = document.getElementById("document_type");
     // Support both legacy id="owner" and current id="sort"
     const sortDropdown =
@@ -214,21 +215,22 @@ export async function applyFiltersAndSort() {
       return;
     }
 
-    // Get selected work areas
-    let selectedWorkAreas = [];
-    if (workAreaDropdown) {
+    // Get selected work areas (array from SumoSelect or native multi-select)
+    let selectedWorkAreas;
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to get selected values as array
+      selectedWorkAreas = window.jQuery("#document_type").val() || [];
+    } else {
+      // Fallback to native multi-select behavior
       const selectedOptions = Array.from(
         workAreaDropdown.selectedOptions || [],
       );
-      // Remove empty/default values so an unselected state returns all results
-      selectedWorkAreas = selectedOptions
-        .map((opt) => opt.value)
-        .filter((val) => val && val.trim().length > 0);
+      selectedWorkAreas = selectedOptions.map((option) => option.value);
     }
 
     const selectedSort = sortDropdown.value || "relevance";
 
-    // Filter by work areas
+    // Filter by work area(s)
     let filtered = filterByWorkArea(selectedWorkAreas);
 
     // Sort results (for pagination compatibility)
@@ -270,24 +272,6 @@ export function initializeFiltersAndSort() {
     workAreaDropdown.addEventListener("change", function () {
       applyFiltersAndSort();
     });
-
-    // Listen for custom multi-select events (our custom component) to reapply filters
-    const multiSelectContainer = workAreaDropdown.nextElementSibling;
-    if (
-      multiSelectContainer &&
-      multiSelectContainer.classList.contains("aikb-multiselect-container")
-    ) {
-      multiSelectContainer.addEventListener("multiselect-change", () => {
-        applyFiltersAndSort();
-      });
-    }
-
-    // Legacy SumoSelect support: trigger filtering when the OK button is clicked/closed
-    if (typeof window.$ !== "undefined") {
-      window.$(workAreaDropdown).on("sumo:closed", function () {
-        applyFiltersAndSort();
-      });
-    }
   }
 
   if (sortDropdown) {

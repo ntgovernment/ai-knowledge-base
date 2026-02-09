@@ -50,12 +50,12 @@ The NTG Central AI Knowledge Base is a **modern enterprise search portal** built
 
 #### UI Enhancement Libraries
 
-| Library              | Version | Purpose                                  |
-| -------------------- | ------- | ---------------------------------------- |
-| **SumoSelect**       | 3.4.9   | Enhanced multi-select dropdown filtering |
-| **Fotorama**         | Latest  | Image carousel/slider component          |
-| **jQuery TableSort** | Latest  | Table sorting functionality              |
-| **Moment.js**        | Latest  | Date/time formatting utilities           |
+| Library              | Version | Purpose                                                                          |
+| -------------------- | ------- | -------------------------------------------------------------------------------- |
+| **SumoSelect**       | 3.4.9   | Enhanced multi-select dropdown with "Select All", search, and OK/Cancel controls |
+| **Fotorama**         | Latest  | Image carousel/slider component                                                  |
+| **jQuery TableSort** | Latest  | Table sorting functionality                                                      |
+| **Moment.js**        | Latest  | Date/time formatting utilities                                                   |
 
 ### Styling & Typography
 

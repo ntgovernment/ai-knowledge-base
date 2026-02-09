@@ -267,22 +267,69 @@ function triggerSearch(query) {
 **Enhancement with SumoSelect:**
 
 ```javascript
-// SumoSelect adds enhanced UI
+// SumoSelect adds enhanced UI with full configuration
 $(".sumoselect").SumoSelect({
   selectableOptgroup: true,
   placeholder: "Select...",
   search: true,
   searchText: "Search options",
   noMatch: "No matching options",
+  selectAll: true, // Enable "Select All" checkbox
+  okCancelInMulti: true, // Add OK/Cancel buttons
+  isClickAwayOk: true, // Clicking away confirms selection
 });
 ```
 
 **Result:** Improved dropdown with:
 
-- Search/filter options
-- Multiple selection UI
+- **"Select All" checkbox** for quickly selecting/deselecting all options
+- Search/filter options within dropdown
+- Multiple selection UI with checkboxes
+- OK/Cancel buttons for confirming selections
 - Better mobile experience
-- "Select All" option
+
+### Work Area Filter Behavior (OR Logic)
+
+**Filtering Logic:** When users select multiple work areas from the dropdown, the filter uses **OR logic** (inclusive matching):
+
+- **Behavior:** Results are shown if they match AT LEAST ONE of the selected work areas
+- **User Experience:** Selecting multiple areas broadens the search (more results)
+- **Example:** Selecting "Finance" + "HR" shows all documents tagged with Finance OR HR
+
+**Special Case: "All work areas"**
+
+The "All work areas" option has special behavior:
+
+- **When selected:** Bypasses filtering entirely and shows ALL results regardless of their work-area tags
+- **With other selections:** "All work areas" takes precedence - selecting "All work areas" + "Finance" + "IT" shows ALL results (not just Finance/IT)
+- **User Experience:** Acts as a "show everything" option that overrides other filter selections
+- **Implementation:** Checked before OR logic is applied; returns all results immediately if present
+
+**Technical Implementation:**
+
+- Module: `src/js/search-filters.js`
+- Function: `filterByWorkArea(selectedWorkAreas)`
+- Method: First checks for "All work areas", then uses `Array.some()` for OR logic
+
+**Code Example:**
+
+```javascript
+// Special handling: "All work areas" bypasses filtering
+if (workAreasArray.includes("All work areas")) {
+  return allResults;
+}
+
+// OR logic: result must contain AT LEAST ONE selected work area
+const isMatch = workAreasArray.some((selectedArea) =>
+  resultWorkAreas.includes(selectedArea),
+);
+```
+
+**Contrast with AND Logic (not used):**
+
+- AND logic would require results to belong to ALL selected areas
+- This would significantly reduce results and is typically too restrictive
+- OR logic provides better user experience for multi-category browsing
 
 ### Role/Owner Filter (Dropdown)
 

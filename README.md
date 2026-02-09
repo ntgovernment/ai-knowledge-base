@@ -11,7 +11,7 @@ This project provides fast, client-side search and filtering for AI use cases ac
 - **Instant search** with multi-word support and partial matching
 - **Smart relevance scoring** using term frequency analysis
 - **Highlighted results** showing matched terms
-- **Multi-select filtering** by work area
+- **Multi-select filtering** by work area with "Select All" option and OR logic
 - **Dynamic sorting** by relevance, date, or title
 - **Offline capability** using cached local data
 - **Responsive design** for desktop and mobile

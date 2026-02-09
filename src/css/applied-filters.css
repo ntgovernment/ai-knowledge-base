@@ -1,26 +1,34 @@
 /* Applied Filters Section */
 #appliedFiltersSection {
-  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 24px;
   border-radius: 4px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 #appliedFiltersSection strong {
   font-weight: 600;
   color: #102040;
-  margin: 0 0 12px 0;
+  margin: 0;
 }
 
 #appliedFiltersSection p {
   margin: 0;
+  display: inline;
+}
+
+#appliedFiltersSection > div {
+  display: contents;
 }
 
 #appliedFilters {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
   align-items: center;
 }
 
@@ -36,6 +44,11 @@
   border: 1px solid #d8dee6;
   background-color: #fff;
   color: #102040;
+}
+
+.filter-pill:focus-within {
+  outline: 4px solid #88bc88;
+  outline-offset: 0;
 }
 
 /* Ensure badge color utility classes don't override the outline/pill look */
@@ -61,7 +74,7 @@
 .pill-remove {
   background: none;
   border: none;
-  color: #102040;
+  color: #208820;
   cursor: pointer;
   padding: 0;
   margin-left: 6px;
@@ -76,9 +89,7 @@
 }
 
 .pill-remove:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline: none;
 }
 
 #clearAllBtn {
@@ -86,7 +97,9 @@
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
-  margin-left: auto;
+  margin-left: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
 }
 
 #clearAllBtn:hover {

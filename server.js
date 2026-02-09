@@ -20,6 +20,41 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Handle user data requests (mock endpoints for local development)
+  if (req.url.includes("/cdn/userdata/")) {
+    console.log(`Mock user data request: ${req.url}`);
+    res.writeHead(200, { "Content-Type": "application/json" });
+
+    // Return empty/mock data based on the endpoint
+    if (req.url.includes("get-favourites-xhr")) {
+      res.end(JSON.stringify({ systems: [], content: [], contacts: [] }));
+    } else if (req.url.includes("get-displayname-xhr")) {
+      res.end(JSON.stringify({ displayName: "Yes" }));
+    } else if (req.url.includes("get-userinfo-xhr")) {
+      res.end(
+        JSON.stringify({
+          UIgivenName: "Test",
+          sn: "User",
+          telephoneNumber: "",
+          mail: "test.user@nt.gov.au",
+          title: "",
+          location: "",
+          departmentNumber: "",
+        }),
+      );
+    } else {
+      res.end(JSON.stringify({}));
+    }
+    return;
+  }
+
+  // Silently handle .well-known requests (Chrome DevTools, etc.)
+  if (req.url.startsWith("/.well-known/")) {
+    res.writeHead(404);
+    res.end();
+    return;
+  }
+
   // Handle Funnelback proxy requests
   if (req.url.startsWith("/api/funnelback")) {
     const queryParams = req.url.substring("/api/funnelback?".length);
@@ -44,7 +79,7 @@ const server = http.createServer((req, res) => {
         console.error("Error calling Funnelback API:", err);
         res.writeHead(500, { "Content-Type": "application/json" });
         res.end(
-          JSON.stringify({ error: "Failed to fetch from Funnelback API" })
+          JSON.stringify({ error: "Failed to fetch from Funnelback API" }),
         );
       });
 
@@ -115,4 +150,5 @@ server.listen(PORT, () => {
   console.log(`  /landing          → AI knowledge base (landing page)`);
   console.log(`  /content          → Summarise meeting notes (content page)`);
   console.log(`  /api/funnelback   → Funnelback API proxy`);
+  console.log(`  /cdn/userdata/*   → Mock user data endpoints (local dev)`);
 });

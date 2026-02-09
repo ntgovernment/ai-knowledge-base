@@ -33,24 +33,21 @@ export function displayAppliedFilters(filters) {
     container.appendChild(pill);
   }
 
-  // Add work area pills (primary blue)
-  if (filters.workAreas && filters.workAreas.length > 0) {
-    // Don't show pills if all work areas are selected
-    const allWorkAreasSelected = isAllWorkAreasSelected(filters.workAreas);
-
-    if (!allWorkAreasSelected) {
-      hasFilters = true;
-      filters.workAreas.forEach((workArea) => {
+  // Add work area pills (primary blue) - create separate pill for each selected work area
+  if (filters.workAreas && Array.isArray(filters.workAreas)) {
+    filters.workAreas.forEach((workArea) => {
+      if (workArea && workArea.trim()) {
+        hasFilters = true;
         const pill = createFilterPill(
           "Work area",
           workArea,
           "bg-primary",
           "work-area",
-          workArea,
+          workArea, // Pass work area value for individual removal
         );
         container.appendChild(pill);
-      });
-    }
+      }
+    });
   }
 
   // Do not add sort pill
@@ -66,22 +63,6 @@ export function displayAppliedFilters(filters) {
 
   // Show/hide section based on whether filters are active
   section.style.display = hasFilters ? "block" : "none";
-}
-
-/**
- * Check if all work areas are selected
- * @param {Array} selectedWorkAreas - Currently selected work areas
- * @returns {boolean}
- */
-function isAllWorkAreasSelected(selectedWorkAreas) {
-  const dropdown = document.getElementById("document_type");
-  if (!dropdown) return false;
-
-  const totalOptions = Array.from(dropdown.options).filter(
-    (opt) => !opt.disabled && opt.value,
-  ).length;
-
-  return selectedWorkAreas.length === totalOptions;
 }
 
 /**
@@ -173,34 +154,28 @@ async function removeFilter(filterType, filterValue) {
       break;
 
     case "work-area":
-      // Unselect specific work area from multi-select
+      // Remove specific work area from multi-select
       const workAreaDropdown = document.getElementById("document_type");
       if (workAreaDropdown && filterValue) {
-        const option = Array.from(workAreaDropdown.options).find(
-          (opt) => opt.value === filterValue,
-        );
-        if (option) {
-          option.selected = false;
+        if (window.jQuery && window.jQuery.fn.SumoSelect) {
+          // Use SumoSelect API to get current values
+          let currentValues = window.jQuery("#document_type").val() || [];
+          // Remove the specific work area
+          currentValues = currentValues.filter((val) => val !== filterValue);
+          // Update SumoSelect with new values
+          window.jQuery("#document_type").val(currentValues)[0].sumo.reload();
+        } else {
+          // Fallback to native multi-select
+          Array.from(workAreaDropdown.options).forEach((option) => {
+            if (option.value === filterValue) {
+              option.selected = false;
+            }
+          });
         }
 
         // Trigger change event to reapply filters
         const changeEvent = new Event("change", { bubbles: true });
         workAreaDropdown.dispatchEvent(changeEvent);
-
-        // Also trigger for multi-select component if it exists
-        const multiSelectContainer = workAreaDropdown.nextElementSibling;
-        if (
-          multiSelectContainer &&
-          multiSelectContainer.classList.contains("aikb-multiselect-container")
-        ) {
-          const instance = multiSelectContainer.__multiSelectInstance;
-          if (instance) {
-            instance.selectedValues.delete(filterValue);
-            instance.syncNativeSelect();
-            instance.updateDisplayText();
-            instance.triggerChange();
-          }
-        }
       }
       break;
 
@@ -218,26 +193,17 @@ export async function clearAllFilters() {
     searchInput.value = "";
   }
 
-  // Reset work area dropdown to all selected
+  // Clear work area dropdown (reset multi-select to empty)
   const workAreaDropdown = document.getElementById("document_type");
   if (workAreaDropdown) {
-    Array.from(workAreaDropdown.options).forEach((opt) => {
-      if (!opt.disabled && opt.value) {
-        opt.selected = true;
-      }
-    });
-
-    // Update multi-select component if it exists
-    const multiSelectContainer = workAreaDropdown.nextElementSibling;
-    if (
-      multiSelectContainer &&
-      multiSelectContainer.classList.contains("aikb-multiselect-container")
-    ) {
-      const instance = multiSelectContainer.__multiSelectInstance;
-      if (instance && typeof instance.selectAllByDefault === "function") {
-        instance.selectAllByDefault();
-        instance.triggerChange();
-      }
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to clear selections
+      window.jQuery("#document_type").val([]);
+    } else {
+      // Fallback to native multi-select
+      Array.from(workAreaDropdown.options).forEach((option) => {
+        option.selected = false;
+      });
     }
   }
 
@@ -247,7 +213,7 @@ export async function clearAllFilters() {
     section.style.display = "none";
   }
 
-  // Reload initial results
+  // Reload initial results (this will reinitialize SumoSelect properly)
   const { loadInitialResults } = await import("./load-initial-results.js");
   loadInitialResults();
 }
@@ -275,18 +241,26 @@ export function getCurrentFilters() {
   const sortDropdown =
     document.getElementById("sort") || document.getElementById("owner");
 
+  // Get work areas as array
+  let workAreas = [];
+  if (workAreaDropdown) {
+    if (window.jQuery && window.jQuery.fn.SumoSelect) {
+      // Use SumoSelect API to get selected values as array
+      workAreas = window.jQuery("#document_type").val() || [];
+    } else {
+      // Fallback to native multi-select behavior
+      const selectedOptions = Array.from(
+        workAreaDropdown.selectedOptions || [],
+      );
+      workAreas = selectedOptions.map((option) => option.value);
+    }
+  }
+
   const filters = {
     searchQuery: searchInput ? searchInput.value : "",
-    workAreas: [],
+    workAreas: workAreas,
     sort: sortDropdown ? sortDropdown.value : "relevance",
   };
-
-  if (workAreaDropdown) {
-    const selectedOptions = Array.from(workAreaDropdown.selectedOptions || []);
-    filters.workAreas = selectedOptions
-      .map((opt) => opt.value)
-      .filter((val) => val && val.trim().length > 0);
-  }
 
   return filters;
 }

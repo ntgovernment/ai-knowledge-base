@@ -1,7 +1,6 @@
 /* Import all CSS modules for landing page bundle (except content-page.css) */
 @import "./search-interface.css";
 @import "./search-card.css";
-@import "./multi-select-dropdown.css";
 @import "./search-results.css";
 @import "./applied-filters.css";
 @import "./pagination.css";
@@ -12,13 +11,18 @@
   display: none;
 }
 
-/* Highly scoped search icon placement to avoid affecting multi-select and cards */
+/* Highly scoped search icon placement to avoid affecting cards */
 #policy-search-form .search-input-container {
   position: relative;
 }
 
 #policy-search-form .search-input-container #search.ntgc-text-input {
   padding-right: 48px; /* reserve space for icon inside the input */
+}
+
+#policy-search-form .search-input-container #search.ntgc-text-input:focus {
+  outline: 4px solid #88bc88 !important;
+  outline-offset: 0 !important;
 }
 
 #policy-search-form .search-input-container::after {
@@ -33,4 +37,41 @@
   color: #888;
   pointer-events: none;
   line-height: 1;
+}
+
+/* CTA Component - Submit use case responsive layout */
+.aikb-cta-submit {
+  width: 100%;
+}
+
+/* Welcome text wrapper - left aligned on desktop */
+.aikb-welcome-wrapper {
+  width: 100%;
+}
+
+/* Clearfix utility for container with floated CTA */
+.container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (min-width: 992px) {
+  /* Direct selectors for welcome heading and paragraph */
+  #content > div:nth-child(3) > div > h2,
+  #content > div:nth-child(3) > div > p {
+    width: 51%;
+    float: left;
+  }
+
+  .aikb-cta-submit {
+    width: 45%;
+    float: right;
+    margin-top: -3rem;
+    padding-left: 2rem;
+  }
+
+  .aikb-cta-submit * {
+    float: right;
+  }
 }
