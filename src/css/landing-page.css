@@ -39,39 +39,44 @@
   line-height: 1;
 }
 
-/* CTA Component - Submit use case responsive layout */
-.aikb-cta-submit {
+/* Two-column grid layout - Mobile first, responsive design */
+.nt-two-column {
+  display: block;
   width: 100%;
 }
 
-/* Welcome text wrapper - left aligned on desktop */
-.aikb-welcome-wrapper {
+.nt-two-column__left,
+.nt-two-column__right {
   width: 100%;
 }
 
-/* Clearfix utility for container with floated CTA */
-.container::after {
-  content: "";
-  display: table;
-  clear: both;
+.nt-two-column__left > :first-child,
+.nt-two-column__right > :first-child {
+  margin-top: 0;
 }
 
+/* Reset code tag styling when wrapping buttons */
+.nt-two-column code {
+  display: inline;
+  padding: 0;
+  background-color: transparent !important;
+  background: none !important;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Desktop layout - side-by-side columns */
 @media (min-width: 992px) {
-  /* Direct selectors for welcome heading and paragraph */
-  #content > div:nth-child(3) > div > h2,
-  #content > div:nth-child(3) > div > p {
-    width: 51%;
-    float: left;
+  .nt-two-column {
+    display: grid;
+    grid-template-columns: 53.125fr 46.875fr;
+    gap: 2rem;
+    align-items: start;
   }
 
-  .aikb-cta-submit {
-    width: 45%;
-    float: right;
-    margin-top: -3rem;
+  .nt-two-column__right {
     padding-left: 2rem;
-  }
-
-  .aikb-cta-submit * {
-    float: right;
   }
 }
