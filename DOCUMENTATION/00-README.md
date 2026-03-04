@@ -7,6 +7,7 @@ This documentation covers the **AI Knowledge Base Portal** for NTG Central (Nort
 **Purpose:** Help NT government employees discover AI-related guidance, use cases, and resources to boost workplace productivity.
 
 **Two entry bundles:**
+
 - `dist/landing-page.min.{js,css}` — search interface, filtering, cards, pagination
 - `dist/content-page.min.{js,css}` — code block wrapping, copy-to-clipboard, sidebar
 
@@ -113,21 +114,22 @@ This documentation is organized into the following modules:
 
 For DXP components, always use the README in each component folder as the source of truth:
 
-- `dxp/Callout/README.md`
-- `dxp/Prompt/README.md`
+- `dxp/Callout/README.md` - Informational callout with left border emphasis
+- `dxp/Prompt/README.md` - AI prompt display with pre-block styling and copy behavior (production: March 2026)
+
 4. Read **[08-DEVELOPER-GUIDE.md](08-DEVELOPER-GUIDE.md)** for build commands and debugging
 
 ---
 
 ## Document Index
 
-| Document              | Canonical Topic                                                                 |
-| --------------------- | ------------------------------------------------------------------------------- |
-| 01-ARCHITECTURE.md    | Tech stack, build system, DOM structure, state management, data flow            |
-| 02-SEARCH-ENGINE.md   | Offline search algorithm, scoring, tokenization, Funnelback background refresh  |
-| 03-USER-SYSTEM.md     | SAML auth, user profile, localStorage, persona system                          |
+| Document              | Canonical Topic                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------------------------------- |
+| 01-ARCHITECTURE.md    | Tech stack, build system, DOM structure, state management, data flow                                    |
+| 02-SEARCH-ENGINE.md   | Offline search algorithm, scoring, tokenization, Funnelback background refresh                          |
+| 03-USER-SYSTEM.md     | SAML auth, user profile, localStorage, persona system                                                   |
 | 04-COMPONENTS.md      | All UI components: search interface, cards, filters, pagination, sidebar, pre-blocks, two-column layout |
-| 05-STYLING.md         | CSS architecture, color palette, typography, two-column grid                    |
-| 06-API-REFERENCE.md   | External APIs: Funnelback REST, Squiz Matrix JS API, GA4                        |
-| 07-ACCESSIBILITY.md   | WCAG 2.1 AA, keyboard nav, ARIA, AU Design System compliance                   |
-| 08-DEVELOPER-GUIDE.md | Local setup, build commands, watch mode, debugging, common tasks                |
+| 05-STYLING.md         | CSS architecture, color palette, typography, two-column grid                                            |
+| 06-API-REFERENCE.md   | External APIs: Funnelback REST, Squiz Matrix JS API, GA4                                                |
+| 07-ACCESSIBILITY.md   | WCAG 2.1 AA, keyboard nav, ARIA, AU Design System compliance                                            |
+| 08-DEVELOPER-GUIDE.md | Local setup, build commands, watch mode, debugging, common tasks                                        |

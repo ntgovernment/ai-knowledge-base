@@ -1,8 +1,8 @@
 /**
  * Prompt DXP Component - Main Entry Point
  *
- * Renders prompt content as text inside a <pre> block so existing
- * content-page scripts can apply the shared pre styling and copy button.
+ * Renders prompt content as text inside a <pre> block with Prompt-specific
+ * styling classes. Copy button functionality is provided by copy-to-clipboard.js.
  */
 
 /**
@@ -75,7 +75,7 @@ const main = async (input) => {
   if (!content) {
     return `
 <div class="aikb-prompt">
-  <div class="aikb-pre-block" style="outline-color: red;">
+  <div class="aikb-prompt__wrapper" style="outline-color: red;">
     <h3 class="aikb-prompt__heading">Configuration Error</h3>
     <pre class="aikb-prompt__pre">Prompt content is required.</pre>
   </div>
@@ -92,7 +92,7 @@ const main = async (input) => {
 
   return `
 <div class="aikb-prompt">
-  <div class="aikb-pre-block">
+  <div class="aikb-prompt__wrapper">
     ${headingHtml}
     <pre class="aikb-prompt__pre">${promptTextHtml}</pre>
   </div>

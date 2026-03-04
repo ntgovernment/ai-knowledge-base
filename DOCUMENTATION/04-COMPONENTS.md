@@ -35,10 +35,10 @@ This document covers all interactive UI components, form elements, filters, and 
 
 ### DXP Components
 
-Component-specific implementation details are maintained in each component's own README.
+Component-specific implementation details are maintained in each component's own README. These are production-deployed Squiz DXP edge components:
 
 - `dxp/Callout/README.md` - Callout component usage, styling, accessibility, and migration notes
-- `dxp/Prompt/README.md` - Prompt component rendering pipeline, pre/copy behavior, troubleshooting, and test checklist
+- `dxp/Prompt/README.md` - Prompt component rendering pipeline, pre/copy behavior, troubleshooting, and test checklist (deployed March 2026 on AI Knowledge Base articles)
 
 ### Back to Search Button
 

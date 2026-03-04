@@ -44,7 +44,8 @@
             overflow-x: visible;
         }
 
-        .aikb-pre-block {
+        /* Prompt-specific wrapper styling */
+        .aikb-prompt__wrapper {
             width: 100%;
             height: 100%;
             padding: 24px;
@@ -59,15 +60,11 @@
             display: inline-flex;
         }
 
-        .aikb-pre-block>* {
+        .aikb-prompt__wrapper>* {
             align-self: stretch;
         }
 
-        .aikb-pre-block h2,
-        .aikb-pre-block h3,
-        .aikb-pre-block h4,
-        .aikb-pre-block h5,
-        .aikb-pre-block h6 {
+        .aikb-prompt__heading {
             color: #102040;
             font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
@@ -76,7 +73,7 @@
             word-wrap: break-word;
         }
 
-        .aikb-pre-block pre {
+        .aikb-prompt__pre {
             color: #384560;
             font-size: 16px;
             font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -154,36 +151,6 @@
     </div>
 
     <script>
-        function wrapPreBlocks(main) {
-            main = main || document.getElementById("aikb-main-content") || document.body;
-            const headingSelector = "h2, h3, h4, h5, h6";
-            const headings = main.querySelectorAll(headingSelector);
-
-            headings.forEach((heading) => {
-                const next = heading.nextElementSibling;
-                if (
-                    next &&
-                    next.tagName === "PRE" &&
-                    !heading.parentElement.classList.contains("aikb-pre-block")
-                ) {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "aikb-pre-block";
-                    heading.parentNode.insertBefore(wrapper, heading);
-                    wrapper.appendChild(heading);
-                    wrapper.appendChild(next);
-                }
-            });
-
-            main.querySelectorAll("pre").forEach((pre) => {
-                if (!pre.parentElement.classList.contains("aikb-pre-block")) {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "aikb-pre-block";
-                    pre.parentNode.insertBefore(wrapper, pre);
-                    wrapper.appendChild(pre);
-                }
-            });
-        }
-
         function fallbackCopy(text) {
             const ta = document.createElement("textarea");
             ta.value = text;
@@ -282,7 +249,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             const root = document.querySelector(".preview-content") || document.body;
-            wrapPreBlocks(root);
             addCopyButtons(root);
         });
     </script>
