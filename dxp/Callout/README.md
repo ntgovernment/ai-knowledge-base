@@ -62,6 +62,30 @@ Requires `src/css/callout.css` to be included in the page. The CSS defines:
 - `--aikb-callout-gap-sm`: Small gap (8px)
 - `--aikb-callout-gap-md`: Medium gap (16px)
 
+### Legacy Utility Classes
+
+Legacy pages may still use utility classes from older templates. These are not required for DXP component usage but are documented here for migration context:
+
+```css
+.au-callout {
+  padding: 24px;
+  border-left: 4px solid #8890a0;
+  background-color: #ecf0f0;
+  color: #102040;
+  word-wrap: break-word;
+}
+
+.au-callout--alt {
+  background-color: #e0e0e0;
+}
+
+.au-callout--dark {
+  background-color: #454347;
+  color: #ffffff;
+  border-color: #a2a1a3;
+}
+```
+
 ## Previews
 
 Three preview variants are defined in `manifest.json`:

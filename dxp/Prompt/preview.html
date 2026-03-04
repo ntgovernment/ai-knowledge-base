@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Component Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: #f5f5f5;
+            font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .preview-container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .aikb-prompt {
+            width: 100%;
+        }
+
+        /* Match src/css/aikb-pre-block.css */
+        .copy-pre-btn-wrapper {
+            max-width: 100%;
+            box-sizing: border-box;
+            width: 100%;
+            position: relative;
+            white-space: normal;
+            word-break: break-word;
+            overflow-x: visible;
+            display: block;
+            margin-top: 32px;
+        }
+
+        .copy-pre-btn-wrapper>* {
+            max-width: 100%;
+            box-sizing: border-box;
+            white-space: normal;
+            word-break: break-word;
+            overflow-x: visible;
+        }
+
+        .aikb-pre-block {
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            background: #f5f5f5;
+            overflow: hidden;
+            outline: 1px solid #afb5bf;
+            outline-offset: -1px;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            display: inline-flex;
+        }
+
+        .aikb-pre-block>* {
+            align-self: stretch;
+        }
+
+        .aikb-pre-block h2,
+        .aikb-pre-block h3,
+        .aikb-pre-block h4,
+        .aikb-pre-block h5,
+        .aikb-pre-block h6 {
+            color: #102040;
+            font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            line-height: 24px;
+            margin: 0 0 8px 0;
+            word-wrap: break-word;
+        }
+
+        .aikb-pre-block pre {
+            color: #384560;
+            font-size: 16px;
+            font-family: Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 400;
+            line-height: 24px;
+            margin: 0;
+            padding: 1.25rem 0 0 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: none;
+            border: none;
+            box-shadow: none;
+        }
+
+        /* Match src/css/copy-to-clipboard.css */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+            max-width: 100%;
+            padding-top: 3.25rem;
+        }
+
+        pre.copyable {
+            position: relative;
+            overflow: auto;
+        }
+
+        .copy-pre-btn {
+            font-weight: 600;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 14px 6px 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            border: none;
+            background: #f5f5f5;
+            color: #102040;
+            cursor: pointer;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: none;
+            transition: background 0.2s;
+        }
+
+        .copy-pre-btn::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.59998 4.80002C9.59998 4.13627 10.1362 3.60002 10.8 3.60002H15.7537C16.0725 3.60002 16.3762 3.72752 16.6012 3.95252L18.8475 6.19877C19.0725 6.42377 19.2 6.72752 19.2 7.04627V14.4C19.2 15.0638 18.6637 15.6 18 15.6H10.8C10.1362 15.6 9.59998 15.0638 9.59998 14.4V4.80002ZM10.8 2.40002C9.47623 2.40002 8.39998 3.47627 8.39998 4.80002V14.4C8.39998 15.7238 9.47623 16.8 10.8 16.8H18C19.3237 16.8 20.4 15.7238 20.4 14.4V7.04627C20.4 6.40877 20.1487 5.79752 19.6987 5.34752L17.4525 3.10127C17.0025 2.65127 16.3912 2.40002 15.7537 2.40002H10.8ZM5.99998 7.20002C4.67623 7.20002 3.59998 8.27627 3.59998 9.60002V19.2C3.59998 20.5238 4.67623 21.6 5.99998 21.6H13.2C14.5237 21.6 15.6 20.5238 15.6 19.2V18.6H14.4V19.2C14.4 19.8638 13.8637 20.4 13.2 20.4H5.99998C5.33623 20.4 4.79998 19.8638 4.79998 19.2V9.60002C4.79998 8.93627 5.33623 8.40002 5.99998 8.40002H6.59998V7.20002H5.99998Z" fill="%23102040"/></svg>');
+            background-size: 20px 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.85;
+            vertical-align: middle;
+        }
+
+        .copy-pre-btn.is-copied::after {
+            background: url('data:image/svg+xml;utf8,<svg width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.7924 0.198914C20.0692 0.464133 20.0692 0.900461 19.7924 1.16568L7.6468 12.8011C7.36995 13.0663 6.91449 13.0663 6.63764 12.8011L0.207636 6.64116C-0.0692119 6.37595 -0.0692119 5.93962 0.207636 5.6744C0.484483 5.40918 0.939942 5.40918 1.21679 5.6744L7.14222 11.3509L18.7832 0.198914C19.0601 -0.0663047 19.5155 -0.0663047 19.7924 0.198914Z" fill="%23102040"/></svg>');
+            background-size: 20px 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.95;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container">
+        <div class="preview-content">[component://output]</div>
+    </div>
+
+    <script>
+        function wrapPreBlocks(main) {
+            main = main || document.getElementById("aikb-main-content") || document.body;
+            const headingSelector = "h2, h3, h4, h5, h6";
+            const headings = main.querySelectorAll(headingSelector);
+
+            headings.forEach((heading) => {
+                const next = heading.nextElementSibling;
+                if (
+                    next &&
+                    next.tagName === "PRE" &&
+                    !heading.parentElement.classList.contains("aikb-pre-block")
+                ) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "aikb-pre-block";
+                    heading.parentNode.insertBefore(wrapper, heading);
+                    wrapper.appendChild(heading);
+                    wrapper.appendChild(next);
+                }
+            });
+
+            main.querySelectorAll("pre").forEach((pre) => {
+                if (!pre.parentElement.classList.contains("aikb-pre-block")) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "aikb-pre-block";
+                    pre.parentNode.insertBefore(wrapper, pre);
+                    wrapper.appendChild(pre);
+                }
+            });
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.top = "-1000px";
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            const ok = document.execCommand("copy");
+            document.body.removeChild(ta);
+            if (!ok) throw new Error("execCommand copy failed");
+        }
+
+        function showCopiedState(btn) {
+            if (btn._copyResetTimer) {
+                clearTimeout(btn._copyResetTimer);
+            }
+            btn.textContent = "Copied";
+            btn.classList.add("is-copied");
+            btn.setAttribute("aria-label", "Copied to clipboard");
+            btn._copyResetTimer = setTimeout(() => {
+                btn.textContent = "Copy";
+                btn.classList.remove("is-copied");
+                btn.setAttribute("aria-label", "Copy code block to clipboard");
+            }, 1600);
+        }
+
+        function showError() {
+            alert("Failed to copy.");
+        }
+
+        function addCopyButton(wrapper, pre) {
+            if (wrapper.querySelector(".copy-pre-btn")) return;
+
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "copy-pre-btn";
+            btn.textContent = "Copy";
+            btn.setAttribute("aria-label", "Copy code block to clipboard");
+            btn.style.position = "absolute";
+            btn.style.top = "8px";
+            btn.style.right = "8px";
+            wrapper.appendChild(btn);
+
+            btn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                const text = pre.textContent || "";
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        showCopiedState(btn);
+                    } catch (err) {
+                        showError();
+                    }
+                    return;
+                }
+
+                try {
+                    fallbackCopy(text);
+                    showCopiedState(btn);
+                } catch (err) {
+                    showError();
+                }
+            });
+        }
+
+        function addCopyButtons(main) {
+            main.querySelectorAll("pre").forEach((pre) => {
+                pre.classList.add("copyable");
+                const heading = pre.previousElementSibling;
+
+                if (heading && /^H[2-6]$/.test(heading.tagName)) {
+                    if (!heading.parentElement.classList.contains("copy-pre-btn-wrapper")) {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "copy-pre-btn-wrapper";
+                        wrapper.style.position = "relative";
+                        wrapper.style.width = "100%";
+                        heading.parentNode.insertBefore(wrapper, heading);
+                        wrapper.appendChild(heading);
+                        wrapper.appendChild(pre);
+                        addCopyButton(wrapper, pre);
+                    }
+                } else if (!pre.parentElement.classList.contains("copy-pre-btn-wrapper")) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "copy-pre-btn-wrapper";
+                    wrapper.style.position = "relative";
+                    wrapper.style.width = "100%";
+                    pre.parentNode.insertBefore(wrapper, pre);
+                    wrapper.appendChild(pre);
+                    addCopyButton(wrapper, pre);
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const root = document.querySelector(".preview-content") || document.body;
+            wrapPreBlocks(root);
+            addCopyButtons(root);
+        });
+    </script>
+</body>
+
+</html>

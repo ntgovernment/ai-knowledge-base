@@ -108,6 +108,13 @@ This documentation is organized into the following modules:
 1. Read **[01-ARCHITECTURE.md](01-ARCHITECTURE.md)** for system overview and file map
 2. Read **[02-SEARCH-ENGINE.md](02-SEARCH-ENGINE.md)** for the offline search algorithm and data flow
 3. Read **[04-COMPONENTS.md](04-COMPONENTS.md)** for all UI component markup and behaviour
+
+### Component-Specific Docs (Canonical)
+
+For DXP components, always use the README in each component folder as the source of truth:
+
+- `dxp/Callout/README.md`
+- `dxp/Prompt/README.md`
 4. Read **[08-DEVELOPER-GUIDE.md](08-DEVELOPER-GUIDE.md)** for build commands and debugging
 
 ---
