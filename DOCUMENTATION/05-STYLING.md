@@ -510,8 +510,17 @@ Large (lg):        1280px+
 
 ### Callout Boxes
 
+The **Callout** component is available as a DXP edge component and includes comprehensive styling and usage
+information. Refer to the component's own documentation for details on markup, theming, and accessibility:
+
+- `dxp/Callout/README.md` — component-specific guide (styles live in `src/css/callout.css`).
+
+The snippet below shows the underlying utility CSS used elsewhere in the project; it is _not_ required when
+the component is used in DXP.
+
 ```css
 .au-callout {
+  /* utility helper used by legacy pages */
   padding: 24px; /* 1.5rem */
   border-left: 4px solid #8890a0;
   background-color: #ecf0f0; /* Light gray */

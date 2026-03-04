@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callout Component Test</title>
+    <link rel="stylesheet" href="dist/content-page.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #102040;
+        }
+
+        .test-section {
+            margin-bottom: 2rem;
+        }
+
+        .test-section h2 {
+            font-size: 1.25rem;
+            color: #384560;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Define CSS custom properties used by callout */
+        :root {
+            --clr-surface-primary: #ffffff;
+            --clr-text-default: #1f1e27;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>🎨 Callout Component Test</h1>
+
+        <div class="test-section">
+            <h2>✅ With Heading (Default)</h2>
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__heading">Callout heading</div>
+                        <div class="aikb-callout__text">
+                            This component displays important information with a distinct left
+                            border for visual emphasis. Use callouts to highlight tips, notices, or
+                            key information that users should pay attention to.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Without Heading</h2>
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__text">
+                            Simple callout without heading - perfect for quick tips or brief information that doesn't
+                            require a title.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📚 Long Content</h2>
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__heading">Detailed Information</div>
+                        <div class="aikb-callout__text">
+                            This is an example of a callout with longer content. The component automatically handles
+                            text wrapping and maintains proper spacing even with multiple paragraphs or extensive
+                            information.
+                            The 8px dark blue left border (#1f1f5f) provides strong visual emphasis while the 24px
+                            padding
+                            ensures comfortable reading space. This design pattern is adapted from the NT Government Web
+                            Design
+                            System and follows accessibility best practices with WCAG AAA compliant contrast ratios
+                            (7:1).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>⚡ Short Content</h2>
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__heading">Quick Tip</div>
+                        <div class="aikb-callout__text">
+                            Brief callout with minimal text works great too!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📱 Multiple Callouts</h2>
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__heading">First Callout</div>
+                        <div class="aikb-callout__text">
+                            Multiple callouts stack with proper spacing thanks to margin-bottom.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__heading">Second Callout</div>
+                        <div class="aikb-callout__text">
+                            Each callout maintains consistent styling and spacing.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="aikb-callout">
+                <div class="aikb-callout__content">
+                    <div class="aikb-callout__text-container">
+                        <div class="aikb-callout__text">
+                            Third callout without heading still looks cohesive.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section" style="border: 2px dashed #ccc; padding: 1rem; border-radius: 4px;">
+            <h2>📐 Component Specifications</h2>
+            <ul style="list-style: none; padding-left: 0; font-size: 0.9rem; color: #384560;">
+                <li><strong>Border:</strong> 8px solid #1f1f5f (left)</li>
+                <li><strong>Padding:</strong> 24px (Desktop) / 16px (Mobile)</li>
+                <li><strong>Background:</strong> #ffffff (white)</li>
+                <li><strong>Text Color:</strong> #1f1e27 (dark)</li>
+                <li><strong>Heading:</strong> 24px / 700 weight (Desktop), 20px (Mobile)</li>
+                <li><strong>Body:</strong> 16px / 400 weight</li>
+                <li><strong>Spacing:</strong> 8px gaps, 16px content gap, 1.5rem margin-bottom</li>
+                <li><strong>Accessibility:</strong> WCAG AAA compliant (7:1 contrast)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="dist/content-page.min.js"></script>
+    <script>
+        console.log('✅ Callout component test loaded');
+        console.log('📦 Check browser console for initialization logs');
+    </script>
+</body>
+
+</html>

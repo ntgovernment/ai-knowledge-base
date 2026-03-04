@@ -1,0 +1,93 @@
+/**
+ * Callout Component Styles
+ * 
+ * A presentational callout component for highlighting important information
+ * with a distinct left border for visual emphasis. Adapted from WDS Callout component.
+ * 
+ * Usage:
+ * <div class="aikb-callout">
+ *   <div class="aikb-callout__content">
+ *     <div class="aikb-callout__text-container">
+ *       <div class="aikb-callout__heading">Callout heading</div>
+ *       <div class="aikb-callout__text">Callout content...</div>
+ *     </div>
+ *   </div>
+ * </div>
+ */
+
+/* Callout-specific design tokens */
+:root {
+  --aikb-callout-border-color: #1f1f5f; /* NTG Central dark blue */
+  --aikb-callout-border-width: 8px;
+  --aikb-callout-padding: 24px; /* --sp-xl equivalent */
+  --aikb-callout-gap-sm: 8px; /* --sp-xs equivalent */
+  --aikb-callout-gap-md: 16px; /* --sp-md equivalent */
+}
+
+/* Main callout container */
+.aikb-callout {
+  width: 100%;
+  padding: var(--aikb-callout-padding);
+  background: var(--clr-surface-primary, #ffffff);
+  border-left: var(--aikb-callout-border-width) solid
+    var(--aikb-callout-border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--aikb-callout-gap-sm);
+  margin-bottom: 1.5rem; /* Spacing between callouts */
+}
+
+/* Content wrapper */
+.aikb-callout__content {
+  align-self: stretch;
+  display: flex;
+  gap: var(--aikb-callout-gap-md);
+}
+
+/* Text container */
+.aikb-callout__text-container {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--aikb-callout-gap-sm);
+}
+
+/* Heading styling */
+.aikb-callout__heading {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 1.5rem; /* 24px - H3 size */
+  font-weight: 700;
+  line-height: 1.75rem; /* 28px */
+  word-wrap: break-word;
+}
+
+/* Content text styling */
+.aikb-callout__text {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 1rem; /* 16px */
+  font-weight: 400;
+  line-height: 1.5rem; /* 24px */
+  word-wrap: break-word;
+}
+
+/* Support for formatted content */
+.aikb-callout__text p {
+  margin-bottom: 0.75rem;
+}
+
+.aikb-callout__text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aikb-callout {
+    padding: 1rem; /* Reduce padding on smaller screens */
+  }
+
+  .aikb-callout__heading {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.5rem; /* 24px */
+  }
+}

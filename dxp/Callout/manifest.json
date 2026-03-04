@@ -1,0 +1,94 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "ntg-aikb",
+  "name": "callout",
+  "displayName": "Callout",
+  "description": "Informational callout component with visual emphasis via left border. Use to highlight tips, notices, or key information for content pages.",
+  "icon": {
+    "id": "lightbulb",
+    "color": {
+      "type": "enum",
+      "value": "orange"
+    }
+  },
+  "type": "edge",
+  "version": "1.0.1",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "heading": {
+            "type": "string",
+            "title": "Heading",
+            "description": "Optional callout heading (3-7 words recommended)",
+            "default": ""
+          },
+          "content": {
+            "type": "FormattedText",
+            "title": "Content",
+            "format": "multi-line",
+            "description": "Callout content (required, supports rich HTML formatting via WYSIWYG editor)",
+            "default": "This component displays important information with a distinct left border for visual emphasis."
+          }
+        },
+        "required": ["content"]
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "default": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "heading": "Callout heading",
+              "content": "This component displays important information with a distinct left border for visual emphasis. Use callouts to highlight tips, notices, or key information that users should pay attention to."
+            }
+          }
+        }
+      }
+    },
+    "without-heading": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "content": "Simple callout without heading - perfect for quick tips or brief information."
+            }
+          }
+        }
+      }
+    },
+    "long-content": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "heading": "Detailed Information",
+              "content": "This is an example of a callout with longer content. The component automatically handles text wrapping and maintains proper spacing even with multiple paragraphs or extensive information. The 8px dark blue left border provides strong visual emphasis while the 24px padding ensures comfortable reading space."
+            }
+          }
+        }
+      }
+    }
+  }
+}
