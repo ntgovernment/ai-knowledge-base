@@ -1,0 +1,94 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "ntg-aikb",
+  "name": "prompt",
+  "displayName": "Prompt",
+  "description": "Prompt component rendered as a pre-styled block with copy button support.",
+  "icon": {
+    "id": "code",
+    "color": {
+      "type": "enum",
+      "value": "blue"
+    }
+  },
+  "type": "edge",
+  "version": "1.1.0",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "heading": {
+            "type": "string",
+            "title": "Heading",
+            "description": "Optional prompt heading.",
+            "default": ""
+          },
+          "content": {
+            "type": "FormattedText",
+            "title": "Content",
+            "format": "multi-line",
+            "description": "Prompt content (required). Accepts rich text from editor and renders as plain preformatted text.",
+            "default": ""
+          }
+        },
+        "required": ["content"]
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "default": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "heading": "Prompt",
+              "content": "<p>You are an assistant that writes concise release notes.</p><p>Summarise the following changes:</p><ul><li>Search filters now support multi-select.</li><li>Results render 40% faster.</li></ul>"
+            }
+          }
+        }
+      }
+    },
+    "without-heading": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "content": "<p>Extract action items from the meeting transcript and group them by owner.</p>"
+            }
+          }
+        }
+      }
+    },
+    "long-content": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "heading": "System Prompt",
+              "content": "<p>You are an expert analyst.</p><p>When answering:</p><ol><li>State assumptions first.</li><li>Provide a direct answer.</li><li>List risks and unknowns.</li></ol><p>Use plain language and do not invent facts.</p>"
+            }
+          }
+        }
+      }
+    }
+  }
+}

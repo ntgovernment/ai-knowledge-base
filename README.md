@@ -47,6 +47,8 @@ ai-knowledge-base/
 │   ├── css/             # Stylesheets
 │   └── data/            # Local search data
 ├── dist/                # Built assets
+├── dxp/                 # DXP edge components (Callout, Prompt)
+├── schemas/             # Component manifest schemas
 ├── DOCUMENTATION/       # Detailed technical docs
 ├── AGENTS.md           # AI agent guidelines
 └── COPILOT_INSTRUCTIONS.md  # Copilot usage tips

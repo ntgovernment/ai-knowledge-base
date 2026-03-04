@@ -33,23 +33,12 @@ This document covers all interactive UI components, form elements, filters, and 
 </div>
 ```
 
-### Code Example Blocks
+### DXP Components
 
-**Runtime Wrapping:**
+Component-specific implementation details are maintained in each component's own README. These are production-deployed Squiz DXP edge components:
 
-- JS automatically wraps `h2`-`h6` + `<pre>` into `.aikb-pre-block` for unified styling
-- Copy button injected in `.copy-pre-btn-wrapper` outside `<pre>` (not included in copied text)
-
-**Copy Button States:**
-
-- Default: "Copy" text + copy icon (dual-page SVG)
-- Success: "Copied" text + checkmark icon for ~1.6s, then reverts
-- No toast overlay; button state change only
-
-**Styling:**
-
-- Borderless button, top-right aligned
-- Contents wrap without horizontal scroll (`white-space: pre-wrap`, `word-break: break-word`)
+- `dxp/Callout/README.md` - Callout component usage, styling, accessibility, and migration notes
+- `dxp/Prompt/README.md` - Prompt component rendering pipeline, pre/copy behavior, troubleshooting, and test checklist (deployed March 2026 on AI Knowledge Base articles)
 
 ### Back to Search Button
 
